@@ -1,10 +1,9 @@
 # Dotfiles
 
-This repository manages system and application configurations across **macOS**, **Linux**, and **Windows** using [Chezmoi](https://www.chezmoi.io/).
+My personal dotfiles, managed with [Chezmoi](https://www.chezmoi.io/) for cross-platform compatibility.
+
 
 ## Structure
-
-The repository is organized by tool, making it easy to expand in the future:
 
 ```text
 dotfiles/
@@ -15,7 +14,7 @@ dotfiles/
         └── rules/
 ```
 
-**Note:** You can add new tool directories inside `dot_config/` (or create other top-level mappings) as needed. For example, `dot_config/git/` would map to `~/.config/git/`.
+New tool directories can be added inside `dot_config/` (or with other top-level mappings) as needed. For example, `dot_config/git/` would map to `~/.config/git/`.
 
 ## How Chezmoi Maps Files
 
@@ -33,22 +32,28 @@ Because the source path is `dot_config/opencode/`, Chezmoi will create and manag
 
 ## Prerequisites
 
-*   [Chezmoi](https://www.chezmoi.io/install/) must be installed on your system.
+*   [Chezmoi](https://www.chezmoi.io/install/)
 
 ## Setup
 
 ### 1. Initialize Chezmoi with this repository
 
-If you are cloning from a remote URL (replace `<username>` with your GitHub username):
-
 ```bash
 # macOS / Linux / Windows
-chezmoi init --apply [https://github.com/](https://github.com/)<username>/dotfiles.git
+chezmoi init --apply https://github.com/kaufmann-dev/dotfiles.git
+```
+
+Or, if working with a local copy:
+
+```bash
+# macOS / Linux
+chezmoi init --source-path /absolute/path/to/this/repo
+
+# Windows (PowerShell)
+chezmoi init --source-path C:\absolute\path\to\this\repo
 ```
 
 ### 2. Apply the configurations
-
-After initialization, apply the dotfiles to your system:
 
 ```bash
 chezmoi apply
@@ -56,17 +61,19 @@ chezmoi apply
 
 ## Automating Updates
 
-To ensure your configurations are always up to date across all machines, you can wrap your OpenCode launch command. This forces Chezmoi to pull any new GitHub changes right before the agent starts.
+To keep OpenCode in sync across machines, its launch command can be wrapped to pull the latest dotfiles first.
 
 ### macOS and Linux
-Add this alias to your `~/.bashrc` or `~/.zshrc` file:
+
+Add to `~/.bashrc` or `~/.zshrc`:
 
 ```bash
 alias opencode="chezmoi update && command opencode"
 ```
 
 ### Windows
-Add this function to your PowerShell profile (run `notepad $PROFILE` to edit it):
+
+Add to your PowerShell profile (`notepad $PROFILE`):
 
 ```powershell
 function opencode {
@@ -79,14 +86,14 @@ function opencode {
 
 | Command | Description |
 |---------|-------------|
-| `chezmoi apply` | Apply any changes from the source directory to your system. |
-| `chezmoi diff` | See what changes would be applied without making them. |
+| `chezmoi apply` | Apply changes from the source directory to the system. |
+| `chezmoi diff` | Preview changes without applying them. |
 | `chezmoi edit <file>` | Edit a managed file in the source directory. |
-| `chezmoi re-add` | Update the source directory with changes made to the target files. |
+| `chezmoi re-add` | Update the source directory with changes made to target files. |
 | `chezmoi update` | Pull the latest changes from the remote repository and apply them. |
 
 ## Cross-Platform Notes
 
-Chezmoi supports templating and conditional logic. If you need platform-specific configurations in the future, you can use Chezmoi templates (e.g., `{{ if eq .chezmoi.os "darwin" }}...{{ end }}`) within your configuration files.
+Chezmoi supports templating and conditional logic. Platform-specific configurations can be handled with templates (e.g., `{{ if eq .chezmoi.os "darwin" }}...{{ end }}`).
 
 For more details, see the [Chezmoi documentation](https://www.chezmoi.io/docs/).
