@@ -32,7 +32,11 @@ Because the source path is `dot_config/opencode/`, Chezmoi will create and manag
 
 ## Prerequisites
 
-*   [Chezmoi](https://www.chezmoi.io/install/)
+Install [Chezmoi](https://www.chezmoi.io/):
+
+*   **macOS:** `brew install chezmoi`
+*   **Linux:** `sh -c "$(curl -fsLS get.chezmoi.io)"`
+*   **Windows:** `winget install twpayne.chezmoi`
 
 ## Setup
 
@@ -63,18 +67,13 @@ chezmoi apply
 
 To keep OpenCode configurations continuously in sync across machines without slowing down your workflow, you can wrap the launch command to update your dotfiles **asynchronously** in the background.
 
-### macOS and Linux (Bash / Zsh)
+### macOS and Linux
 
-Copy and paste the appropriate command for your shell to automatically set up the function and reload your profile:
+Copy and paste this command to automatically set up the function and reload your profile:
+*(Note: If you use a shell other than Bash, such as Zsh, replace `~/.bashrc` with `~/.zshrc`)*
 
-**For Bash:**
 ```bash
 echo 'opencode() { chezmoi update > /dev/null 2>&1 & command opencode "$@"; }' >> ~/.bashrc && source ~/.bashrc
-```
-
-**For Zsh:**
-```sh
-echo 'opencode() { chezmoi update > /dev/null 2>&1 & command opencode "$@"; }' >> ~/.zshrc && source ~/.zshrc
 ```
 
 ### Windows (PowerShell)
