@@ -2,34 +2,6 @@
 
 My personal dotfiles, managed with [Chezmoi](https://www.chezmoi.io/) for cross-platform compatibility.
 
-
-## Structure
-
-```text
-dotfiles/
-└── dot_config/         # Maps to ~/.config (or %USERPROFILE%\.config)
-    └── opencode/       # OpenCode configuration
-        ├── agents/
-        ├── skills/
-        └── rules/
-```
-
-New tool directories can be added inside `dot_config/` (or with other top-level mappings) as needed. For example, `dot_config/git/` would map to `~/.config/git/`.
-
-## How Chezmoi Maps Files
-
-Chezmoi translates special prefixes in the source directory to paths in your home directory:
-
-| Source prefix | Destination |
-|---------------|-------------|
-| `dot_` | `.` (hidden file/directory) |
-| `private_` | Sets file permissions to `600` |
-| `executable_` | Sets file as executable (`755`) |
-| `literal_` | Removes the prefix literally (useful for files literally named `dot_...`) |
-| `symlink_` | Creates a symlink instead of a regular file |
-
-Because the source path is `dot_config/opencode/`, Chezmoi will create and manage `%USERPROFILE%\.config\opencode\` on Windows and `~/.config/opencode/` on macOS and Linux.
-
 ## Prerequisites
 
 Install [Chezmoi](https://www.chezmoi.io/):
@@ -50,7 +22,8 @@ chezmoi init --apply https://github.com/kaufmann-dev/dotfiles.git
 Or, if working with a local copy:
 
 ```bash
-chezmoi init --source-path /absolute/path/to/this/repo
+cd <directory>
+chezmoi init --source-path .
 ```
 
 ### 2. Apply the configurations
@@ -95,6 +68,33 @@ If you ever want to remove this auto-update behavior:
 | `chezmoi edit <file>` | Edit a managed file in the source directory. |
 | `chezmoi re-add` | Update the source directory with changes made to target files. |
 | `chezmoi update` | Pull the latest changes from the remote repository and apply them. |
+
+## Structure
+
+```text
+dotfiles/
+└── dot_config/         # Maps to ~/.config (or %USERPROFILE%\.config)
+    └── opencode/       # OpenCode configuration
+        ├── agents/
+        ├── skills/
+        └── rules/
+```
+
+New tool directories can be added inside `dot_config/` (or with other top-level mappings) as needed. For example, `dot_config/git/` would map to `~/.config/git/`.
+
+## How Chezmoi Maps Files
+
+Chezmoi translates special prefixes in the source directory to paths in your home directory:
+
+| Source prefix | Destination |
+|---------------|-------------|
+| `dot_` | `.` (hidden file/directory) |
+| `private_` | Sets file permissions to `600` |
+| `executable_` | Sets file as executable (`755`) |
+| `literal_` | Removes the prefix literally (useful for files literally named `dot_...`) |
+| `symlink_` | Creates a symlink instead of a regular file |
+
+Because the source path is `dot_config/opencode/`, Chezmoi will create and manage `%USERPROFILE%\.config\opencode\` on Windows and `~/.config/opencode/` on macOS and Linux.
 
 ## Cross-Platform Notes
 
