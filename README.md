@@ -63,28 +63,26 @@ chezmoi apply
 
 To keep OpenCode configurations continuously in sync across machines without slowing down your workflow, you can wrap the launch command to update your dotfiles **asynchronously** in the background.
 
-### macOS and Linux
+### macOS and Linux (Bash / Zsh)
 
-Add the following function to your `~/.bashrc` or `~/.zshrc`:
+Copy and paste the appropriate command for your shell to automatically set up the function and reload your profile:
 
+**For Bash:**
 ```bash
-opencode() {
-  # Run update silently in the background
-  chezmoi update > /dev/null 2>&1 &
-  command opencode "$@"
-}
+echo 'opencode() { chezmoi update > /dev/null 2>&1 & command opencode "$@"; }' >> ~/.bashrc && source ~/.bashrc
 ```
 
-### Windows
+**For Zsh:**
+```sh
+echo 'opencode() { chezmoi update > /dev/null 2>&1 & command opencode "$@"; }' >> ~/.zshrc && source ~/.zshrc
+```
 
-Add this function to your PowerShell profile (edit with `notepad $PROFILE`):
+### Windows (PowerShell)
+
+Copy and paste this command into PowerShell to automatically create/update your profile and reload it:
 
 ```powershell
-function opencode {
-    # Run update silently in the background
-    Start-Process -WindowStyle Hidden -FilePath "chezmoi" -ArgumentList "update"
-    & "opencode.exe" @args
-}
+if (!(Test-Path $PROFILE)) { New-Item -Type File -Path $PROFILE -Force }; Add-Content -Path $PROFILE -Value "`nfunction opencode { Start-Process -WindowStyle Hidden -FilePath 'chezmoi' -ArgumentList 'update'; & 'opencode.exe' @args }"; . $PROFILE
 ```
 
 ## Daily Usage
