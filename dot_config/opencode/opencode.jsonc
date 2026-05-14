@@ -1,12 +1,9 @@
 {
   "$schema": "https://opencode.ai/config.json",
-  "theme": "vercel",
   "autoupdate": true,
   "model": "deepseek/deepseek-v4-pro",
   "small_model": "deepseek/deepseek-v4-flash",
-  "keybinds": {
-    "command_list": "<leader>p"
-  },
+
   "default_agent": "build",
   "mcp": {
     "context7": {

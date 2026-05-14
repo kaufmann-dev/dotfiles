@@ -2,10 +2,9 @@
 description: Stress-tests plans and designs through relentless interviewing
 mode: subagent
 temperature: 0.7
-tools:
-  write: true
-  edit: true
-  bash: true
+permission:
+  read: allow
+  bash: allow
 ---
 
 # Inquisitor
@@ -41,4 +40,3 @@ For each step:
 ## Composition
 
 - **Invoke directly when:** the user wants to "stress-test" a plan, challenge a design, or asks for a deep dive into architecture.
-- **Invoke via:** `/inquisit`
