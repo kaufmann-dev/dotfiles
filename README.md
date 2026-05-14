@@ -61,23 +61,28 @@ chezmoi apply
 
 ## Automating Updates
 
-To keep OpenCode in sync across machines, its launch command can be wrapped to pull the latest dotfiles first.
+To keep OpenCode configurations continuously in sync across machines without slowing down your workflow, you can wrap the launch command to update your dotfiles **asynchronously** in the background.
 
 ### macOS and Linux
 
-Add to `~/.bashrc` or `~/.zshrc`:
+Add the following function to your `~/.bashrc` or `~/.zshrc`:
 
 ```bash
-alias opencode="chezmoi update && command opencode"
+opencode() {
+  # Run update silently in the background
+  chezmoi update > /dev/null 2>&1 &
+  command opencode "$@"
+}
 ```
 
 ### Windows
 
-Add to your PowerShell profile (`notepad $PROFILE`):
+Add this function to your PowerShell profile (edit with `notepad $PROFILE`):
 
 ```powershell
 function opencode {
-    chezmoi update
+    # Run update silently in the background
+    Start-Process -WindowStyle Hidden -FilePath "chezmoi" -ArgumentList "update"
     & "opencode.exe" @args
 }
 ```

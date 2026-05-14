@@ -3,7 +3,6 @@
   "autoupdate": true,
   "model": "deepseek/deepseek-v4-pro",
   "small_model": "deepseek/deepseek-v4-flash",
-
   "default_agent": "build",
   "mcp": {
     "context7": {
@@ -30,9 +29,5 @@
   "tools": {
     "websearch": true,
     "codesearch": true
-  },
-  "instructions": [
-    "context/GUIDELINES.md",
-    "context/DESIGN.md"
-  ]
+  }
 }
