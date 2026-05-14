@@ -1,6 +1,6 @@
 ---
 description: Performs security audits and identifies vulnerabilities
-mode: subagent
+mode: primary
 temperature: 0.1
 permission:
   read: allow

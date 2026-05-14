@@ -1,6 +1,6 @@
 ---
 description: Stress-tests plans and designs through relentless interviewing
-mode: subagent
+mode: primary
 temperature: 0.7
 permission:
   read: allow

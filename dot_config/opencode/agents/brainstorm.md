@@ -1,6 +1,6 @@
 ---
 description: Refines rough project ideas through structured questioning
-mode: subagent
+mode: primary
 temperature: 0.7
 top_p: 0.9
 permission:

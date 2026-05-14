@@ -1,6 +1,6 @@
 ---
 description: Designs test suites, writes tests, and analyzes coverage gaps
-mode: subagent
+mode: primary
 temperature: 0.1
 permission:
   read: allow

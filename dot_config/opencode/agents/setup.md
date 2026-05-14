@@ -1,6 +1,6 @@
 ---
 description: Bootstraps new projects from scratch with modern best practices
-mode: subagent
+mode: primary
 temperature: 0.2
 permission:
   read: allow

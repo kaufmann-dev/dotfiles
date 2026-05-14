@@ -1,6 +1,6 @@
 ---
 description: Reviews code for quality and best practices
-mode: subagent
+mode: primary
 temperature: 0.1
 permission:
   read: allow
