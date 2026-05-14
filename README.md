@@ -50,11 +50,7 @@ chezmoi init --apply https://github.com/kaufmann-dev/dotfiles.git
 Or, if working with a local copy:
 
 ```bash
-# macOS / Linux
 chezmoi init --source-path /absolute/path/to/this/repo
-
-# Windows (PowerShell)
-chezmoi init --source-path C:\absolute\path\to\this\repo
 ```
 
 ### 2. Apply the configurations
@@ -83,6 +79,12 @@ Copy and paste this command into PowerShell to automatically create/update your 
 ```powershell
 if (!(Test-Path $PROFILE)) { New-Item -Type File -Path $PROFILE -Force }; Add-Content -Path $PROFILE -Value "`nfunction opencode { Start-Process -WindowStyle Hidden -FilePath 'chezmoi' -ArgumentList 'update'; & 'opencode.exe' @args }"; . $PROFILE
 ```
+
+### Disabling Automatic Updates
+
+If you ever want to remove this auto-update behavior:
+* **macOS / Linux:** Open your shell profile (e.g. `nano ~/.bashrc`), delete the `opencode()` function block, and save.
+* **Windows:** Type `notepad $PROFILE` in PowerShell, delete the `function opencode { ... }` block, and save.
 
 ## Daily Usage
 
