@@ -16,6 +16,26 @@
     "gh_grep": {
       "type": "remote",
       "url": "https://mcp.grep.app"
+    },
+    "svelte": {
+      "type": "remote",
+      "url": "https://mcp.svelte.dev/mcp"
+    },
+    "playwright": {
+      "type": "local",
+      "command": [
+        "npx",
+        "@playwright/mcp@latest"
+      ],
+      "enabled": true
     }
-  }
+  },
+  "tools": {
+    "websearch": true,
+    "codesearch": true
+  },
+  "instructions": [
+    "context/GUIDELINES.md",
+    "context/DESIGN.md"
+  ]
 }
