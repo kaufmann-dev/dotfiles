@@ -78,11 +78,11 @@ dotfiles/
 │   ├── AGENTS.md       # Global Codex guidance
 │   └── config.toml     # Codex configuration
 ├── dot_agents/         # Maps to ~/.agents
-│   └── skills/         # Codex user-level skills
+│   └── skills/         # Shared Codex/OpenCode skills
 └── dot_config/         # Maps to ~/.config (or %USERPROFILE%\.config)
     └── opencode/       # OpenCode configuration
         ├── agents/
-        ├── skills/
+        ├── symlink_skills -> ~/.agents/skills
         └── rules/
 ```
 
