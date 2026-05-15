@@ -71,23 +71,30 @@ These models are the preferred choices for each role as of May 2026. You can als
 ### Phase 2: Architecture & Planning
 | Task | Lead Model | Purpose |
 | :--- | :--- | :--- |
-| **Architect** | **Strategy-Model** | Generate the perfect technical implementation logic and system design. |
+| **Architect** | **Technical-Model** | Generate the perfect technical implementation logic and system design. |
 | **Inquisit** | **Critic-Model** | Review the technical implementation for edge cases and dependency conflicts. |
 | **Plan** | **Technical-Model** | Plan the implementation steps into a tactical, actionable backlog. |
 | **Inquisit** | **Critic-Model** | Review the plan for feasibility, timelines, and resource constraints. |
 
 ---
 
-### Phase 3: Implementation Loop
+### Phase 3: Setup & Validation
 | Task | Lead Model | Purpose |
 | :--- | :--- | :--- |
-| **Setup** | **Technical-Model** | Setup the project environment, folder structure, and boilerplate code. |
+| **Setup** | **Technical-Model** | Initialize the project: environment, folder structure, boilerplate code, dependencies, and all components in a single pass. |
+| **Inquisit** | **Critic-Model** | Review the setup for correctness, dependency completeness, and adherence to the architecture. |
+
+---
+
+### Phase 4: Development Loop
+| Task | Lead Model | Purpose |
+| :--- | :--- | :--- |
 | **Plan (Iterative)** | **Technical-Model** | Plan the next specific adjustment based on the current build state. |
 | **Build** | **Technical-Model** | Implement the adjustment, run code, and fix errors autonomously. |
 
 ---
 
-### Phase 4: Production Readiness
+### Phase 5: Production Readiness
 | Task | Lead Model | Purpose |
 | :--- | :--- | :--- |
 | **Secure** | **Technical-Model** | Perform a security audit and red-teaming before production deployment. |
