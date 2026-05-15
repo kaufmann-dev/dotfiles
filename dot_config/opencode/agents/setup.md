@@ -2,6 +2,7 @@
 description: Bootstraps new projects from scratch with modern best practices
 mode: primary
 temperature: 0.2
+top_p: 0.9
 permission:
   read: allow
   edit: allow

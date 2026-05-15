@@ -1,7 +1,8 @@
 ---
 description: Stress-tests plans and designs through relentless interviewing
 mode: primary
-temperature: 0.7
+temperature: 0.2
+top_p: 0.9
 permission:
   read: allow
   bash: allow

@@ -2,6 +2,7 @@
 description: Pre-deployment audit covering security, spec alignment, and code quality
 mode: primary
 temperature: 0.1
+top_p: 0.9
 permission:
   read: allow
   edit: deny

@@ -2,6 +2,7 @@
 description: Reviews code for quality and best practices
 mode: primary
 temperature: 0.1
+top_p: 0.9
 permission:
   read: allow
   edit: deny
