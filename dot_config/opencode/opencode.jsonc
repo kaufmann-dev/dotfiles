@@ -4,6 +4,7 @@
   "model": "deepseek/deepseek-v4-pro",
   "small_model": "deepseek/deepseek-v4-flash",
   "default_agent": "build",
+  "plugin": ["@franlol/opencode-md-table-formatter@latest"],
   "mcp": {
     "context7": {
       "type": "remote",
