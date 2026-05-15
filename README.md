@@ -73,6 +73,12 @@ If you ever want to remove this auto-update behavior:
 
 ```text
 dotfiles/
+├── dot_codex/          # Maps to ~/.codex
+│   ├── agents/         # Codex custom agents
+│   ├── AGENTS.md       # Global Codex guidance
+│   └── config.toml     # Codex configuration
+├── dot_agents/         # Maps to ~/.agents
+│   └── skills/         # Codex user-level skills
 └── dot_config/         # Maps to ~/.config (or %USERPROFILE%\.config)
     └── opencode/       # OpenCode configuration
         ├── agents/
