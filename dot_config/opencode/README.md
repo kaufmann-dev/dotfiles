@@ -41,22 +41,16 @@ Skills are modular packages that extend agent capabilities with specialized know
 
 ## 🔄 Development Workflow
 
-The agent workflow follows a structured four-phase approach:
-
 ### Model Definitions
-Three specialized models handle different functional roles:
-* **Strategy-Model**: Broad reasoning and long-context logic
-* **Technical-Model**: Agentic execution, code, and security
-* **Critic-Model**: Factual accuracy and meticulous auditing
+Three specialized models handle different functional roles. The table below shows their role, recommended May 2026 model, and an open-weight alternative.
 
-#### Recommended Models (May 2026)
-These models are the preferred choices for each role as of May 2026. You can also use the same model for every role.
-* **Strategy-Model**: Gemini 3.1 Pro
-  * Open-weight alternative: **MiMo-V2.5-Pro**
-* **Technical-Model**: GPT 5.5
-  * Open-weight alternative: **DeepSeek V4Pro (Max)**
-* **Critic-Model**: Opus 4.7
-  * Open-weight alternative: **Kimi K2.6**
+| Role | Purpose | Recommended Model (May 2026) | Open-weight Alternative |
+| :--- | :--- | :--- | :--- |
+| **Strategy-Model** | Broad reasoning and long-context logic | Gemini 3.1 Pro | MiMo-V2.5-Pro |
+| **Technical-Model** | Agentic execution, code, and security | GPT 5.5 | DeepSeek V4Pro (Max) |
+| **Critic-Model** | Factual accuracy and meticulous auditing | Opus 4.7 | Kimi K2.6 |
+
+The agent workflow follows a structured four-phase approach:
 
 ---
 
