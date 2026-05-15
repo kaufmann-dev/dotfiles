@@ -98,4 +98,4 @@ These models are the preferred choices for each role as of May 2026. You can als
 | Task | Lead Model | Purpose |
 | :--- | :--- | :--- |
 | **Test** | **Test-Agent** | Validate the implementation with automated tests and ensure stability before audit. |
-| **Audit** | **Critic-Model** | Perform the final production readiness audit, covering security, correctness, and specification alignment before shipping. |
+| **Audit** | **Critic-Model** | Perform the final production readiness audit, covering security, correctness, and specification alignment. |
