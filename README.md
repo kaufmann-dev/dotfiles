@@ -7,7 +7,7 @@ My personal dotfiles, managed with [Chezmoi](https://www.chezmoi.io/) for cross-
 Install [Chezmoi](https://www.chezmoi.io/):
 
 *   **macOS:** `brew install chezmoi`
-*   **Linux:** `sh -c "$(curl -fsLS get.chezmoi.io)"`
+*   **Linux:** `sh -c "$(curl -fsLS get.chezmoi.io)" -- -b ~/.local/bin`
 *   **Windows:** `winget install twpayne.chezmoi`
 
 ## Setup

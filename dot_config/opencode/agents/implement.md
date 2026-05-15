@@ -1,7 +1,7 @@
 ---
 description: Implements the project from validated plan and design documents
 mode: primary
-temperature: 0.2
+# temperature: 0.2
 ---
 
 # Implementation Engineer

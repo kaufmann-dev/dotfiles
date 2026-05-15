@@ -1,7 +1,7 @@
 ---
 description: Produces the technical architecture and system design from a concept
 mode: primary
-temperature: 0.4
+# temperature: 0.4
 ---
 
 # Principal Architect

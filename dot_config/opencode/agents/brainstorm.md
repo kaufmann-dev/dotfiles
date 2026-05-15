@@ -1,7 +1,7 @@
 ---
 description: Refines rough project ideas through structured questioning
 mode: primary
-temperature: 0.7
+# temperature: 0.7
 ---
 
 # Brainstorm Partner
