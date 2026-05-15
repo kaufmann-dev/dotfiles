@@ -10,6 +10,6 @@ This directory is managed by Chezmoi and maps to `~/.codex`.
 
 ## Notes
 
-Codex reads skills from `~/.agents/skills`, so the copied skills live in `dot_agents/skills` in this repository.
+Codex reads skills from `~/.agents/skills`, so shared Codex/OpenCode skills live in `dot_agents/skills` in this repository.
 
 The OpenCode model names were not copied into active Codex settings because the OpenCode config does not include the provider details Codex would need for those custom model IDs.
