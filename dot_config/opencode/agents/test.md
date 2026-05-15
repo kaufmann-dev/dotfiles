@@ -1,7 +1,7 @@
 ---
 description: Designs test suites, writes tests, and analyzes coverage gaps
 mode: primary
-temperature: 0.1
+# temperature: 0.1
 ---
 
 # Test Engineer

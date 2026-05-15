@@ -1,7 +1,7 @@
 ---
 description: Pre-deployment audit covering security, spec alignment, and code quality
 mode: primary
-temperature: 0.1
+# temperature: 0.1
 ---
 
 # Senior Auditor

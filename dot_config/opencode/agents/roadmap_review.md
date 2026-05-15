@@ -1,7 +1,7 @@
 ---
 description: Reviews and strengthens the PLAN.md through feasibility and completeness critique
 mode: primary
-temperature: 0.2
+# temperature: 0.2
 ---
 
 # Plan Reviewer

@@ -1,7 +1,7 @@
 ---
 description: Reviews and strengthens the ARCHITECTURE.md through technical design critique
 mode: primary
-temperature: 0.2
+# temperature: 0.2
 ---
 
 # Architecture Reviewer
