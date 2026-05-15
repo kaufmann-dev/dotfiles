@@ -1,5 +1,5 @@
 ---
-description: Implements the project from plan, concept, architecture, and design documents
+description: Implements the project from validated plan and design documents
 mode: primary
 temperature: 0.2
 ---

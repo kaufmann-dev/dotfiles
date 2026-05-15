@@ -1,5 +1,5 @@
 ---
-description: Produces a tactical implementation plan from concept, architecture, and design
+description: Produces the initial implementation roadmap from concept, architecture, and design
 mode: primary
 temperature: 0.3
 ---
