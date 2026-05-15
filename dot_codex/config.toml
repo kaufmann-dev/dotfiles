@@ -1,0 +1,40 @@
+#:schema https://developers.openai.com/codex/config-schema.json
+
+model = "gpt-5.5"
+model_reasoning_effort = "high"
+web_search = "live"
+
+[agents]
+max_threads = 6
+max_depth = 1
+
+[mcp_servers.context7]
+url = "https://mcp.context7.com/mcp"
+
+[mcp_servers.gh_grep]
+url = "https://mcp.grep.app"
+
+[mcp_servers.svelte]
+url = "https://mcp.svelte.dev/mcp"
+
+[mcp_servers.playwright]
+command = "npx"
+args = ["@playwright/mcp@latest"]
+enabled = true
+
+[mcp_servers.github]
+command = "npx"
+args = ["-y", "@modelcontextprotocol/server-github"]
+
+# OpenCode settings without a safe Codex equivalent:
+# - autoupdate
+# - default_agent = "build"
+# - plugin = ["@franlol/opencode-md-table-formatter@latest"]
+# - tools.codesearch = true
+# - tui.theme = "vercel" (Codex tui.theme controls syntax highlighting only)
+# - tui.keybinds.command_list = "<leader>p" (Codex action names differ)
+#
+# OpenCode model IDs were not copied because Codex custom providers require
+# provider base URLs/auth settings that are not present in opencode.jsonc:
+# - model = "deepseek/deepseek-v4-pro"
+# - small_model = "deepseek/deepseek-v4-flash"
