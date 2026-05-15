@@ -24,9 +24,9 @@ This workflow defines specialized agents that work in pairs — each creative/pl
 | **brainstorm_review** | Conceptualization  | Review and strengthen `CONCEPT.md` at the concept level only         |
 | **architect**       | Architecture         | Produce `ARCHITECTURE.md` from the validated concept                 |
 | **architect_review** | Architecture        | Review and strengthen `ARCHITECTURE.md` at the design level only     |
-| **plan**            | Planning             | Produce `PLAN.md` from concept, architecture, and design documents   |
-| **plan_review**     | Planning             | Review and strengthen `PLAN.md` for feasibility and completeness     |
-| **build**           | Implementation       | Implement the project following the validated plan and documents      |
+| **roadmap**         | Planning             | Produce `PLAN.md` from concept, architecture, and design documents   |
+| **roadmap_review**  | Planning             | Review and strengthen `PLAN.md` for feasibility and completeness     |
+| **implement**       | Implementation       | Implement the project following the validated plan and documents      |
 | **test**            | Validation           | Create and run test suites                                           |
 | **audit**           | Production Readiness | Final audit for security, correctness, and specification alignment   |
 
@@ -53,16 +53,6 @@ Three specialized models handle different functional roles. The table below show
 | **Technical-Model** | Agentic execution, code, and security | GPT 5.5 | DeepSeek V4Pro (Max) |
 | **Critic-Model** | Factual accuracy and meticulous auditing | Opus 4.7 | Kimi K2.6 |
 
-### Document Flow
-
-Each phase produces and validates a specific document that feeds into the next phase:
-
-```
-CONCEPT.md ──→ ARCHITECTURE.md ──→ PLAN.md ──→ Implementation
-     ↑               ↑                 ↑
-  reviewed         reviewed          reviewed
-```
-
 ---
 
 ### Phase 1: Conceptualization
@@ -84,20 +74,30 @@ CONCEPT.md ──→ ARCHITECTURE.md ──→ PLAN.md ──→ Implementation
 ### Phase 3: Planning
 | Step | Agent | Lead Model | Purpose |
 | :--- | :--- | :--- | :--- |
-| 3a | **plan** | **Technical-Model** | Read `CONCEPT.md` + `ARCHITECTURE.md` + `DESIGN.md`, produce `PLAN.md` |
-| 3b | **plan_review** | **Critic-Model** | Review `PLAN.md` — feasibility and completeness critique only |
+| 3a | **roadmap** | **Technical-Model** | Read `CONCEPT.md` + `ARCHITECTURE.md` + `DESIGN.md`, produce `PLAN.md` |
+| 3b | **roadmap_review** | **Critic-Model** | Review `PLAN.md` — feasibility and completeness critique only |
 
 ---
 
-### Phase 4: Implementation
+### Phase 4: Initial Implementation
 | Step | Agent | Lead Model | Purpose |
 | :--- | :--- | :--- | :--- |
-| 4 | **build** | **Technical-Model** | Implement from `PLAN.md` + all documents. Works for new and existing projects. |
+| 4 | **implement** | **Technical-Model** | Implement the project from `PLAN.md` + all documents |
 
 ---
 
-### Phase 5: Validation & Production Readiness
+### Phase 5: Incremental Development 🔁
+> Uses the **default** `plan` and `build` agents. No custom agents needed — this is the standard iterative development loop for changes, fixes, and feature additions after the initial build.
+
 | Step | Agent | Lead Model | Purpose |
 | :--- | :--- | :--- | :--- |
-| 5a | **test** | **Technical-Model** | Validate the implementation with automated tests |
-| 5b | **audit** | **Critic-Model** | Final production readiness audit: security, correctness, spec alignment |
+| 5a | **plan** *(default)* | — | Plan the next change based on current state |
+| 5b | **build** *(default)* | — | Implement the change, run code, fix errors |
+
+---
+
+### Phase 6: Validation & Production Readiness
+| Step | Agent | Lead Model | Purpose |
+| :--- | :--- | :--- | :--- |
+| 6a | **test** | **Technical-Model** | Validate the implementation with automated tests |
+| 6b | **audit** | **Critic-Model** | Final production readiness audit: security, correctness, spec alignment |
