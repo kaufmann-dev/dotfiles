@@ -81,7 +81,7 @@ These models are the preferred choices for each role as of May 2026. You can als
 ### Phase 3: Setup & Validation
 | Task | Lead Model | Purpose |
 | :--- | :--- | :--- |
-| **Setup** | **Technical-Model** | Initialize the project: environment, folder structure, boilerplate code, dependencies, and all components in a single pass. |
+| **Setup** | **Technical-Model** | One-pass project initialization: environment, structure, boilerplate, dependencies, and components. |
 | **Inquisit** | **Critic-Model** | Review the setup for correctness, dependency completeness, and adherence to the architecture. |
 
 ---
