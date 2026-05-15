@@ -86,10 +86,10 @@ These models are the preferred choices for each role as of May 2026. You can als
 
 ---
 
-### Phase 4: Development Loop
+### Phase 4: Development Loop 🔁
 | Task | Lead Model | Purpose |
 | :--- | :--- | :--- |
-| **Plan (Iterative)** | **Technical-Model** | Plan the next specific adjustment based on the current build state. |
+| **Plan** | **Technical-Model** | Plan the next specific adjustment based on the current build state. |
 | **Build** | **Technical-Model** | Implement the adjustment, run code, and fix errors autonomously. |
 
 ---
