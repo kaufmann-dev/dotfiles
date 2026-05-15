@@ -16,16 +16,19 @@ opencode/
 
 ## 🤖 Agents
 
-This workflow defines six specialized agents that work together in distinct phases:
+This workflow defines specialized agents that work in pairs — each creative/planning agent has a dedicated reviewer that operates strictly within the same domain.
 
-| Agen           | Phase                | Purpose                                                |
-| :---           | :---                 | :---                                                   |
-| **brainstorm** | Conceptualization    | Generate high-level concepts and explore possibilities |
-| **inquisit**   | Review & Validation  | Challenge assumptions and identify risks/edge cases    |
-| **setup**      | Implementation       | Prepare project environment and boilerplate            |
-| **test**       | Implementation       | Create and run test suites                             |
-| **secure**     | Production Readiness | Security audit and red-teaming                         |
-| **review**     | Production Readiness | Final audit for specification alignment                |
+| Agent               | Phase                | Purpose                                                              |
+| :---                | :---                 | :---                                                                 |
+| **brainstorm**      | Conceptualization    | Refine rough ideas into a validated `CONCEPT.md`                     |
+| **brainstorm_review** | Conceptualization  | Review and strengthen `CONCEPT.md` at the concept level only         |
+| **architect**       | Architecture         | Produce `ARCHITECTURE.md` from the validated concept                 |
+| **architect_review** | Architecture        | Review and strengthen `ARCHITECTURE.md` at the design level only     |
+| **plan**            | Planning             | Produce `PLAN.md` from concept, architecture, and design documents   |
+| **plan_review**     | Planning             | Review and strengthen `PLAN.md` for feasibility and completeness     |
+| **build**           | Implementation       | Implement the project following the validated plan and documents      |
+| **test**            | Validation           | Create and run test suites                                           |
+| **audit**           | Production Readiness | Final audit for security, correctness, and specification alignment   |
 
 ## 🛠️ Skills
 
@@ -50,46 +53,51 @@ Three specialized models handle different functional roles. The table below show
 | **Technical-Model** | Agentic execution, code, and security | GPT 5.5 | DeepSeek V4Pro (Max) |
 | **Critic-Model** | Factual accuracy and meticulous auditing | Opus 4.7 | Kimi K2.6 |
 
-The agent workflow follows a structured four-phase approach:
+### Document Flow
+
+Each phase produces and validates a specific document that feeds into the next phase:
+
+```
+CONCEPT.md ──→ ARCHITECTURE.md ──→ PLAN.md ──→ Implementation
+     ↑               ↑                 ↑
+  reviewed         reviewed          reviewed
+```
 
 ---
 
 ### Phase 1: Conceptualization
-| Task | Lead Model | Purpose |
-| :--- | :--- | :--- |
-| **Brainstorm** | **Strategy-Model** | Generate high-level concepts and explore the "What" and "Why." |
-| **Inquisit** | **Critic-Model** | Review the concept; poke holes in logic and identify early risks. |
+| Step | Agent | Lead Model | Purpose |
+| :--- | :--- | :--- | :--- |
+| 1a | **brainstorm** | **Strategy-Model** | Explore the idea and produce `CONCEPT.md` |
+| 1b | **brainstorm_review** | **Critic-Model** | Review `CONCEPT.md` — concept-level critique only (no technical questions) |
 
 ---
 
-### Phase 2: Architecture & Planning
-| Task | Lead Model | Purpose |
-| :--- | :--- | :--- |
-| **Architect** | **Technical-Model** | Generate the perfect technical implementation logic and system design. |
-| **Inquisit** | **Critic-Model** | Review the technical implementation for edge cases and dependency conflicts. |
-| **Plan** | **Technical-Model** | Plan the implementation steps into a tactical, actionable backlog. |
-| **Inquisit** | **Critic-Model** | Review the plan for feasibility, timelines, and resource constraints. |
+### Phase 2: Architecture
+| Step | Agent | Lead Model | Purpose |
+| :--- | :--- | :--- | :--- |
+| 2a | **architect** | **Technical-Model** | Read `CONCEPT.md`, produce `ARCHITECTURE.md` |
+| 2b | **architect_review** | **Critic-Model** | Review `ARCHITECTURE.md` — technical design critique only |
 
 ---
 
-### Phase 3: Setup & Validation
-| Task | Lead Model | Purpose |
-| :--- | :--- | :--- |
-| **Setup** | **Technical-Model** | One-pass project initialization: environment, structure, boilerplate, dependencies, and components. |
-| **Inquisit** | **Critic-Model** | Review the setup for correctness, dependency completeness, and adherence to the architecture. |
+### Phase 3: Planning
+| Step | Agent | Lead Model | Purpose |
+| :--- | :--- | :--- | :--- |
+| 3a | **plan** | **Technical-Model** | Read `CONCEPT.md` + `ARCHITECTURE.md` + `DESIGN.md`, produce `PLAN.md` |
+| 3b | **plan_review** | **Critic-Model** | Review `PLAN.md` — feasibility and completeness critique only |
 
 ---
 
-### Phase 4: Development Loop 🔁
-| Task | Lead Model | Purpose |
-| :--- | :--- | :--- |
-| **Plan** | **Technical-Model** | Plan the next specific adjustment based on the current build state. |
-| **Build** | **Technical-Model** | Implement the adjustment, run code, and fix errors autonomously. |
+### Phase 4: Implementation
+| Step | Agent | Lead Model | Purpose |
+| :--- | :--- | :--- | :--- |
+| 4 | **build** | **Technical-Model** | Implement from `PLAN.md` + all documents. Works for new and existing projects. |
 
 ---
 
-### Phase 5: Production Readiness
-| Task | Lead Model | Purpose |
-| :--- | :--- | :--- |
-| **Test** | **Test-Agent** | Validate the implementation with automated tests and ensure stability before audit. |
-| **Audit** | **Critic-Model** | Perform the final production readiness audit, covering security, correctness, and specification alignment. |
+### Phase 5: Validation & Production Readiness
+| Step | Agent | Lead Model | Purpose |
+| :--- | :--- | :--- | :--- |
+| 5a | **test** | **Technical-Model** | Validate the implementation with automated tests |
+| 5b | **audit** | **Critic-Model** | Final production readiness audit: security, correctness, spec alignment |

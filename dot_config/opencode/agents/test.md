@@ -2,11 +2,6 @@
 description: Designs test suites, writes tests, and analyzes coverage gaps
 mode: primary
 temperature: 0.1
-top_p: 0.9
-permission:
-  read: allow
-  edit: allow
-  bash: allow
 ---
 
 # Test Engineer
