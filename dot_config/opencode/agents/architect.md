@@ -2,6 +2,7 @@
 description: Produces the technical architecture and system design for a concept
 mode: primary
 temperature: 0.4
+top_p: 0.9
 permission:
   read: allow
   edit: deny
