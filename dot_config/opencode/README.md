@@ -39,18 +39,6 @@ Skills are modular packages that extend agent capabilities with specialized know
 - **svelte-code-writer** - Code generation for Svelte projects
 - **svelte-core-bestpractices** - Svelte development best practices
 
-## ⚙️ Configuration
-
-### opencode.jsonc
-Primary configuration file for OpenCode settings:
-- Model selection (deepseek/deepseek-v4-pro, deepseek/deepseek-v4-flash)
-- Default agent selection
-- MCP (Model Context Protocol) server configurations
-- Tool enablement (websearch, codesearch)
-
-### tui.jsonc
-Terminal UI configuration for command-line interactions with OpenCode.
-
 ## 🔄 Development Workflow
 
 The agent workflow follows a structured four-phase approach:
@@ -95,23 +83,3 @@ Three specialized models handle different functional roles:
 | :--- | :--- | :--- |
 | **Secure** | **Technical-Model** | Perform a security audit and red-teaming before production deployment. |
 | **Review** | **Critic-Model** | Conduct a general audit to ensure the final product matches the original intent. |
-
-## 🚀 Quick Start
-
-1. **Review agents** — See [AGENTS.md](./AGENTS.md) for detailed specifications
-2. **Explore skills** — Each skill directory contains a `SKILL.md` with its specification
-3. **Configure** — Update `opencode.jsonc` to customize models, MCPs, and tools
-4. **Use** — Reference agents and skills in your OpenCode workflows
-
-## 📚 Key Design Principles
-
-Based on embedded best practices:
-
-- **Think Before Coding** — Surface assumptions and tradeoffs explicitly
-- **Simplicity First** — Minimum code that solves the problem
-- **Surgical Changes** — Touch only what's necessary, match existing style
-- **Goal-Driven Execution** — Define success criteria and verify completion
-
----
-
-*Last updated: May 15, 2026*
