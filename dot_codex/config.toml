@@ -4,6 +4,9 @@ model = "gpt-5.5"
 model_reasoning_effort = "high"
 web_search = "live"
 
+[features]
+hooks = true
+
 [agents]
 max_threads = 6
 max_depth = 1
