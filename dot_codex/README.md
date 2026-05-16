@@ -6,7 +6,6 @@ This directory is managed by Chezmoi and maps to `~/.codex`.
 
 - `config.toml` - Codex user configuration, including MCP servers copied from OpenCode where Codex supports them.
 - `AGENTS.md` - Global Codex guidance copied from the OpenCode instructions.
-- `agents/*.toml` - Codex custom agents converted from the OpenCode agent definitions.
 
 ## Notes
 
