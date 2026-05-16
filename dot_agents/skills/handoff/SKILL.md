@@ -1,8 +1,10 @@
 ---
 name: handoff
-description: Compact the current conversation into a handoff document for another agent to pick up.
+description: Compact the current conversation into a handoff document for another agent to pick up. ONLY use this skill if the user explicitly requests it.
 argument-hint: "What will the next session be used for?"
 ---
+
+**CRITICAL INSTRUCTION: You MUST NOT use this skill proactively. It should ONLY be used when the user explicitly requests a handoff or a handoff document.**
 
 Write a handoff document summarising the current conversation so a fresh agent can continue the work. Save it to a path produced by `mktemp -t handoff-XXXXXX.md` (read the file before you write to it).
 
