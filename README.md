@@ -81,9 +81,7 @@ dotfiles/
 │   └── skills/         # Shared Codex/OpenCode skills
 └── dot_config/         # Maps to ~/.config (or %USERPROFILE%\.config)
     └── opencode/       # OpenCode configuration
-        ├── agents/
-        ├── symlink_skills -> ~/.agents/skills
-        └── rules/
+        └── agents/
 ```
 
 New tool directories can be added inside `dot_config/` (or with other top-level mappings) as needed. For example, `dot_config/git/` would map to `~/.config/git/`.

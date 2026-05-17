@@ -10,8 +10,7 @@ opencode/
 ├── AGENTS.md        # Detailed agent specifications
 ├── opencode.jsonc   # Primary OpenCode configuration
 ├── tui.jsonc        # Terminal UI configuration
-├── agents/          # Agent definitions
-└── symlink_skills   # Chezmoi symlink to ~/.agents/skills
+└── agents/          # Agent definitions
 ```
 
 ## 🤖 Agents
@@ -32,7 +31,7 @@ This workflow defines specialized agents that work in pairs — each creative/pl
 
 ## 🛠️ Skills
 
-Skills are modular packages that extend agent capabilities with specialized knowledge and workflows. They are stored once in `~/.agents/skills` and linked into this OpenCode config by Chezmoi.
+Skills are modular packages that extend agent capabilities with specialized knowledge and workflows. They are stored in `~/.agents/skills`, which OpenCode reads by default.
 
 - **create-design-md** - Generate structured design documents with best practices
 - **find-skills** - Discover and install skills from the ecosystem
