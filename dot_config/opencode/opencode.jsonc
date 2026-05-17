@@ -4,7 +4,9 @@
   "model": "deepseek/deepseek-v4-pro",
   "small_model": "deepseek/deepseek-v4-flash",
   "default_agent": "build",
-  "plugin": ["@franlol/opencode-md-table-formatter@latest"],
+  "plugin": [
+    "@franlol/opencode-md-table-formatter@latest"
+  ],
   "mcp": {
     "context7": {
       "type": "remote",
@@ -14,19 +16,14 @@
       "type": "remote",
       "url": "https://mcp.grep.app"
     },
-    "svelte": {
-      "type": "remote",
-      "url": "https://mcp.svelte.dev/mcp"
-    },
     "playwright": {
       "type": "local",
       "command": [
         "npx",
         "@playwright/mcp@latest"
-      ],
-      "enabled": true
+      ]
     },
-    "github": { // 👈 add this
+    "github": {
       "type": "local",
       "command": [
         "npx",
