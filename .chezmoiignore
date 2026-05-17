@@ -1,0 +1,2 @@
+# Ignore all README files from being applied to the home directory
+**/README.md
