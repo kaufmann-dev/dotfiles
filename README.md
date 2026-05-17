@@ -73,15 +73,17 @@ If you ever want to remove this auto-update behavior:
 
 ```text
 dotfiles/
+├── AGENTS.md           # Global shared agent guidance (source of truth)
 ├── dot_codex/          # Maps to ~/.codex
 │   ├── agents/         # Codex custom agents
-│   ├── AGENTS.md       # Global Codex guidance
+│   ├── symlink_AGENTS.md.tmpl -> (source directory)/AGENTS.md
 │   └── config.toml     # Codex configuration
 ├── dot_agents/         # Maps to ~/.agents
 │   └── skills/         # Shared Codex/OpenCode skills
 └── dot_config/         # Maps to ~/.config (or %USERPROFILE%\.config)
     └── opencode/       # OpenCode configuration
-        └── agents/
+        ├── agents/
+        └── symlink_AGENTS.md.tmpl -> (source directory)/AGENTS.md
 ```
 
 New tool directories can be added inside `dot_config/` (or with other top-level mappings) as needed. For example, `dot_config/git/` would map to `~/.config/git/`.
