@@ -11,7 +11,6 @@ url = "https://mcp.grep.app"
 [mcp_servers.playwright]
 command = "npx"
 args = ["@playwright/mcp@latest"]
-enabled = true
 
 [mcp_servers.github]
 command = "npx"
