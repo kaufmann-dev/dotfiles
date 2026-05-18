@@ -2,6 +2,15 @@
 
 My personal dotfiles, managed with [Chezmoi](https://www.chezmoi.io/) for cross-platform compatibility.
 
+## Navigation
+
+- [Prerequisites](#prerequisites)
+- [Setup](#setup)
+- [Automating Updates](#automating-updates)
+- [Daily Usage](#daily-usage)
+- [Structure](#structure)
+- [How Chezmoi Maps Files](#how-chezmoi-maps-files)
+
 ## Prerequisites
 
 Install [Chezmoi](https://www.chezmoi.io/):
@@ -107,3 +116,6 @@ Because the source path is `dot_config/opencode/`, Chezmoi will create and manag
 Chezmoi supports templating and conditional logic. Platform-specific configurations can be handled with templates (e.g., `{{ if eq .chezmoi.os "darwin" }}...{{ end }}`).
 
 For more details, see the [Chezmoi documentation](https://www.chezmoi.io/docs/).
+
+
+blablabla mermaid
