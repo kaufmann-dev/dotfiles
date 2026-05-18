@@ -29,6 +29,7 @@ Derive the project name, description, and commands from them — do not invent.
 - `Contents` always appears after the title block, before any other section.
 - `Installation` and `Usage` are required if anything must be installed or run.
   Use the actual package manager found in lockfiles.
+- Combine macOS/Linux and Windows commands in a single code block, using comments to separate OSes.
 - `Configuration` only if config options exist.
 - `API / Reference` only for libraries.
 - `Contributing` — one sentence; link `CONTRIBUTING.md` if it exists.
