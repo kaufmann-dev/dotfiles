@@ -1,6 +1,6 @@
 ---
 name: find-skills
-description: Discover, compare, vet, and optionally help install external agent skills.
+description: "Use this skill when the user asks to find, compare, vet, recommend, install, or check for external agent skills, or when they ask whether a reusable skill exists for a capability."
 ---
 
 # Find Skills
@@ -8,19 +8,6 @@ description: Discover, compare, vet, and optionally help install external agent 
 ## Purpose
 
 Help the user discover external skills that extend agent capabilities, then verify whether they are trustworthy enough to recommend or install.
-
-## Use When
-
-- The user asks whether a skill exists.
-- The user asks to find or install a skill.
-- The user describes a recurring capability gap that a reusable skill might solve.
-- The user asks how to extend the agent workflow.
-
-## Do Not Use When
-
-- A local skill already fits the request.
-- The user wants the current task solved directly rather than adding capabilities.
-- The requested installation would be unsafe or unrelated to the user's goal.
 
 ## Rules
 

@@ -1,6 +1,6 @@
 ---
 name: write-design
-description: Create or update DESIGN.md with visual identity, design tokens, component styling, and interaction guidance.
+description: "Use this skill when the user asks to create, improve, refresh, or audit a project DESIGN.md, design system, visual identity, tokens, typography, spacing, component styling, motion, or interaction guidance."
 ---
 
 # Write DESIGN.md
@@ -8,19 +8,6 @@ description: Create or update DESIGN.md with visual identity, design tokens, com
 ## Purpose
 
 Create or refresh `DESIGN.md` as the project-scope source of truth for design systems and visual identity.
-
-## Use When
-
-- The user asks for `DESIGN.md`, design tokens, visual identity, or UI style rules.
-- A frontend project needs a persistent design system for agents to follow.
-- Existing visual guidance is missing, scattered, or inconsistent.
-
-## Do Not Use When
-
-- The user wants setup or usage docs; use `write-readme`.
-- The user wants technical architecture; use `write-architecture`.
-- The user wants agent workflow rules; use `write-agents`.
-- The target is this global dotfiles repo and no project-scope design system was requested.
 
 ## Document Boundary
 

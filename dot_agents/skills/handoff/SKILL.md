@@ -1,6 +1,6 @@
 ---
 name: handoff
-description: Create a concise handoff document so another agent can continue the work.
+description: "Use this skill only when the user explicitly asks for a handoff, context summary, continuation note, or document for another agent or future session to continue the work."
 argument-hint: "What the next session should focus on"
 ---
 
@@ -9,18 +9,6 @@ argument-hint: "What the next session should focus on"
 ## Purpose
 
 Summarize the current work so a fresh agent can continue without rereading the entire conversation.
-
-## Use When
-
-- The user explicitly asks for a handoff.
-- The user asks to prepare the context for another agent or next session.
-- The user invokes this skill directly.
-
-## Do Not Use When
-
-- The user only asks for a normal progress update.
-- Existing artifacts already contain the needed context and a short final response is enough.
-- The handoff would duplicate a plan, PR description, issue, or commit already created.
 
 ## Workflow
 

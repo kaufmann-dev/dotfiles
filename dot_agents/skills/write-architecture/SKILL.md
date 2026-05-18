@@ -1,6 +1,6 @@
 ---
 name: write-architecture
-description: Create or update ARCHITECTURE.md with project technology, system structure, data flow, integrations, and tradeoffs.
+description: "Use this skill when the user asks to create, improve, refresh, or audit a project ARCHITECTURE.md covering stack, system structure, data flow, persistence, integrations, runtime/deployment shape, security boundaries, or technical tradeoffs."
 ---
 
 # Write ARCHITECTURE.md
@@ -8,19 +8,6 @@ description: Create or update ARCHITECTURE.md with project technology, system st
 ## Purpose
 
 Create or refresh `ARCHITECTURE.md` as the technical source of truth for how a project is built and how its parts fit together.
-
-## Use When
-
-- The user asks for architecture documentation.
-- The stack, runtime topology, data flow, integrations, or technical boundaries need to be explained.
-- Existing architecture docs are missing, stale, or contradictory.
-
-## Do Not Use When
-
-- The user wants setup or usage docs; use `write-readme`.
-- The user wants agent workflow instructions; use `write-agents`.
-- The user wants visual design guidance; use `write-design`.
-- The target is this global dotfiles repo and the user did not explicitly request project-scope architecture docs.
 
 ## Document Boundary
 

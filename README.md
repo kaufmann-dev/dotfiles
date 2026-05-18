@@ -71,23 +71,23 @@ This global configuration repo intentionally does not have root `ARCHITECTURE.md
 
 ## Skill Catalog
 
-| Skill                | Use when                                                                 | Activation policy        |
-| -------------------- | ------------------------------------------------------------------------ | ------------------------ |
-| `brainstorm`         | Refining a rough product idea before implementation planning             | Task-mapped              |
-| `setup`              | Creating or refreshing a project's core docs as one coordinated workflow | Task-mapped orchestrator |
-| `write-design`       | Creating or updating a project `DESIGN.md`                               | Task-mapped              |
-| `write-architecture` | Creating or updating a project `ARCHITECTURE.md`                         | Task-mapped              |
-| `write-readme`       | Creating or updating a project `README.md`                               | Task-mapped              |
-| `write-agents`       | Creating or updating a project `AGENTS.md`                               | Task-mapped              |
-| `frontend-design`    | Building or improving a frontend interface                               | Task-mapped              |
-| `audit`              | Reviewing implementation for security, correctness, and spec alignment   | Task-mapped, read-only   |
-| `md-table-formatter` | Formatting Markdown tables generated or edited during documentation work | Task-mapped              |
-| `find-skills`        | Discovering external skills to install                                   | Discovery with consent   |
-| `find-mcps`          | Discovering MCP servers or connectors                                    | Discovery with consent   |
-| `commit`             | Creating a git commit                                                    | Explicit opt-in only     |
-| `handoff`            | Preparing a handoff document for another agent                           | Explicit opt-in only     |
+Agents choose skills from the skill name and frontmatter `description`, because that metadata is visible before the skill body is loaded.
 
-Task-mapped means an agent may use the skill when the user's request clearly matches the skill. Explicit opt-in means the user must directly ask for that action.
+| Skill                | Description |
+| -------------------- | ----------- |
+| `brainstorm`         | Refine rough product ideas through concept-level questioning before implementation planning. |
+| `setup`              | Coordinate project documentation setup across `DESIGN.md`, `ARCHITECTURE.md`, `README.md`, and `AGENTS.md`. |
+| `write-design`       | Create or update `DESIGN.md` with visual identity, design tokens, component styling, and interaction guidance. |
+| `write-architecture` | Create or update `ARCHITECTURE.md` with project technology, system structure, data flow, integrations, and tradeoffs. |
+| `write-readme`       | Create or update a human-facing project `README.md` with overview, setup, usage, and navigation. |
+| `write-agents`       | Create or update a project `AGENTS.md` with concise, repo-specific operating instructions for coding agents. |
+| `frontend-design`    | Build or improve frontend interfaces with strong visual quality and project-appropriate design. |
+| `audit`              | Perform a read-only pre-deployment review for security, correctness, spec alignment, and code quality. |
+| `md-table-formatter` | Format Markdown tables so columns are aligned and readable. |
+| `find-skills`        | Discover, compare, vet, and optionally help install external agent skills. |
+| `find-mcps`          | Discover, compare, vet, and optionally help install Model Context Protocol servers or connectors. |
+| `commit`             | Create a git commit with a message based on the actual diff when the user explicitly asks for a commit. |
+| `handoff`            | Create a concise handoff document when the user explicitly asks another agent or future session to continue the work. |
 
 ## MCP Servers
 

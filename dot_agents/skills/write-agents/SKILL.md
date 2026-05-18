@@ -1,6 +1,6 @@
 ---
 name: write-agents
-description: Create or update a project AGENTS.md with concise, repo-specific operating instructions for coding agents.
+description: "Use this skill when the user asks to create, improve, refresh, or audit a project AGENTS.md, agent instructions, Codex/OpenCode guidance, or repository-specific AI assistant workflow rules."
 ---
 
 # Write AGENTS.md
@@ -8,19 +8,6 @@ description: Create or update a project AGENTS.md with concise, repo-specific op
 ## Purpose
 
 Create or refresh `AGENTS.md` for coding agents. The file should prevent likely mistakes during automated work in the target repository.
-
-## Use When
-
-- The user asks for agent instructions, Codex/OpenCode guidance, or `AGENTS.md`.
-- Repo-specific commands, constraints, generated-file rules, or workflow gotchas need to be documented.
-- A project has human docs but lacks clear agent operating rules.
-
-## Do Not Use When
-
-- The user wants human onboarding; use `write-readme`.
-- The user wants stack or system architecture; use `write-architecture`.
-- The user wants visual design guidance; use `write-design`.
-- The user wants the global dotfiles workflow updated; edit this repo's root `AGENTS.md` directly with the global scope in mind.
 
 ## Document Boundary
 

@@ -1,6 +1,6 @@
 ---
 name: find-mcps
-description: Discover, compare, vet, and optionally help install Model Context Protocol servers or connectors.
+description: "Use this skill when the user asks to find, compare, vet, recommend, configure, or install Model Context Protocol servers or connectors for a service, tool, workflow, or MCP-compatible client."
 ---
 
 # Find MCPs
@@ -8,19 +8,6 @@ description: Discover, compare, vet, and optionally help install Model Context P
 ## Purpose
 
 Help the user find MCP servers or connectors that fit a tool, service, or workflow, while treating each recommendation as a lightweight security review.
-
-## Use When
-
-- The user asks whether an MCP exists.
-- The user wants MCP recommendations.
-- The user wants help adding an MCP server to Codex, OpenCode, Claude, Cursor, VS Code, or another MCP-compatible client.
-- A workflow would benefit from a new external integration.
-
-## Do Not Use When
-
-- The user is asking to use an MCP that is already configured and available.
-- The user wants a normal library recommendation rather than an MCP.
-- The task can be solved safely with existing tools and no new connector.
 
 ## Rules
 

@@ -1,6 +1,6 @@
 ---
 name: frontend-design
-description: Build or improve frontend interfaces with strong visual quality and project-appropriate design.
+description: "Use this skill when the user asks to build, redesign, polish, or improve a frontend page, component, app screen, visual artifact, interactive UI, or web experience with strong project-appropriate design quality."
 ---
 
 # Frontend Design
@@ -8,18 +8,6 @@ description: Build or improve frontend interfaces with strong visual quality and
 ## Purpose
 
 Create production-quality frontend interfaces that feel intentionally designed for the project, audience, and workflow.
-
-## Use When
-
-- The user asks to build a web page, component, app screen, poster, artifact, or interactive UI.
-- A frontend implementation needs visual polish, layout decisions, or component styling.
-- The project has a `DESIGN.md` or visual system that must be followed.
-
-## Do Not Use When
-
-- The task is backend-only, documentation-only, or pure refactoring.
-- The user asks only for architecture or planning.
-- The requested output is a generated bitmap image rather than frontend code.
 
 ## Rules
 
