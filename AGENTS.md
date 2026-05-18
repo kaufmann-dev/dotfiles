@@ -53,6 +53,7 @@ If a file does not exist, do nothing — do not create it, do not suggest creati
 - `context7` — version-specific library/framework docs. Not for general reasoning.
 
 # Skills
+- `add-mcp-configs` — add project-scoped MCP server configuration entries for multiple agent tools.
 - `write-readme` / `write-design` / `write-agents` — only when creating that file from scratch.
   For edits to existing files, apply changes directly (see Post-Change Documentation Sync).
 - `md-table-formatter` — every time a Markdown table is created or modified, no exceptions.
