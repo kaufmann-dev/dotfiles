@@ -75,3 +75,6 @@ You are able to use the Svelte MCP server, where you have access to comprehensiv
 
 ## Playwright MCP
 You are able to use the Playwright MCP server for browser automation and end-to-end testing. Use it to navigate pages, interact with UI elements, take screenshots, and verify page content.
+
+## GitHub MCP
+You are able to use the GitHub MCP server, where you have access to comprehensive GitHub API.
