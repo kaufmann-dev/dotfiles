@@ -16,8 +16,6 @@ Root `README.md` is for humans. Root `AGENTS.md` is the shared operating manual 
 - [Skill Catalog](#skill-catalog)
 - [MCP Servers](#mcp-servers)
 - [Setup](#setup)
-- [Automating Updates](#automating-updates)
-- [Daily Maintenance](#daily-maintenance)
 
 ## Agent Workflow
 
@@ -98,49 +96,8 @@ Initialize and apply this source repo:
 chezmoi init --apply https://github.com/kaufmann-dev/dotfiles.git
 ```
 
-For an existing local clone:
+Every time this repository is updated, run:
 
 ```bash
-cd path/to/dotfiles
-chezmoi init --source-path .
-chezmoi apply
+chezmoi update
 ```
-
-## Automating Updates
-
-To keep OpenCode configurations continuously in sync across machines without slowing down your workflow, wrap the launch command so it updates your dotfiles asynchronously in the background.
-
-### macOS and Linux
-
-Copy and paste this command to set up the function and reload your profile. If you use a shell other than Bash, such as Zsh, replace `~/.bashrc` with `~/.zshrc`.
-
-```bash
-echo 'opencode() { chezmoi update > /dev/null 2>&1 & command opencode "$@"; }' >> ~/.bashrc && source ~/.bashrc
-```
-
-### Windows (PowerShell)
-
-Copy and paste this command into PowerShell to create or update your profile and reload it:
-
-```powershell
-if (!(Test-Path $PROFILE)) { New-Item -Type File -Path $PROFILE -Force }; Add-Content -Path $PROFILE -Value "`nfunction opencode { Start-Process -WindowStyle Hidden -FilePath 'chezmoi' -ArgumentList 'update'; & 'opencode.exe' @args }"; . $PROFILE
-```
-
-### Disabling Automatic Updates
-
-If you ever want to remove this auto-update behavior:
-
-- macOS / Linux: Open your shell profile, such as `nano ~/.bashrc`, delete the `opencode()` function block, and save.
-- Windows: Type `notepad $PROFILE` in PowerShell, delete the `function opencode { ... }` block, and save.
-
-## Daily Maintenance
-
-| Command              | Purpose                                             |
-| -------------------- | --------------------------------------------------- |
-| `chezmoi diff`       | Preview changes before applying them                |
-| `chezmoi apply`      | Apply source changes to the home directory          |
-| `chezmoi edit <file>` | Edit a managed target file through the source repo |
-| `chezmoi re-add`     | Pull target-file changes back into the source repo  |
-| `chezmoi update`     | Pull the latest repo changes and apply them         |
-
-When changing this repository directly, edit the source files here and then run `chezmoi diff` or `chezmoi apply` from the source directory.
