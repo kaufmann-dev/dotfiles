@@ -56,6 +56,15 @@ Strong success criteria let you loop independently. Weak criteria ("make it work
 
 ## 5. Tool Usage Guidelines
 
+### Skills
+
+We have the following skills:
+...
+
+Only use skills when specifically asked to do so.
+
+### MCP Servers
+
 ## Context7
 When you need to search docs, use `context7` tools.
 
