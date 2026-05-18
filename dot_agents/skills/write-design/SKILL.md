@@ -1,76 +1,92 @@
 ---
 name: write-design
-description: "Use this skill when the user asks to create, improve, refresh, or audit a project DESIGN.md, design system, visual identity, tokens, typography, spacing, component styling, motion, or interaction guidance."
+description: Use only when creating DESIGN.md from scratch. Never for editing existing files.
 ---
 
 # Write DESIGN.md
 
-## Purpose
+Produces a compliant `DESIGN.md` per the `@google/design.md` spec: YAML front matter
+(machine-readable tokens) + Markdown prose (human-readable rationale).
 
-Create or refresh `DESIGN.md` as the project-scope source of truth for design systems and visual identity.
+## File Structure
 
-## Document Boundary
-
-| File | Owns |
-| --- | --- |
-| `DESIGN.md` | Visual identity, colors, typography, spacing, shape, elevation, components, motion, accessibility constraints |
-| `ARCHITECTURE.md` | Stack, runtime structure, data flow, integrations, and deployment shape |
-| `README.md` | Human setup, usage, and navigation |
-| `AGENTS.md` | Agent-specific workflow and repo constraints |
-
-## Workflow
-
-1. Read existing design docs, UI code, style config, component libraries, screenshots, and brand assets.
-2. For new or substantial docs, consult the local references:
-   - `references/SPEC.md`
-   - `references/BEST_PRACTICES.md`
-3. Define machine-readable tokens in YAML front matter when creating a full `DESIGN.md`.
-4. Keep prose tied to tokens using `{path.to.token}` references where practical.
-5. Use hex colors, exact dimensions, semantic typography tokens, and component token references.
-6. Avoid architecture, setup, and agent workflow content.
-
-## Suggested Shape
-
-```markdown
+```
 ---
 version: alpha
-description: Project design system for coding agents.
+name: <string>
+description: <string>
 colors:
-  primary: "#1A1C1E"
+  <token-name>: "<hex>"
 typography:
-  body-md:
-    fontFamily: Inter
-    fontSize: 1rem
-spacing:
-  md: 16px
+  <token-name>:
+    fontFamily:
+    fontSize:
+    fontWeight:
+    lineHeight:
+    letterSpacing:
 rounded:
-  md: 8px
+  sm | md | lg | full: <dimension>
+spacing:
+  sm | md | lg: <dimension>
 components:
-  button-primary:
-    backgroundColor: "{colors.primary}"
+  <component-name>:
+    backgroundColor: "{colors.token}"
+    textColor: "{colors.token}"
+    rounded: "{rounded.token}"
+    padding: <dimension>
 ---
 
 ## Overview
-
 ## Colors
-
 ## Typography
-
 ## Layout & Spacing
-
 ## Elevation & Depth
-
 ## Shapes
-
 ## Components
-
 ## Do's and Don'ts
 ```
 
-## Output
+## Token Rules
 
-A `DESIGN.md` that gives agents exact visual rules and enough rationale to apply them consistently.
+**Colors**
+- Hex only (`"#1A1C1E"`). No `rgb()`, `rgba()`, or named colors.
+- Role-based names: `primary`, `secondary`, `on-surface`, `surface-container`.
+  Not: `blue`, `text-secondary`, `h1-color`.
 
-## Completion Rules
+**Typography**
+- Semantic scale names: `headline-xl`, `body-md`, `label-sm`.
+  Not: `h1`, `h2`, `body`.
+- Single dimension notation: `1rem` not `1rem (16px)`.
+- No `color` property inside typography tokens.
 
-Finish only when the design guidance is specific, token-backed where appropriate, and free of architecture or README content.
+**Dimensions**
+- Always include units: `8px`, `1.5rem`. Never bare numbers or descriptive text.
+
+**Rounded / Spacing**
+- Scale keys only: `sm`, `md`, `lg`, `full`. Not element names like `button`, `tag`.
+
+**Token References**
+- In prose and component values, reference tokens as `{colors.primary}`, `{rounded.sm}`.
+  Never hardcode values in prose that are already defined as tokens.
+
+**Components**
+- Valid properties: `backgroundColor`, `textColor`, `typography`, `rounded`,
+  `padding`, `size`, `height`, `width`.
+- Variants (hover, active) are separate entries: `button-primary-hover`.
+
+## Section Rules
+- Use exactly the headers listed above, in that order.
+- Do not number headers.
+- Omit sections you have nothing to say about — no placeholder sections.
+- Non-standard sections (`Design Philosophy`, `Animation`, `Breakpoints`) are not top-level.
+  Fold them into the nearest canonical section as subsections.
+
+## After Writing
+
+Validate:
+```bash
+npx @google/design.md lint DESIGN.md
+```
+
+Fix all `error` findings before delivering. Investigate `warning` findings —
+especially `contrast-ratio` and `broken-ref` — and resolve or note them explicitly.
