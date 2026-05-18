@@ -7,7 +7,7 @@ description: Run every time a markdown table is created or modified in any file.
 
 Formats valid pipe tables with consistent spacing while preserving content,
 column count, and left/center/right alignment markers. Padding is
-Unicode/display-width aware and based on visible Markdown text where possible.
+Unicode/display-width aware and based on the Markdown source text.
 
 ```bash
 python {skill_path}/format-table.py file.md

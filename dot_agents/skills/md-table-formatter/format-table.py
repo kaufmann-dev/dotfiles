@@ -29,34 +29,6 @@ def display_width(text: str) -> int:
     return sum(char_width(ch) for ch in text)
 
 
-def strip_markdown(text: str) -> str:
-    """Strip markdown formatting for width calculation, preserving inline code content."""
-    code_blocks = []
-
-    def save_code(m):
-        code_blocks.append(m.group(1))
-        return f"\x00CODE{len(code_blocks) - 1}\x00"
-
-    text = re.sub(r"`(.+?)`", save_code, text)
-
-    prev = None
-    while text != prev:
-        prev = text
-        text = re.sub(r"\*\*\*(.+?)\*\*\*", r"\1", text)
-        text = re.sub(r"\*\*(.+?)\*\*", r"\1", text)
-        text = re.sub(r"\*(.+?)\*", r"\1", text)
-        text = re.sub(r"~~(.+?)~~", r"\1", text)
-        text = re.sub(r"!\[([^\]]*)\]\([^)]+\)", r"\1", text)
-        text = re.sub(r"\[([^\]]+)\]\([^)]+\)", r"\1", text)
-
-    def restore_code(m):
-        idx = int(m.group(1))
-        return code_blocks[idx] if idx < len(code_blocks) else m.group(0)
-
-    text = re.sub(r"\x00CODE(\d+)\x00", restore_code, text)
-    return text
-
-
 def is_table_row(line: str) -> bool:
     trimmed = line.strip()
     if not trimmed.startswith("|") or not trimmed.endswith("|"):
@@ -103,7 +75,7 @@ def format_table(lines: list[str]) -> list[str]:
         if i in sep_indices:
             continue
         for j, cell in enumerate(row):
-            w = display_width(strip_markdown(cell.strip()))
+            w = display_width(cell.strip())
             col_widths[j] = max(col_widths[j], w)
 
     result = []
@@ -124,7 +96,7 @@ def format_table(lines: list[str]) -> list[str]:
 
 
 def pad_cell(text: str, width: int, align: str) -> str:
-    dw = display_width(strip_markdown(text))
+    dw = display_width(text)
     padding = max(0, width - dw)
     if align == "center":
         left = padding // 2
