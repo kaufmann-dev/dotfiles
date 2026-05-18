@@ -1,4 +1,4 @@
-# Agent Workflow Dotfiles
+# Dotfiles
 
 Personal agent workflow dotfiles managed with [chezmoi](https://www.chezmoi.io/).
 
@@ -6,15 +6,17 @@ This repository installs shared instructions, reusable skills, and MCP server co
 
 ## Contents
 
-- [What This Manages](#what-this-manages)
-- [Prerequisites](#prerequisites)
-- [Install](#install)
-- [Daily Usage](#daily-usage)
-- [Structure](#structure)
-- [Agent Instructions](#agent-instructions)
-- [Skills](#skills)
-- [MCP Servers](#mcp-servers)
-- [Chezmoi Mapping](#chezmoi-mapping)
+- [Dotfiles](#dotfiles)
+  - [Contents](#contents)
+  - [What This Manages](#what-this-manages)
+  - [Prerequisites](#prerequisites)
+  - [Install](#install)
+  - [Daily Usage](#daily-usage)
+  - [Structure](#structure)
+  - [Agent Instructions](#agent-instructions)
+  - [Skills](#skills)
+  - [MCP Servers](#mcp-servers)
+  - [Chezmoi Mapping](#chezmoi-mapping)
 
 ## What This Manages
 
