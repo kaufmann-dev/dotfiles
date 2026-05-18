@@ -1,19 +1,5 @@
 # Agent Workflow Dotfiles
 
-## Navigation
-
-- [Overview](#overview)
-- [How It Fits Together](#how-it-fits-together)
-- [Agent Workflow](#agent-workflow)
-- [Skill Catalog](#skill-catalog)
-- [MCP Servers](#mcp-servers)
-- [Setup](#setup)
-- [Daily Maintenance](#daily-maintenance)
-- [Repository Map](#repository-map)
-- [Chezmoi Notes](#chezmoi-notes)
-
-## Overview
-
 This repository is a chezmoi-managed global configuration for coding agents. It installs shared instructions, reusable skills, and MCP server configuration for Codex and OpenCode so both tools follow the same workflow.
 
 The important idea is separation of scope:
@@ -24,28 +10,14 @@ The important idea is separation of scope:
 
 Root `README.md` is for humans. Root `AGENTS.md` is the shared operating manual for agents and is symlinked into the configured agent tools.
 
-## How It Fits Together
+## Navigation
 
-```mermaid
-flowchart TD
-  repo["dotfiles source repo"] --> apply["chezmoi apply or update"]
-  apply --> codex["~/.codex"]
-  apply --> opencode["~/.config/opencode"]
-  apply --> agents["~/.agents/skills"]
-
-  repo --> rootAgents["AGENTS.md"]
-  rootAgents --> codexAgents["~/.codex/AGENTS.md symlink"]
-  rootAgents --> opencodeAgents["~/.config/opencode/AGENTS.md symlink"]
-
-  codex --> codexConfig["config.toml"]
-  opencode --> opencodeConfig["opencode.jsonc and tui.jsonc"]
-  agents --> skills["workflow skills"]
-
-  codexConfig --> mcps["Context7, gh_grep, Playwright, GitHub MCP"]
-  opencodeConfig --> mcps
-```
-
-After applying the repo, Codex and OpenCode both point at the same global `AGENTS.md`. The skills live in `~/.agents/skills`, making them available as reusable workflows for project work.
+- [Agent Workflow](#agent-workflow)
+- [Skill Catalog](#skill-catalog)
+- [MCP Servers](#mcp-servers)
+- [Setup](#setup)
+- [Automating Updates](#automating-updates)
+- [Daily Maintenance](#daily-maintenance)
 
 ## Agent Workflow
 
@@ -134,6 +106,33 @@ chezmoi init --source-path .
 chezmoi apply
 ```
 
+## Automating Updates
+
+To keep OpenCode configurations continuously in sync across machines without slowing down your workflow, wrap the launch command so it updates your dotfiles asynchronously in the background.
+
+### macOS and Linux
+
+Copy and paste this command to set up the function and reload your profile. If you use a shell other than Bash, such as Zsh, replace `~/.bashrc` with `~/.zshrc`.
+
+```bash
+echo 'opencode() { chezmoi update > /dev/null 2>&1 & command opencode "$@"; }' >> ~/.bashrc && source ~/.bashrc
+```
+
+### Windows (PowerShell)
+
+Copy and paste this command into PowerShell to create or update your profile and reload it:
+
+```powershell
+if (!(Test-Path $PROFILE)) { New-Item -Type File -Path $PROFILE -Force }; Add-Content -Path $PROFILE -Value "`nfunction opencode { Start-Process -WindowStyle Hidden -FilePath 'chezmoi' -ArgumentList 'update'; & 'opencode.exe' @args }"; . $PROFILE
+```
+
+### Disabling Automatic Updates
+
+If you ever want to remove this auto-update behavior:
+
+- macOS / Linux: Open your shell profile, such as `nano ~/.bashrc`, delete the `opencode()` function block, and save.
+- Windows: Type `notepad $PROFILE` in PowerShell, delete the `function opencode { ... }` block, and save.
+
 ## Daily Maintenance
 
 | Command              | Purpose                                             |
@@ -145,60 +144,3 @@ chezmoi apply
 | `chezmoi update`     | Pull the latest repo changes and apply them         |
 
 When changing this repository directly, edit the source files here and then run `chezmoi diff` or `chezmoi apply` from the source directory.
-
-## Repository Map
-
-```text
-dotfiles/
-|-- AGENTS.md
-|-- README.md
-|-- .chezmoiignore
-|-- dot_agents/
-|   `-- skills/
-|       |-- brainstorm/
-|       |-- setup/
-|       |-- write-design/
-|       |-- write-architecture/
-|       |-- write-readme/
-|       |-- write-agents/
-|       |-- frontend-design/
-|       |-- audit/
-|       |-- find-skills/
-|       |-- find-mcps/
-|       |-- md-table-formatter/
-|       |-- commit/
-|       `-- handoff/
-|-- dot_codex/
-|   |-- config.toml
-|   `-- symlink_AGENTS.md.tmpl
-`-- dot_config/
-    `-- opencode/
-        |-- opencode.jsonc
-        |-- tui.jsonc
-        `-- symlink_AGENTS.md.tmpl
-```
-
-Chezmoi maps these source paths into the home directory:
-
-| Source path                                | Destination                                      |
-| ------------------------------------------ | ------------------------------------------------ |
-| `dot_agents/skills`                        | `~/.agents/skills`                               |
-| `dot_codex/config.toml`                    | `~/.codex/config.toml`                           |
-| `dot_codex/symlink_AGENTS.md.tmpl`         | `~/.codex/AGENTS.md` symlink                     |
-| `dot_config/opencode/opencode.jsonc`       | `~/.config/opencode/opencode.jsonc`              |
-| `dot_config/opencode/tui.jsonc`            | `~/.config/opencode/tui.jsonc`                   |
-| `dot_config/opencode/symlink_AGENTS.md.tmpl` | `~/.config/opencode/AGENTS.md` symlink         |
-
-## Chezmoi Notes
-
-Chezmoi translates source prefixes before applying files:
-
-| Prefix        | Meaning                                      |
-| ------------- | -------------------------------------------- |
-| `dot_`        | Creates a hidden file or directory           |
-| `symlink_`    | Creates a symlink instead of a regular file  |
-| `private_`    | Applies private file permissions             |
-| `executable_` | Marks the target file executable             |
-| `literal_`    | Removes the prefix without special handling  |
-
-`.chezmoiignore` excludes `README.md` files from being applied into the home directory. The root README is documentation for this source repo, not a managed home file.
