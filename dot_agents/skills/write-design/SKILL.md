@@ -8,6 +8,13 @@ description: Use only when creating DESIGN.md from scratch. Never for editing ex
 Produces a compliant `DESIGN.md` per the `@google/design.md` spec: YAML front matter
 (machine-readable tokens) + Markdown prose (human-readable rationale).
 
+## Before Writing
+
+- Inspect existing design docs, UI code, style config, component libraries,
+  screenshots, and brand assets.
+- Keep `DESIGN.md` limited to visual identity, tokens, components, motion, and
+  accessibility. Do not include setup, architecture, or agent workflow content.
+
 ## File Structure
 
 ```
@@ -77,9 +84,11 @@ components:
 ## Section Rules
 - Use exactly the headers listed above, in that order.
 - Do not number headers.
-- Omit sections you have nothing to say about — no placeholder sections.
+- Omit sections you have nothing to say about - no placeholder sections.
 - Non-standard sections (`Design Philosophy`, `Animation`, `Breakpoints`) are not top-level.
   Fold them into the nearest canonical section as subsections.
+- Put asset, iconography, motion, accessibility, and responsive guidance under
+  the nearest canonical section instead of creating new top-level sections.
 
 ## After Writing
 
@@ -88,5 +97,5 @@ Validate:
 npx @google/design.md lint DESIGN.md
 ```
 
-Fix all `error` findings before delivering. Investigate `warning` findings —
-especially `contrast-ratio` and `broken-ref` — and resolve or note them explicitly.
+Fix all `error` findings before delivering. Investigate `warning` findings -
+especially `contrast-ratio` and `broken-ref` - and resolve or note them explicitly.
