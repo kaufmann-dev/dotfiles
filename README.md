@@ -130,3 +130,19 @@ Codex and OpenCode are configured with the same MCP servers:
 | `gh_grep`    | Remote URL    | Real-world code examples from public GitHub repositories.   |
 | `playwright` | Local `npx`     | Browser automation, UI checks, and end-to-end verification. |
 | `github`     | Local `npx`     | GitHub API workflows when repository work is authorized.    |
+
+The `github` MCP server needs local GitHub authentication. This public repository
+does not store tokens or other credentials. Set `GITHUB_PERSONAL_ACCESS_TOKEN`
+on each machine instead, then restart Codex or OpenCode.
+
+```bash
+# macOS & Linux (Add to ~/.bashrc or ~/.zshrc)
+echo 'export GITHUB_PERSONAL_ACCESS_TOKEN="github_pat_..."' >> ~/.bashrc
+source ~/.bashrc
+
+# Windows (PowerShell)
+setx GITHUB_PERSONAL_ACCESS_TOKEN "github_pat_..."
+```
+
+Use a fine-grained GitHub personal access token with only the permissions needed
+for the repositories or organizations you work with.
