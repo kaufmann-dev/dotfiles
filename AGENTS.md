@@ -1,6 +1,6 @@
 # Global Agent Instructions
 
-This file is the shared baseline for coding agents. Chezmoi symlinks it into Codex and OpenCode so both tools follow the same workflow. Local project instructions may add detail; when they conflict, follow the most specific instruction and surface the conflict if it changes the user's request.
+This file is the baseline operating guide for coding agents. Project-local instructions may add more detail; when instructions conflict, follow the most specific applicable rule and surface the conflict if it changes the user's request.
 
 ## 1. Think Before Coding
 
@@ -53,9 +53,9 @@ For multi-step work, keep a short plan with verification for each step:
 3. Report the result -> include skipped checks or remaining risk.
 ```
 
-## 5. Global Workflow
+## 5. Universal Workflow
 
-Use this loop in every target project:
+Use this loop in every project:
 
 1. Read the user request and nearest project instructions.
 2. Inspect relevant files before editing.
@@ -64,11 +64,9 @@ Use this loop in every target project:
 5. Run the most focused useful verification.
 6. Report what changed, what passed, and what could not be verified.
 
-Prefer facts from the repository over guesses. Prefer local project docs over general advice. Prefer exact commands and file references over vague summaries.
+Prefer facts from the repository over guesses. Prefer project docs over general advice. Prefer exact commands and file references over vague summaries.
 
 ## 6. Skill Policy
-
-Skills live under `~/.agents/skills` after chezmoi applies this repo. In this source repo they live under `dot_agents/skills`.
 
 Use a skill when its purpose clearly matches the task, but do not force a skill into unrelated work. If a user explicitly names a skill, follow that skill unless it conflicts with higher-priority instructions.
 
@@ -83,7 +81,7 @@ Do not use skills to bypass user consent. Installing tools, creating commits, de
 
 ## 7. Project Documentation Workflow
 
-This global repo defines the workflow. Individual projects own the project documents:
+Project documentation has clear ownership:
 
 | File | Owns |
 | --- | --- |
@@ -92,7 +90,7 @@ This global repo defines the workflow. Individual projects own the project docum
 | `ARCHITECTURE.md` | Stack, system structure, data flow, integrations, and tradeoffs |
 | `DESIGN.md` | Visual identity, tokens, components, and interaction guidance |
 
-`ARCHITECTURE.md` and `DESIGN.md` are project-scope files. Do not create them at the root of this global dotfiles repo unless the user explicitly changes the repo's purpose.
+Keep facts in the file that owns them. Link between docs instead of copying long reference material across files.
 
 Use `setup` when the user wants all project docs created or refreshed together. Use a specific `write-*` skill when the user asks for one document.
 
@@ -107,16 +105,13 @@ Use `setup` when the user wants all project docs created or refreshed together. 
 
 When a command fails because a required tool is missing, say so and continue with the best available verification.
 
-## 9. Chezmoi Rules For This Repo
+## 9. Working Tree Safety
 
-This repository is a chezmoi source tree.
-
-- Edit source files in this repo, not generated home-directory targets.
-- Keep root `AGENTS.md` as the single source of truth for symlinked agent instructions.
-- Do not replace symlink templates with copied instruction files.
-- Do not change Codex or OpenCode config values unless the user asks.
-- Do not add root `ARCHITECTURE.md` or `DESIGN.md`; those are project-level artifacts.
-- `README.md` is intentionally ignored by chezmoi and stays source-repo documentation only.
+- Check relevant status or diffs before broad edits when the project is version controlled.
+- Do not overwrite, discard, or revert user changes unless explicitly asked.
+- If unrelated changes exist, work around them.
+- If unrelated changes block the task, explain the conflict and ask how to proceed.
+- Do not stage or commit unless the user explicitly asks.
 
 ## 10. Reporting
 
