@@ -85,6 +85,7 @@ dotfiles/
 |-- README.md
 |-- dot_agents/
 |   `-- skills/
+|       |-- add-mcp-configs/
 |       |-- commit/
 |       |-- md-table-formatter/
 |       |-- write-agents/
@@ -123,10 +124,11 @@ The global instructions emphasize simple, surgical changes, repo-first discovery
 
 Skills are installed under `~/.agents/skills/`.
 
-| Skill              | Purpose                                                                        |
-| ------------------ | ------------------------------------------------------------------------------ |
-| `commit`             | Stage and commit changes using structured, conventional git commit guidelines. |
-| `md-table-formatter` | Format Markdown tables after any table is created or modified.                 |
+| Skill                | Purpose                                                                          |
+| -------------------- | -------------------------------------------------------------------------------- |
+| `add-mcp-configs`    | Add project-scoped MCP configs for multiple agent tools.                         |
+| `commit`             | Stage and commit changes using structured, conventional git commit guidelines.   |
+| `md-table-formatter` | Format Markdown tables after any table is created or modified.                   |
 | `write-agents`       | Create a project `AGENTS.md` from scratch.                                       |
 | `write-design`       | Create a project `DESIGN.md` from scratch.                                       |
 | `write-readme`       | Create a project `README.md` from scratch.                                       |
