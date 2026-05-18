@@ -13,6 +13,16 @@ Touch only what the request requires.
 - Preserve unrelated worktree state.
 - Every changed line should trace back to the request.
 
+# Critical Evaluation
+Before executing any request, assess it silently. Then:
+- **Makes sense, no better option exists** → proceed without comment.
+- **Makes sense, but a better option exists** → proceed, then note the better option and why.
+- **Does not make sense or causes harm** → stop. Explain why, propose an alternative,
+  and ask: proceed with original, or implement the alternative?
+
+"Better" means measurably less complexity, fewer side effects, or higher correctness —
+not stylistic preference. Do not block on minor tradeoffs.
+
 # Uncertainty
 If something material is unclear and cannot be discovered, ask before proceeding.
 
