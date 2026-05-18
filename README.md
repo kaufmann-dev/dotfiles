@@ -60,33 +60,19 @@ chezmoi update
 
 A simple pattern for keeping tools like OpenCode in sync is to wrap their launch command with a background update. This triggers `chezmoi update` asynchronously every time you open the tool — no waiting, no manual syncing.
 
-### macOS and Linux
-
 Add a shell function that runs the update silently in the background before launching:
 
 ```bash
+# macOS & Linux (Add to ~/.bashrc or ~/.zshrc)
 echo 'opencode() { chezmoi update > /dev/null 2>&1 & command opencode "$@"; }' >> ~/.bashrc && source ~/.bashrc
-```
 
-> **Note:** Replace `~/.bashrc` with `~/.zshrc` (or your shell's profile file) if you're not using Bash.
-
-### Windows (PowerShell)
-
-```powershell
+# Windows (PowerShell - Add to $PROFILE)
 if (!(Test-Path $PROFILE)) { New-Item -Type File -Path $PROFILE -Force }; Add-Content -Path $PROFILE -Value "`nfunction opencode { Start-Process -WindowStyle Hidden -FilePath 'chezmoi' -ArgumentList 'update'; & 'opencode.exe' @args }"; . $PROFILE
 ```
 
-### How It Works
+This wrapper function intercepts calls to `opencode` to fire `chezmoi update` in the background (without blocking or outputting text) before launching the tool itself. You can adapt this pattern to any CLI tool by replacing `opencode` with your target command.
 
-The wrapper function intercepts calls to `opencode` and:
-
-1. Fires `chezmoi update` in the background (no terminal output, doesn't block)
-2. Immediately launches the real `opencode` with any arguments you passed
-
-You can adapt this pattern to **any CLI tool** — just replace `opencode` with the command you want to trigger updates on.
-
-### Removing the Auto-Update
-
+To remove the auto-update wrapper:
 - **macOS / Linux:** Open your shell profile (`nano ~/.bashrc`), remove the `opencode()` function line, and save.
 - **Windows:** Run `notepad $PROFILE`, delete the `function opencode { ... }` block, and save.
 
