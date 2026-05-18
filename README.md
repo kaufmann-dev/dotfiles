@@ -2,13 +2,11 @@
 
 Personal dotfiles managed with [chezmoi](https://www.chezmoi.io/).
 
-This repository currently focuses on installing shared instructions, reusable skills, and MCP server configurations for Codex, OpenCode, Gemini CLI, Antigravity, and Claude Code. While it is kept lightweight to ensure global agent behaviors live here, it serves as a flexible foundation that can grow to manage other configurations and dotfiles as needed.
+Supported agent tools: Codex, OpenCode, Gemini CLI, Antigravity, and Claude Code.
 
-- **Codex Settings** (`~/.codex/`): Configures web search, MCP servers, and shared instructions.
-- **OpenCode Settings** (`~/.config/opencode/`): Configures tool defaults, interface styling, and shared instructions.
-- **Gemini CLI Settings** (`~/.gemini/`): Configures MCP servers and shared instructions.
-- **Antigravity Settings** (`~/.gemini/antigravity/`): Configures Antigravity MCP servers.
-- **Claude Code Settings** (`~/.claude/`, `~/.claude.json`): Configures MCP servers and shared instructions.
+This repository focuses on installing shared instructions, reusable skills, and MCP server configurations for supported agent tools. While it is kept lightweight to ensure global agent behaviors live here, it serves as a flexible foundation that can grow to manage other configurations and dotfiles as needed.
+
+- **Tool Settings** (`~/.codex/`, `~/.config/opencode/`, `~/.gemini/`, `~/.gemini/antigravity/`, `~/.claude/`, `~/.claude.json`): Configures native settings, MCP servers, and shared instructions.
 - **Shared Skills** (`~/.agents/skills/`): Installs reusable, specialized skills that agents can use.
 
 ## Contents
@@ -61,23 +59,23 @@ chezmoi update
 
 ## Automating Updates
 
-A simple pattern for keeping tools like OpenCode in sync is to wrap their launch command with a background update. This triggers `chezmoi update` asynchronously every time you open the tool — no waiting, no manual syncing.
+A simple pattern for keeping a CLI tool in sync is to wrap its launch command with a background update. This triggers `chezmoi update` asynchronously every time you open the tool — no waiting, no manual syncing.
 
 Add a shell function that runs the update silently in the background before launching:
 
 ```bash
 # macOS & Linux (Add to ~/.bashrc or ~/.zshrc)
-echo 'opencode() { chezmoi update > /dev/null 2>&1 & command opencode "$@"; }' >> ~/.bashrc && source ~/.bashrc
+echo 'agenttool() { chezmoi update > /dev/null 2>&1 & command agenttool "$@"; }' >> ~/.bashrc && source ~/.bashrc
 
 # Windows (PowerShell - Add to $PROFILE)
-if (!(Test-Path $PROFILE)) { New-Item -Type File -Path $PROFILE -Force }; Add-Content -Path $PROFILE -Value "`nfunction opencode { Start-Process -WindowStyle Hidden -FilePath 'chezmoi' -ArgumentList 'update'; & 'opencode.exe' @args }"; . $PROFILE
+if (!(Test-Path $PROFILE)) { New-Item -Type File -Path $PROFILE -Force }; Add-Content -Path $PROFILE -Value "`nfunction agenttool { Start-Process -WindowStyle Hidden -FilePath 'chezmoi' -ArgumentList 'update'; & 'agenttool.exe' @args }"; . $PROFILE
 ```
 
-This wrapper function intercepts calls to `opencode` to fire `chezmoi update` in the background (without blocking or outputting text) before launching the tool itself. You can adapt this pattern to any CLI tool by replacing `opencode` with your target command.
+Replace `agenttool` with the command you want to keep synced. The wrapper function fires `chezmoi update` in the background without blocking or outputting text, then launches the tool itself.
 
 To remove the auto-update wrapper:
-- **macOS / Linux:** Open your shell profile (`nano ~/.bashrc`), remove the `opencode()` function line, and save.
-- **Windows:** Run `notepad $PROFILE`, delete the `function opencode { ... }` block, and save.
+- **macOS / Linux:** Open your shell profile (`nano ~/.bashrc`), remove the wrapper function line, and save.
+- **Windows:** Run `notepad $PROFILE`, delete the wrapper function block, and save.
 
 ## Structure
 
@@ -112,12 +110,12 @@ dotfiles/
 
 ## Agent Instructions
 
-`AGENTS.md` is the shared operating guide. Both Codex and OpenCode receive it through symlinks created by chezmoi:
+`AGENTS.md` is the shared operating guide. Native instruction filenames receive it through symlinks created by chezmoi:
 
 - `dot_codex/symlink_AGENTS.md.tmpl` maps to `~/.codex/AGENTS.md`.
 - `dot_config/opencode/symlink_AGENTS.md.tmpl` maps to `~/.config/opencode/AGENTS.md`.
-- `dot_gemini/symlink_GEMINI.md.tmpl` maps to `~/.gemini/GEMINI.md` for Gemini CLI and Antigravity.
-- `dot_claude/symlink_CLAUDE.md.tmpl` maps to `~/.claude/CLAUDE.md` for Claude Code.
+- `dot_gemini/symlink_GEMINI.md.tmpl` maps to `~/.gemini/GEMINI.md`.
+- `dot_claude/symlink_CLAUDE.md.tmpl` maps to `~/.claude/CLAUDE.md`.
 
 The global instructions emphasize simple, surgical changes, repo-first discovery, focused verification, and documentation ownership. Project-local `AGENTS.md` files remain more specific and should override these global defaults when they apply.
 
@@ -135,7 +133,7 @@ Skills are installed under `~/.agents/skills/`.
 
 ## MCP Servers
 
-Codex, OpenCode, Gemini CLI, Antigravity, and Claude Code are configured with the same MCP servers:
+All supported agent tools are configured with the same MCP servers:
 
 | MCP        | Configuration | Purpose                                                     |
 | ---------- | ------------- | ----------------------------------------------------------- |
