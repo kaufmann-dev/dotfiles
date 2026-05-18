@@ -2,10 +2,13 @@
 
 Personal dotfiles managed with [chezmoi](https://www.chezmoi.io/).
 
-This repository currently focuses on installing shared instructions, reusable skills, and MCP server configurations for Codex and OpenCode. While it is kept lightweight to ensure global agent behaviors live here, it serves as a flexible foundation that can grow to manage other configurations and dotfiles as needed.
+This repository currently focuses on installing shared instructions, reusable skills, and MCP server configurations for Codex, OpenCode, Gemini CLI, Antigravity, and Claude Code. While it is kept lightweight to ensure global agent behaviors live here, it serves as a flexible foundation that can grow to manage other configurations and dotfiles as needed.
 
 - **Codex Settings** (`~/.codex/`): Configures web search, MCP servers, and shared instructions.
 - **OpenCode Settings** (`~/.config/opencode/`): Configures tool defaults, interface styling, and shared instructions.
+- **Gemini CLI Settings** (`~/.gemini/`): Configures MCP servers and shared instructions.
+- **Antigravity Settings** (`~/.gemini/antigravity/`): Configures Antigravity MCP servers.
+- **Claude Code Settings** (`~/.claude/`, `~/.claude.json`): Configures MCP servers and shared instructions.
 - **Shared Skills** (`~/.agents/skills/`): Installs reusable, specialized skills that agents can use.
 
 ## Contents
@@ -92,6 +95,14 @@ dotfiles/
 |-- dot_codex/
 |   |-- config.toml
 |   `-- symlink_AGENTS.md.tmpl
+|-- dot_claude/
+|   `-- symlink_CLAUDE.md.tmpl
+|-- dot_claude.json
+|-- dot_gemini/
+|   |-- antigravity/
+|   |   `-- mcp_config.json
+|   |-- settings.json
+|   `-- symlink_GEMINI.md.tmpl
 `-- dot_config/
     `-- opencode/
         |-- opencode.jsonc
@@ -105,6 +116,8 @@ dotfiles/
 
 - `dot_codex/symlink_AGENTS.md.tmpl` maps to `~/.codex/AGENTS.md`.
 - `dot_config/opencode/symlink_AGENTS.md.tmpl` maps to `~/.config/opencode/AGENTS.md`.
+- `dot_gemini/symlink_GEMINI.md.tmpl` maps to `~/.gemini/GEMINI.md` for Gemini CLI and Antigravity.
+- `dot_claude/symlink_CLAUDE.md.tmpl` maps to `~/.claude/CLAUDE.md` for Claude Code.
 
 The global instructions emphasize simple, surgical changes, repo-first discovery, focused verification, and documentation ownership. Project-local `AGENTS.md` files remain more specific and should override these global defaults when they apply.
 
@@ -122,7 +135,7 @@ Skills are installed under `~/.agents/skills/`.
 
 ## MCP Servers
 
-Codex and OpenCode are configured with the same MCP servers:
+Codex, OpenCode, Gemini CLI, Antigravity, and Claude Code are configured with the same MCP servers:
 
 | MCP        | Configuration | Purpose                                                     |
 | ---------- | ------------- | ----------------------------------------------------------- |
@@ -133,7 +146,7 @@ Codex and OpenCode are configured with the same MCP servers:
 
 The `github` MCP server needs local GitHub authentication. This public repository
 does not store tokens or other credentials. Set `GITHUB_PERSONAL_ACCESS_TOKEN`
-on each machine instead, then restart Codex or OpenCode.
+on each machine instead, then restart the agent tool.
 
 ```bash
 # macOS & Linux (Add to ~/.bashrc or ~/.zshrc)
