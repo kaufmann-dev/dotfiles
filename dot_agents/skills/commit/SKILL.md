@@ -1,53 +1,26 @@
 ---
 name: commit
-description: "Use this skill only when the user explicitly asks to create a git commit, commit current changes, or generate and apply a commit message from the actual diff."
-argument-hint: "Optional commit intent, scope, or files to include"
+description: Use only when the user explicitly asks to commit.
 ---
 
 # Commit
 
-## Purpose
-
-Create a focused git commit from the current repository changes with a clear message based on the diff.
-
-## Rules
-
-- Never discard, revert, or overwrite user changes.
-- If staged changes exist, commit only staged changes unless the user asks otherwise.
-- If no staged changes exist, stage only the files that belong to the requested commit.
-- Stop and ask if unrelated changes are mixed together.
-- Do not mention AI, agents, or this skill in the commit message unless requested.
-
-## Workflow
-
-1. Inspect:
-   - `git status --short`
-   - `git diff --stat`
-   - `git diff`
-   - `git diff --cached --stat`
-   - `git diff --cached`
-2. Decide the commit scope from staged changes, user instructions, and the diff.
-3. Stage only the relevant files if needed.
-4. Generate a concise conventional commit message when a type fits:
-   - `feat`
-   - `fix`
-   - `docs`
-   - `test`
-   - `refactor`
-   - `chore`
-5. Commit with a non-interactive command.
-6. Report the commit hash, subject, scope, and verification.
-
-## Message Shape
-
-```text
-<type>: <subject>
-
-<short body explaining what changed and why>
+## Inspect
+```bash
+git status --short && git diff --stat && git diff && git diff --cached
 ```
 
-Keep the subject under 72 characters. Keep the body to one to three short bullets or sentences.
+## Scope
+- Staged changes exist → commit only staged.
+- Nothing staged → stage only files relevant to the request.
+- Unrelated changes are mixed → ask before proceeding.
 
-## Completion Rules
+## Message
+```
+<type>(<scope>): <subject, max 72 chars>
 
-Finish only after the commit succeeds or after explaining why no safe commit can be made.
+<1–3 sentences: what changed and why>
+```
+Types: `feat` `fix` `docs` `refactor` `test` `chore`
+
+Do not mention AI, agents, or tooling in the message.

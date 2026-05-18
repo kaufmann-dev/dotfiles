@@ -1,67 +1,37 @@
 ---
 name: write-readme
-description: "Use this skill when the user asks to create, improve, refresh, or audit a human-facing project README.md, including overview, setup, usage, commands, navigation, troubleshooting, or links to project docs."
+description: Use only when creating README.md from scratch. Never for editing existing files.
 ---
 
-# Write README.md
+# Write README
 
-## Purpose
+## Before Writing
+Read config files first: `package.json`, `pyproject.toml`, `Makefile`, `Dockerfile`, `.env.example`.
+Derive the project name, description, and commands from them — do not invent.
 
-Create or refresh `README.md` for humans who need to understand, run, use, or contribute to a project.
-
-## Document Boundary
-
-| File | Owns |
-| --- | --- |
-| `README.md` | Human overview, setup, usage, commands, navigation, troubleshooting |
-| `AGENTS.md` | Agent-only workflow and repo constraints |
-| `ARCHITECTURE.md` | Deep technical structure, data flow, integrations, and deployment shape |
-| `DESIGN.md` | Design tokens, visual identity, UI rules, and component styling |
-
-Summarize adjacent docs in one sentence when useful, then link to them.
-
-## Workflow
-
-1. Read the existing README and nearby project docs.
-2. Inspect manifests, scripts, configs, and entrypoints for verified setup and commands.
-3. Add or repair top navigation when the README is more than a small stub.
-4. Replace stale placeholders, broken diagrams, and inaccurate file trees.
-5. Keep the README human-facing and avoid agent-only rules.
-6. Preserve useful existing content unless the user requested cleanup.
-
-## Suggested Shape
-
-For a new or fully refreshed README, prefer:
-
-```markdown
+## Structure
+```
 # Project Name
+> One-line description
 
-## Navigation
+## Contents
+<anchor links to every H2 below>
 
-## Overview
-
-## Quick Start
-
+## Installation
 ## Usage
-
-## Development
-
-## Project Docs
+## Configuration
+## API / Reference
+## Contributing
+## License
 ```
 
-Adjust headings to match the project. Include Mermaid only when it makes the project easier to understand.
-
-## Output
-
-A README with:
-
-- Clear project purpose
-- Setup and prerequisites
-- Common commands
-- Basic usage
-- Links to project docs when they exist
-- Honest troubleshooting or unknowns
-
-## Completion Rules
-
-Finish only when `README.md` exists, is accurate from verified facts, and contains no stale placeholders.
+## Rules
+- `Contents` always appears after the title block, before any other section.
+- `Installation` and `Usage` are required if anything must be installed or run.
+  Use the actual package manager found in lockfiles.
+- `Configuration` only if config options exist.
+- `API / Reference` only for libraries.
+- `Contributing` — one sentence; link `CONTRIBUTING.md` if it exists.
+- `License` — one line; link `LICENSE` if it exists.
+- Omit sections that do not apply. No placeholder sections.
+- After writing, run `md-table-formatter` on any tables present.
