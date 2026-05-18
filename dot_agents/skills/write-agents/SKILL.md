@@ -1,85 +1,57 @@
 ---
 name: write-agents
-description: Create or append to a project AGENTS.md with concise, repo-specific operating instructions for coding agents. Use when the user asks to generate, improve, or refresh AGENTS.md, agent instructions, Codex/OpenCode guidance, or repository AI-assistant context while keeping README.md, ARCHITECTURE.md, and DESIGN.md as the sources for human docs, technical architecture, and design system details.
+description: Create or update a project AGENTS.md with concise, repo-specific operating instructions for coding agents.
 ---
 
 # Write AGENTS.md
 
-Create or update `AGENTS.md` for the repository. The file is for future coding agents, not for end users.
+## Purpose
 
-## Document Boundaries
+Create or refresh `AGENTS.md` for coding agents. The file should prevent likely mistakes during automated work in the target repository.
 
-Keep the four project docs distinct:
+## Use When
 
-| File | Owns | Do not duplicate |
-| --- | --- | --- |
-| `DESIGN.md` | Visual identity, design tokens, UI component styling, interaction feel | Tech stack, commands, agent workflow |
-| `ARCHITECTURE.md` | Technology stack, system structure, data flow, integrations, runtime topology | Design tokens, user onboarding, agent behavior |
-| `README.md` | Human-facing overview, top navigation, setup, usage, common development commands | Deep architecture, design system specs, agent-only rules |
-| `AGENTS.md` | Agent-specific repo guidance that prevents mistakes during automated work | Product overview, architecture reference material, design specs |
+- The user asks for agent instructions, Codex/OpenCode guidance, or `AGENTS.md`.
+- Repo-specific commands, constraints, generated-file rules, or workflow gotchas need to be documented.
+- A project has human docs but lacks clear agent operating rules.
 
-If a useful fact belongs in another file, link to that file instead of copying the content into `AGENTS.md`.
+## Do Not Use When
 
-## Preservation Rule
+- The user wants human onboarding; use `write-readme`.
+- The user wants stack or system architecture; use `write-architecture`.
+- The user wants visual design guidance; use `write-design`.
+- The user wants the global dotfiles workflow updated; edit this repo's root `AGENTS.md` directly with the global scope in mind.
 
-If `AGENTS.md` already exists:
+## Document Boundary
 
-- Read the full file before editing.
-- Preserve existing content.
-- Append missing guidance under a clear section such as `## Agent Notes` or the nearest existing relevant heading.
-- Do not delete or rewrite old content unless the user explicitly asks for cleanup.
-- Avoid adding duplicate bullets; append only genuinely missing or corrected information.
+| File | Owns |
+| --- | --- |
+| `AGENTS.md` | Agent-only repo instructions, exact commands, verification paths, generated-file warnings, local workflow constraints |
+| `README.md` | Human overview, setup, usage, and contribution entrypoints |
+| `ARCHITECTURE.md` | Technical structure, runtime topology, data flow, integrations, and tradeoffs |
+| `DESIGN.md` | Visual identity, tokens, components, and interaction guidance |
 
-If `AGENTS.md` does not exist, create a compact file from verified repository facts.
+Link to the owning file instead of copying long reference material.
 
-## Investigation
+## Workflow
 
-Read high-value sources first:
+1. Read existing `AGENTS.md` and nearby instruction files.
+2. Inspect README, architecture/design docs, manifests, task runner config, tests, CI, and generated-code boundaries.
+3. Include only repo-specific guidance an agent would otherwise guess wrong.
+4. Document exact commands for install, build, lint, typecheck, tests, and focused verification when known.
+5. State unknowns explicitly instead of inventing commands.
+6. Keep the file compact and practical.
 
-- `README.md`, `ARCHITECTURE.md`, and `DESIGN.md`
-- Root manifests, workspace config, lockfiles, and task runner files
-- Build, test, lint, formatter, typecheck, codegen, and package manager config
-- CI workflows and pre-commit config
-- Existing instruction files such as `AGENTS.md`, `CLAUDE.md`, `.cursor/rules/`, `.cursorrules`, `.github/copilot-instructions.md`
-- Repo-local agent config such as `opencode.json` or `.codex/`
+## Output
 
-If behavior is still unclear, inspect a small number of representative source files: entrypoints, package boundaries, generated-code boundaries, and tests. Prefer executable sources of truth over prose.
+An `AGENTS.md` with:
 
-## What To Include
+- Project-specific operating rules
+- Commands and verification paths
+- Tool or skill usage notes when relevant
+- Files or directories agents should avoid editing by hand
+- Open questions only when needed
 
-Include only high-signal, repo-specific guidance an agent would otherwise guess wrong:
+## Completion Rules
 
-- Exact commands for install, build, lint, typecheck, test, and focused tests
-- Required command order when order matters
-- Package manager and workspace boundaries
-- Generated files, migrations, codegen, fixtures, snapshots, or other "do not edit by hand" areas
-- Required services, environment files, secrets handling, or local setup gotchas
-- Testing quirks, expensive suites, flaky tests, and safe focused verification paths
-- Repo-specific style or workflow conventions that differ from defaults
-- How agents should consult `README.md`, `ARCHITECTURE.md`, and `DESIGN.md` before making changes
-
-## What To Exclude
-
-Exclude anything better owned elsewhere:
-
-- Product pitch, feature overview, or user onboarding: put this in `README.md`
-- Technology stack, component architecture, data model, API contracts, deployment topology: put this in `ARCHITECTURE.md`
-- Colors, typography, spacing, visual components, UI mood, design tokens: put this in `DESIGN.md`
-- Generic coding advice, exhaustive tutorials, large file trees, or unverifiable guesses
-
-When in doubt, omit or link to the owning file.
-
-## Writing Style
-
-- Keep sections short and practical.
-- Prefer bullets over prose.
-- Use exact commands in fenced code blocks only when multiple commands must be copied together; otherwise use inline code.
-- State assumptions and unknowns explicitly.
-- If a repo is small, keep `AGENTS.md` small.
-
-## Completion
-
-Finish only after `AGENTS.md` exists and either:
-
-- Contains the appended agent guidance, or
-- Already contained everything needed and no edit was necessary.
+Finish only when `AGENTS.md` exists and reflects verified project facts. Do not add generic coding advice unless it prevents a real repo-specific mistake.

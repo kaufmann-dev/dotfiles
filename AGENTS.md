@@ -1,80 +1,128 @@
+# Global Agent Instructions
+
+This file is the shared baseline for coding agents. Chezmoi symlinks it into Codex and OpenCode so both tools follow the same workflow. Local project instructions may add detail; when they conflict, follow the most specific instruction and surface the conflict if it changes the user's request.
+
 ## 1. Think Before Coding
 
-**Don't assume. Don't hide confusion. Surface tradeoffs.**
+Do not assume. Do not hide confusion. Surface tradeoffs.
 
 Before implementing:
-- State your assumptions explicitly. If uncertain, ask.
-- If multiple interpretations exist, present them - don't pick silently.
-- If a simpler approach exists, say so. Push back when warranted.
-- If something is unclear, stop. Name what's confusing. Ask.
+
+- State meaningful assumptions.
+- If multiple interpretations exist, present them.
+- If a simpler approach solves the request, say so.
+- If something material is unclear and cannot be discovered, ask.
 
 ## 2. Simplicity First
 
-**Minimum code that solves the problem. Nothing speculative.**
+Write the minimum code or documentation that solves the problem.
 
-- No features beyond what was asked.
-- No abstractions for single-use code.
-- No "flexibility" or "configurability" that wasn't requested.
-- No error handling for impossible scenarios.
-- If you write 200 lines and it could be 50, rewrite it.
-
-Ask yourself: "Would a senior engineer say this is overcomplicated?" If yes, simplify.
+- Do not add features beyond the request.
+- Do not create abstractions for single-use code.
+- Do not add configurability that was not requested.
+- Do not add defensive handling for impossible scenarios.
+- If a solution feels overbuilt, simplify it before shipping.
 
 ## 3. Surgical Changes
 
-**Touch only what you must. Clean up only your own mess.**
+Touch only what the request requires.
 
-When editing existing code:
-- Don't "improve" adjacent code, comments, or formatting.
-- Don't refactor things that aren't broken.
-- Match existing style, even if you'd do it differently.
-- If you notice unrelated dead code, mention it - don't delete it.
+- Match the existing project style.
+- Do not refactor adjacent code unless the refactor is necessary.
+- Do not improve unrelated comments, formatting, or dead code.
+- Remove only unused code introduced by your own change.
+- Preserve user changes and unrelated worktree state.
 
-When your changes create orphans:
-- Remove imports/variables/functions that YOUR changes made unused.
-- Don't remove pre-existing dead code unless asked.
-
-The test: Every changed line should trace directly to the user's request.
+Every changed line should trace back to the user's request.
 
 ## 4. Goal-Driven Execution
 
-**Define success criteria. Loop until verified.**
+Turn tasks into verifiable goals.
 
-Transform tasks into verifiable goals:
-- "Add validation" → "Write tests for invalid inputs, then make them pass"
-- "Fix the bug" → "Write a test that reproduces it, then make it pass"
-- "Refactor X" → "Ensure tests pass before and after"
+Examples:
 
-For multi-step tasks, state a brief plan:
+- "Add validation" means cover invalid inputs, then make them pass.
+- "Fix the bug" means reproduce the bug or identify the failing path, then verify the fix.
+- "Refactor X" means preserve behavior with focused tests or checks.
+
+For multi-step work, keep a short plan with verification for each step:
+
+```text
+1. Inspect the current behavior -> verify with targeted search or test.
+2. Make the narrow change -> verify with focused checks.
+3. Report the result -> include skipped checks or remaining risk.
 ```
-1. [Step] → verify: [check]
-2. [Step] → verify: [check]
-3. [Step] → verify: [check]
-```
 
-Strong success criteria let you loop independently. Weak criteria ("make it work") require constant clarification.
+## 5. Global Workflow
 
-## 5. Tool Usage Guidelines
+Use this loop in every target project:
 
-### Skills
+1. Read the user request and nearest project instructions.
+2. Inspect relevant files before editing.
+3. Identify the correct skill or tool only after grounding in the repo.
+4. Make the smallest coherent change.
+5. Run the most focused useful verification.
+6. Report what changed, what passed, and what could not be verified.
 
-We have the following skills:
-...
+Prefer facts from the repository over guesses. Prefer local project docs over general advice. Prefer exact commands and file references over vague summaries.
 
-Only use skills when specifically asked to do so.
+## 6. Skill Policy
 
-### MCP Servers
+Skills live under `~/.agents/skills` after chezmoi applies this repo. In this source repo they live under `dot_agents/skills`.
 
-## Context7
-When you need to search docs, use `context7` tools.
+Use a skill when its purpose clearly matches the task, but do not force a skill into unrelated work. If a user explicitly names a skill, follow that skill unless it conflicts with higher-priority instructions.
 
-## GH Grep
-If you are unsure how to do something, use `gh_grep` to search code examples from GitHub.
+| Policy | Skills | Rule |
+| --- | --- | --- |
+| Task-mapped | `brainstorm`, `setup`, `write-design`, `write-architecture`, `write-readme`, `write-agents`, `frontend-design`, `audit`, `md-table-formatter` | Use when the request clearly enters that workflow. |
+| Orchestrated | `setup` | May coordinate `write-design`, `write-architecture`, `write-readme`, and `write-agents` for project docs. |
+| Discovery with consent | `find-skills`, `find-mcps` | Research and recommend freely; install or edit config only after user approval. |
+| Explicit opt-in only | `handoff`, `commit` | Use only when the user directly asks for that action. |
 
-You are able to use the Svelte MCP server, where you have access to comprehensive Svelte 5 and SvelteKit documentation. Here's how to use the available tools effectively:
+Do not use skills to bypass user consent. Installing tools, creating commits, destructive actions, and external writes require explicit user intent.
 
-## Playwright MCP
-You are able to use the Playwright MCP server for browser automation and end-to-end testing. Use it to navigate pages, interact with UI elements, take screenshots, and verify page content.
+## 7. Project Documentation Workflow
 
-## GitHub MCP
-You are able to use the GitHub MCP server, where you have access to comprehensive GitHub API.
+This global repo defines the workflow. Individual projects own the project documents:
+
+| File | Owns |
+| --- | --- |
+| `README.md` | Human overview, setup, usage, and navigation |
+| `AGENTS.md` | Repo-specific agent rules, commands, gotchas, and verification paths |
+| `ARCHITECTURE.md` | Stack, system structure, data flow, integrations, and tradeoffs |
+| `DESIGN.md` | Visual identity, tokens, components, and interaction guidance |
+
+`ARCHITECTURE.md` and `DESIGN.md` are project-scope files. Do not create them at the root of this global dotfiles repo unless the user explicitly changes the repo's purpose.
+
+Use `setup` when the user wants all project docs created or refreshed together. Use a specific `write-*` skill when the user asks for one document.
+
+## 8. MCP and Tool Usage
+
+- Use Context7 for current library or framework documentation.
+- Use `gh_grep` when real-world code examples would reduce uncertainty.
+- Use Playwright for browser automation, UI inspection, screenshots, and end-to-end checks.
+- Use GitHub MCP only for GitHub tasks the user requested or authorized.
+- Prefer `rg` or `rg --files` for repository search.
+- Use structured parsers or existing project tooling when available.
+
+When a command fails because a required tool is missing, say so and continue with the best available verification.
+
+## 9. Chezmoi Rules For This Repo
+
+This repository is a chezmoi source tree.
+
+- Edit source files in this repo, not generated home-directory targets.
+- Keep root `AGENTS.md` as the single source of truth for symlinked agent instructions.
+- Do not replace symlink templates with copied instruction files.
+- Do not change Codex or OpenCode config values unless the user asks.
+- Do not add root `ARCHITECTURE.md` or `DESIGN.md`; those are project-level artifacts.
+- `README.md` is intentionally ignored by chezmoi and stays source-repo documentation only.
+
+## 10. Reporting
+
+Final responses should be short and specific:
+
+- Name the changed files or behavior.
+- Include verification that passed.
+- State any verification skipped and why.
+- Mention unresolved risks or assumptions only when they matter.
