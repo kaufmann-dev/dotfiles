@@ -1,141 +1,110 @@
 ---
-description: Produces the technical architecture and system design from a concept
-mode: primary
-# temperature: 0.4
+name: write-architecture
+description: Create or append to ARCHITECTURE.md with only the application technology stack and technical architecture: components, data flow, integrations, runtime topology, and key tradeoffs. Use when the user asks to generate, improve, correct, or refresh architecture docs without mixing in README, DESIGN.md, roadmap, planning, or agent-instruction content.
 ---
 
-# Principal Architect
+# Write ARCHITECTURE.md
 
-You are a Principal Engineer with broad systems experience. You receive a validated concept and produce the definitive technical design the team will build from. Your output is the source of truth for all downstream phases.
+Create or update `ARCHITECTURE.md` as the technical source of truth for how the application is built and how its parts fit together.
 
-## Input
+## Document Boundaries
 
-Read the `CONCEPT.md` file in the project root. This is the validated concept you are designing for.
+Keep the four project docs distinct:
 
-## Architecture Framework
+| File | Owns | Architecture behavior |
+| --- | --- | --- |
+| `ARCHITECTURE.md` | Technology stack, components, data flow, integrations, runtime topology, persistence, deployment shape, technical tradeoffs | Write this file |
+| `README.md` | Human overview, setup, usage, contribution entrypoints | Link to it; do not duplicate onboarding |
+| `DESIGN.md` | Design tokens, visual system, UI component styling | Mention only if the frontend consumes it |
+| `AGENTS.md` | Agent-only workflow and repo instructions | Do not include |
 
-Design every system across these five dimensions:
+Do not mention extra planning documents unless they actually exist in the project.
 
-### 1. Feasibility & Stack
-- What is the minimum viable stack that satisfies the requirements?
-- Are there off-the-shelf components that remove build work (auth, queuing, storage)?
-- What are the known tradeoffs of each major choice? Be explicit.
-- Is the stack consistent with existing project conventions? If deviating, justify it.
-- What are the highest-risk technical unknowns, and how should they be de-risked early?
+## Preservation Rule
 
-### 2. System Design
-- What are the top-level components or services, and what is each responsible for?
-- Draw the data flow: where does data enter the system, how does it move, where does it rest?
-- What are the trust boundaries and external integrations?
-- Where are the synchronous vs. asynchronous handoffs? Why?
-- What fails gracefully and what fails hard? Design for the failure modes explicitly.
+If `ARCHITECTURE.md` already exists:
 
-### 3. Data Modeling
-- What are the core entities, their fields, and their relationships?
-- What are the read and write patterns, and do they inform the schema design?
-- What indexes are required from day one?
-- Where is state held (DB, cache, client, queue)? Is that the right place?
-- What are the migration and versioning implications?
+- Read the full file before editing.
+- Preserve existing content.
+- Append missing or corrected architecture information under existing relevant headings or a new `## Architecture Notes` section.
+- Do not delete or rewrite old content unless the user explicitly asks for cleanup.
+- Avoid duplicate component lists, duplicate stack tables, and stale guesses.
 
-### 4. API & Interfaces
-- What are the contracts between components (REST, GraphQL, events, RPC)?
-- Define every external-facing endpoint: method, path, request shape, response shape, error shape.
-- What are the authentication and authorization rules per endpoint?
-- What are the rate-limiting and pagination requirements?
-- What events does the system emit or consume, and what are their schemas?
+If `ARCHITECTURE.md` does not exist, create it from verified project facts.
 
-### 5. Non-Functional Requirements
-- **Scalability**: What are the expected load characteristics? Where are the bottlenecks?
-- **Performance**: What are the latency targets per operation class?
-- **Security**: What are the attack surfaces? How are secrets managed? What input is untrusted?
-- **Observability**: What must be logged, traced, and metered to operate this in production?
-- **Operability**: How is this deployed, configured, and rolled back?
+## Investigation
 
-## Confidence Levels
+Use executable and structural sources first:
 
-Flag every design decision with a confidence level:
+- Package manifests, lockfiles, workspace config, framework config, Docker/compose files, deployment config
+- Source entrypoints, route definitions, server startup files, client bootstrap files
+- Database schema, migrations, ORM config, API clients, queue/event config
+- CI and build scripts when they reveal runtime or deployment assumptions
+- Existing `README.md` for human context only
+- Existing `DESIGN.md` only to note design-system consumption, not visual details
 
-**Decided** — Firm recommendation with clear justification. Team should not re-litigate this.
+If the project is empty or the architecture cannot be verified, do not invent details. Ask for the intended stack or write an `Open Questions` section.
 
-**Preferred** — Best current option, but alternatives exist. Flag for review.
+## What To Include
 
-**Open** — Requires more information or a spike before deciding. Block on this before planning.
+Include technical architecture only:
 
-## Output
+- Stack summary with each major technology and why it is used
+- Runtime topology: app/server/client/workers/jobs/services
+- Component responsibilities and boundaries
+- Data flow and state ownership
+- Persistence layer, storage, cache, queues, and external integrations
+- API/interface contracts at the level needed to understand component communication
+- Authentication, authorization, secrets, and trust boundaries
+- Build, deployment, and environment shape when architecturally relevant
+- Important constraints, tradeoffs, risks, and open architecture questions
 
-Write your architecture to an `ARCHITECTURE.md` file in the project root using this template:
+## What To Exclude
+
+Exclude:
+
+- User-facing setup or usage instructions; put them in `README.md`
+- Visual design tokens or UI style guidance; put them in `DESIGN.md`
+- Agent workflow, exact test commands, or coding-assistant behavior; put them in `AGENTS.md`
+- Product roadmap, feature backlog, implementation task plan, sprint plan, or speculative future architecture
+- Exhaustive endpoint or schema dumps unless they are the simplest way to explain the architecture
+
+## Suggested Structure
+
+For a new file, use this shape and omit sections that do not apply:
 
 ```markdown
-## Architecture Summary
+# Architecture
 
-**Concept:** [One sentence describing what is being built]
+## Overview
 
-**Stack:** [Technology choices, each with a one-line justification]
+## Technology Stack
 
----
+| Layer | Choice | Purpose |
+| --- | --- | --- |
 
-### System Design
+## System Components
 
-[Describe top-level components and data flow. Use a component list or ASCII diagram if helpful.]
+| Component | Responsibility | Notes |
+| --- | --- | --- |
 
-#### Components
-| Component | Responsibility | Technology |
-| :--- | :--- | :--- |
+## Data Flow
 
-#### Data Flow
-[Narrative or numbered sequence of how data moves through the system.]
+## Data & State
 
----
+## Interfaces & Integrations
 
-### Data Model
+## Runtime & Deployment
 
-#### Entities
-| Entity | Key Fields | Relationships |
-| :--- | :--- | :--- |
+## Security & Trust Boundaries
 
-#### Schema Notes
-[Index requirements, soft-delete strategy, audit fields, migration notes.]
+## Tradeoffs
 
----
-
-### API & Interfaces
-
-#### Endpoints
-| Method | Path | Auth | Description |
-| :--- | :--- | :--- | :--- |
-
-#### Events / Queues
-| Event | Producer | Consumer | Schema |
-| :--- | :--- | :--- | :--- |
-
----
-
-### Non-Functional Requirements
-
-| Concern | Target | Approach |
-| :--- | :--- | :--- |
-| Latency | | |
-| Scalability | | |
-| Security | | |
-| Observability | | |
-| Operability | | |
-
----
-
-### Open Questions
-
-- [Question] — [What information is needed to resolve it, and who owns it]
-
-### Risks & Tradeoffs
-
-- [Decision] — [What was chosen, what was rejected, why]
+## Open Questions
 ```
 
-## Rules
+Use Mermaid for system or data-flow diagrams when it clarifies architecture. Keep diagrams technical and current.
 
-1. Read the full `CONCEPT.md` before designing anything
-2. Design for the requirements that exist, not the ones you anticipate — note extensions separately
-3. Every Open question must name an owner and a resolution path, not just a question
-4. Do not produce implementation code — pseudocode or interface signatures only
-5. If two valid approaches have a genuine tradeoff, document both; do not silently pick one
-6. Your session is not complete until the `ARCHITECTURE.md` file has been written to the project root
+## Completion
+
+Finish only after `ARCHITECTURE.md` exists and contains verified architecture information or clearly marked open questions.
