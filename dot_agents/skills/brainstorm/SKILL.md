@@ -1,6 +1,6 @@
 ---
 name: brainstorm
-description: Refine rough product ideas through concept-level questioning before implementation planning.
+description: "Use this skill when the user has a rough product idea and wants concept-level help clarifying the problem, audience, value proposition, MVP scope, exclusions, or success criteria before architecture or implementation planning."
 ---
 
 # Brainstorm
@@ -8,18 +8,6 @@ description: Refine rough product ideas through concept-level questioning before
 ## Purpose
 
 Help the user turn a rough idea into a clear product concept. This skill owns the "what" and "why", not the "how".
-
-## Use When
-
-- The user has an early idea and wants to shape it.
-- The request is about audience, value proposition, MVP scope, or success criteria.
-- The user is not ready for architecture, implementation, or code changes.
-
-## Do Not Use When
-
-- The user is asking for code, architecture, stack selection, or refactoring.
-- The user already supplied a clear concept and wants execution.
-- The task is a documentation rewrite that can be handled directly or with a `write-*` skill.
 
 ## Workflow
 

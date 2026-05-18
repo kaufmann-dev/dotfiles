@@ -1,6 +1,6 @@
 ---
 name: setup
-description: Coordinate project documentation setup across DESIGN.md, ARCHITECTURE.md, README.md, and AGENTS.md.
+description: "Use this skill when the user asks to create, refresh, align, or repair a project's core documentation set across DESIGN.md, ARCHITECTURE.md, README.md, and AGENTS.md; this skill coordinates the write-design, write-architecture, write-readme, and write-agents skills."
 ---
 
 # Setup Project Docs
@@ -15,18 +15,6 @@ Project-scope documents:
 - `ARCHITECTURE.md`: stack, system structure, data flow, integrations, and tradeoffs
 - `README.md`: human overview, setup, usage, and navigation
 - `AGENTS.md`: repo-specific instructions for coding agents
-
-## Use When
-
-- The user asks to set up project docs.
-- The user asks to create or refresh several of the standard docs together.
-- Existing docs contradict each other and need a coordinated pass.
-
-## Do Not Use When
-
-- The user asks for only one document; use the matching `write-*` skill.
-- The target is this global dotfiles repo and the user only wants root `README.md` or `AGENTS.md`.
-- The user is asking for product ideation; use `brainstorm`.
 
 ## Workflow
 

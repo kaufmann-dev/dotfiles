@@ -1,6 +1,6 @@
 ---
 name: write-readme
-description: Create or update a human-facing project README.md with overview, setup, usage, and navigation.
+description: "Use this skill when the user asks to create, improve, refresh, or audit a human-facing project README.md, including overview, setup, usage, commands, navigation, troubleshooting, or links to project docs."
 ---
 
 # Write README.md
@@ -8,19 +8,6 @@ description: Create or update a human-facing project README.md with overview, se
 ## Purpose
 
 Create or refresh `README.md` for humans who need to understand, run, use, or contribute to a project.
-
-## Use When
-
-- The user asks for a README.
-- Setup, usage, command, or project-navigation information is stale or missing.
-- The project docs need a human-friendly entrypoint.
-
-## Do Not Use When
-
-- The user wants agent-only instructions; use `write-agents`.
-- The user wants architecture details; use `write-architecture`.
-- The user wants design-system guidance; use `write-design`.
-- The user wants a full docs setup; use `setup`.
 
 ## Document Boundary
 

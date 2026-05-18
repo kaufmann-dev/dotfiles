@@ -1,6 +1,6 @@
 ---
 name: audit
-description: Perform a read-only pre-deployment review for security, correctness, spec alignment, and code quality.
+description: "Use this skill when the user asks for an audit, security review, release-readiness check, pre-deployment review, or read-only assessment of correctness, spec alignment, tests, architecture integrity, operability, and code quality."
 ---
 
 # Audit
@@ -8,18 +8,6 @@ description: Perform a read-only pre-deployment review for security, correctness
 ## Purpose
 
 Review a project or change set before release. The audit should identify concrete risks and decide whether the work is safe to ship.
-
-## Use When
-
-- The user asks for an audit, review, security review, pre-deployment check, or release readiness assessment.
-- A completed implementation needs validation against a brief, plan, architecture, or tests.
-- The main risk is correctness, security, data handling, operability, or spec drift.
-
-## Do Not Use When
-
-- The user wants implementation changes.
-- The user wants a normal code review with small findings only; use the default review stance.
-- The user asks for dependency installation, commits, or external mutations.
 
 ## Rules
 

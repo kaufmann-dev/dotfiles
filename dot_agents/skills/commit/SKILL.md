@@ -1,6 +1,6 @@
 ---
 name: commit
-description: Create a git commit with a message based on the actual diff.
+description: "Use this skill only when the user explicitly asks to create a git commit, commit current changes, or generate and apply a commit message from the actual diff."
 argument-hint: "Optional commit intent, scope, or files to include"
 ---
 
@@ -9,18 +9,6 @@ argument-hint: "Optional commit intent, scope, or files to include"
 ## Purpose
 
 Create a focused git commit from the current repository changes with a clear message based on the diff.
-
-## Use When
-
-- The user explicitly asks to commit.
-- The user explicitly invokes this skill.
-- The user provides a commit scope or intent and asks you to turn it into a commit.
-
-## Do Not Use When
-
-- The user only asks for implementation, review, or documentation.
-- The working tree contains unrelated changes and the commit scope is unclear.
-- Committing would include files outside the user's requested scope.
 
 ## Rules
 

@@ -66,18 +66,11 @@ Use this loop in every project:
 
 Prefer facts from the repository over guesses. Prefer project docs over general advice. Prefer exact commands and file references over vague summaries.
 
-## 6. Skill Policy
+## 6. Skills
 
-Use a skill when its purpose clearly matches the task, but do not force a skill into unrelated work. If a user explicitly names a skill, follow that skill unless it conflicts with higher-priority instructions.
+Agents see each skill's name and description before loading the skill. Choose skills from those descriptions. After loading a skill, follow its workflow and constraints.
 
-| Policy | Skills | Rule |
-| --- | --- | --- |
-| Task-mapped | `brainstorm`, `setup`, `write-design`, `write-architecture`, `write-readme`, `write-agents`, `frontend-design`, `audit`, `md-table-formatter` | Use when the request clearly enters that workflow. |
-| Orchestrated | `setup` | May coordinate `write-design`, `write-architecture`, `write-readme`, and `write-agents` for project docs. |
-| Discovery with consent | `find-skills`, `find-mcps` | Research and recommend freely; install or edit config only after user approval. |
-| Explicit opt-in only | `handoff`, `commit` | Use only when the user directly asks for that action. |
-
-Do not use skills to bypass user consent. Installing tools, creating commits, destructive actions, and external writes require explicit user intent.
+Do not use skills to bypass user consent. Installing tools, creating commits, destructive actions, and external writes require explicit user intent from the user request or from the selected skill's description.
 
 ## 7. Project Documentation Workflow
 
