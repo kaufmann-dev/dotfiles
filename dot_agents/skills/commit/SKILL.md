@@ -1,84 +1,65 @@
 ---
 name: commit
-description: Create a git commit with an AI-generated name and description based on the actual changes.
+description: Create a git commit with a message based on the actual diff.
 argument-hint: "Optional commit intent, scope, or files to include"
 ---
 
-# AI Commit Writer
+# Commit
 
-Create a git commit whose subject and body are generated from the repository changes. The commit message must describe what changed and why, without inventing intent that is not visible in the diff or provided by the user.
+## Purpose
+
+Create a focused git commit from the current repository changes with a clear message based on the diff.
+
+## Use When
+
+- The user explicitly asks to commit.
+- The user explicitly invokes this skill.
+- The user provides a commit scope or intent and asks you to turn it into a commit.
+
+## Do Not Use When
+
+- The user only asks for implementation, review, or documentation.
+- The working tree contains unrelated changes and the commit scope is unclear.
+- Committing would include files outside the user's requested scope.
+
+## Rules
+
+- Never discard, revert, or overwrite user changes.
+- If staged changes exist, commit only staged changes unless the user asks otherwise.
+- If no staged changes exist, stage only the files that belong to the requested commit.
+- Stop and ask if unrelated changes are mixed together.
+- Do not mention AI, agents, or this skill in the commit message unless requested.
 
 ## Workflow
 
-### 1. Inspect the Repository
+1. Inspect:
+   - `git status --short`
+   - `git diff --stat`
+   - `git diff`
+   - `git diff --cached --stat`
+   - `git diff --cached`
+2. Decide the commit scope from staged changes, user instructions, and the diff.
+3. Stage only the relevant files if needed.
+4. Generate a concise conventional commit message when a type fits:
+   - `feat`
+   - `fix`
+   - `docs`
+   - `test`
+   - `refactor`
+   - `chore`
+5. Commit with a non-interactive command.
+6. Report the commit hash, subject, scope, and verification.
 
-Run:
-
-```bash
-git status --short
-git diff --stat
-git diff
-git diff --cached --stat
-git diff --cached
-```
-
-If the user passed arguments, treat them as guidance for the intended commit scope or message emphasis.
-
-### 2. Decide What to Commit
-
-- If staged changes exist, commit only the staged changes unless the user explicitly asks to include unstaged files.
-- If no staged changes exist but unstaged changes do, stage the relevant changed files before committing.
-- If the user named specific files, stage and commit only those files.
-- If there are no changes, stop and say there is nothing to commit.
-- If unrelated changes are mixed together, stop and ask which changes belong in this commit.
-
-Never discard, revert, or rewrite user changes.
-
-### 3. Generate the Commit Message
-
-Write a concise commit message from the diff:
+## Message Shape
 
 ```text
 <type>: <subject>
 
-<description>
+<short body explaining what changed and why>
 ```
 
-Use a conventional commit type when it fits:
+Keep the subject under 72 characters. Keep the body to one to three short bullets or sentences.
 
-- `feat` for user-visible functionality
-- `fix` for bug fixes
-- `docs` for documentation-only changes
-- `test` for tests
-- `refactor` for behavior-preserving code changes
-- `chore` for maintenance or tooling
+## Completion Rules
 
-Rules:
-
-- Keep the subject under 72 characters.
-- Use imperative mood when natural.
-- Make the description 1-3 short bullet points or sentences.
-- Mention important verification if it was run.
-- Do not mention AI, Codex, or the skill unless the user asked for that.
-- Do not add vague filler such as "update files" or "misc changes."
-
-### 4. Create the Commit
-
-Run the commit with the generated message. Prefer a non-interactive command such as:
-
-```bash
-git commit -m "<subject>" -m "<description>"
-```
-
-If the commit fails, explain the failure and do not retry with unrelated changes.
-
-### 5. Report the Result
-
-Reply with:
-
-- the commit hash
-- the generated subject
-- a brief summary of what was committed
-- any verification that was run or skipped
-
-Keep the final response short.
+Finish only after the commit succeeds or after explaining why no safe commit can be made.

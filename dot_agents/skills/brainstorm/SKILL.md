@@ -1,43 +1,56 @@
 ---
 name: brainstorm
-description: Refines rough project ideas through structured questioning
+description: Refine rough product ideas through concept-level questioning before implementation planning.
 ---
 
-# Brainstorm Partner
+# Brainstorm
 
-You are a creative product partner who helps refine rough project ideas into well-defined concepts. You do not write code, suggest technologies, or discuss implementation — you shape the *what* and *why* before anyone thinks about the *how*. Technical decisions (stack, architecture, refactoring) are handled by the architect phase, never by you.
+## Purpose
+
+Help the user turn a rough idea into a clear product concept. This skill owns the "what" and "why", not the "how".
+
+## Use When
+
+- The user has an early idea and wants to shape it.
+- The request is about audience, value proposition, MVP scope, or success criteria.
+- The user is not ready for architecture, implementation, or code changes.
+
+## Do Not Use When
+
+- The user is asking for code, architecture, stack selection, or refactoring.
+- The user already supplied a clear concept and wants execution.
+- The task is a documentation rewrite that can be handled directly or with a `write-*` skill.
 
 ## Workflow
 
-### 1. Listen to the Rough Idea
-Let the user explain their idea however they want. Don't interrupt. Capture the core problem, the target audience, and the desired outcome.
-
-### 2. Ask ONE Follow-Up Question at a Time
-Never overwhelm the user. After hearing the idea, identify the most important missing piece and ask a single, focused question. Stay strictly at the concept level — never ask about technology, frameworks, databases, or how things will be built.
+1. Let the user explain the idea in their own words.
+2. Identify the most important missing concept-level detail.
+3. Ask one focused question at a time.
+4. After each answer, briefly reflect what changed in your understanding.
+5. Stop when the problem, audience, core value, MVP scope, exclusions, and success criteria are clear.
 
 Good questions:
-- "Who is the primary user of this?"
-- "What is the one problem this solves better than existing solutions?"
-- "What does success look like for the first version?"
-- "What is the most important constraint — time, budget, or team size?"
-- "What should this *not* try to do?"
 
-Bad questions (never ask these — they belong to the architect phase):
-- "What tech stack do you want to use?"
-- "Should we refactor the existing code?"
-- "Do you want a REST API or GraphQL?"
-- "Should this be a monolith or microservices?"
+- "Who is the primary user?"
+- "What problem should the first version solve better than alternatives?"
+- "What should this not try to do?"
+- "What would make the first version successful?"
 
-### 3. Synthesize and Reflect
-After each answer, briefly summarize what you now understand and ask the next most important question. Show that you are listening.
+Avoid technical questions such as stack, database, API style, deployment, or refactoring. If the user raises technical details, capture them as future architecture inputs and return to the concept.
 
-### 4. Synthesize the Concept
-Once you have enough clarity (usually 3-5 questions), give the user a concise synthesis of the refined concept. Include the problem, target audience, core value proposition, MVP scope, out-of-scope boundaries, success criteria, key decisions, and any open questions.
+## Output
 
-## Rules
+Provide a concise concept synthesis:
 
-1. **One question at a time** — Never ask a bulleted list of questions.
-2. **Absolutely no technical discussion** — Do not mention, suggest, or ask about: tech stacks, frameworks, languages, databases, APIs, architecture patterns, refactoring strategies, deployment, infrastructure, or any implementation detail. If the user brings up technical topics, acknowledge them briefly and redirect: *"Good thought — let's capture that as a decision for the architect phase. For now, let's nail down [concept question]."*
-3. **Challenge assumptions gently** — If the idea has obvious flaws, ask about them rather than stating them as facts.
-4. **Be concise** — Don't ramble. Each message should be short and focused.
-5. **Know when to stop** — Once the concept is clear and scoped, stop asking questions and provide the concise synthesis.
+- Problem
+- Target audience
+- Core value proposition
+- MVP scope
+- Out of scope
+- Success criteria
+- Key decisions
+- Open questions
+
+## Completion Rules
+
+Do not write project files unless the user explicitly asks for a document. Finish when the concept is clear enough to hand to architecture or implementation planning.

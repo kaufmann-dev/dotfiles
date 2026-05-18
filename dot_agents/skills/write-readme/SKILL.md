@@ -1,52 +1,55 @@
 ---
 name: write-readme
-description: Create or append to a simple human-facing README.md with top navigation, clear setup and usage instructions, and links to DESIGN.md, ARCHITECTURE.md, and AGENTS.md instead of duplicating their contents. Use when the user asks to generate, improve, correct, or refresh a project README.
+description: Create or update a human-facing project README.md with overview, setup, usage, and navigation.
 ---
 
 # Write README.md
 
-Create or update `README.md` for humans who want to understand, run, use, or contribute to the project.
+## Purpose
 
-## Document Boundaries
+Create or refresh `README.md` for humans who need to understand, run, use, or contribute to a project.
 
-Keep the four project docs distinct:
+## Use When
 
-| File | Owns | README behavior |
-| --- | --- | --- |
-| `README.md` | Human overview, navigation, setup, usage, common commands, contribution entrypoints | Write this file |
-| `ARCHITECTURE.md` | Technology stack, components, data flow, integrations, deployment architecture | Link to it for details |
-| `DESIGN.md` | Design tokens, visual identity, UI component styling | Link to it for details |
-| `AGENTS.md` | Agent-only operating instructions | Link to it only when useful for contributors using agents |
+- The user asks for a README.
+- Setup, usage, command, or project-navigation information is stale or missing.
+- The project docs need a human-friendly entrypoint.
 
-Do not copy architecture or design-system reference material into `README.md`. Summarize in one sentence at most, then link.
+## Do Not Use When
 
-## Preservation Rule
+- The user wants agent-only instructions; use `write-agents`.
+- The user wants architecture details; use `write-architecture`.
+- The user wants design-system guidance; use `write-design`.
+- The user wants a full docs setup; use `setup`.
 
-If `README.md` already exists:
+## Document Boundary
 
-- Read the full file before editing.
-- Preserve existing content.
-- Insert a compact navigation block near the top if it is missing. This is the only preferred non-append placement because navigation belongs at the top.
-- Append missing sections or corrections under existing relevant headings or at the end.
-- Do not delete or rewrite old content unless the user explicitly asks for cleanup.
-- Avoid duplicate sections and duplicate commands.
+| File | Owns |
+| --- | --- |
+| `README.md` | Human overview, setup, usage, commands, navigation, troubleshooting |
+| `AGENTS.md` | Agent-only workflow and repo constraints |
+| `ARCHITECTURE.md` | Deep technical structure, data flow, integrations, and deployment shape |
+| `DESIGN.md` | Design tokens, visual identity, UI rules, and component styling |
 
-If `README.md` does not exist, create it.
+Summarize adjacent docs in one sentence when useful, then link to them.
 
-## Required Shape
+## Workflow
 
-Keep the README simple. Prefer this structure for new files:
+1. Read the existing README and nearby project docs.
+2. Inspect manifests, scripts, configs, and entrypoints for verified setup and commands.
+3. Add or repair top navigation when the README is more than a small stub.
+4. Replace stale placeholders, broken diagrams, and inaccurate file trees.
+5. Keep the README human-facing and avoid agent-only rules.
+6. Preserve useful existing content unless the user requested cleanup.
+
+## Suggested Shape
+
+For a new or fully refreshed README, prefer:
 
 ```markdown
 # Project Name
 
 ## Navigation
-
-- [Overview](#overview)
-- [Quick Start](#quick-start)
-- [Usage](#usage)
-- [Development](#development)
-- [Project Docs](#project-docs)
 
 ## Overview
 
@@ -59,34 +62,19 @@ Keep the README simple. Prefer this structure for new files:
 ## Project Docs
 ```
 
-Adjust section names to fit the project, but always include top navigation unless the file is intentionally tiny.
+Adjust headings to match the project. Include Mermaid only when it makes the project easier to understand.
 
-## What To Include
+## Output
 
-Include human-facing information:
+A README with:
 
-- What the project is and who it is for
-- Current status when obvious, such as prototype, library, app, or production service
-- Prerequisites and supported runtime versions
-- Install, run, test, build, and lint commands that a human needs
-- Configuration and environment variables, without secrets
-- Basic usage examples or screenshots when already available
-- Links to `ARCHITECTURE.md`, `DESIGN.md`, and `AGENTS.md` if those files exist or are being created
-- Troubleshooting notes for common setup failures
+- Clear project purpose
+- Setup and prerequisites
+- Common commands
+- Basic usage
+- Links to project docs when they exist
+- Honest troubleshooting or unknowns
 
-## What To Exclude
+## Completion Rules
 
-Exclude:
-
-- Deep component diagrams, data models, endpoint inventories, deployment topology, or stack tradeoffs; put those in `ARCHITECTURE.md`
-- Design tokens, palettes, typography scales, visual rules, or component styling specs; put those in `DESIGN.md`
-- Agent-only tool rules, coding-agent workflow, or repository-specific automation instructions; put those in `AGENTS.md`
-- Marketing filler, long tutorials, speculative roadmap, or generic open-source boilerplate
-
-## Diagrams
-
-Use Mermaid when a diagram makes the README clearer. Keep diagrams small and human-oriented, such as a simple workflow or user journey. Put technical system diagrams in `ARCHITECTURE.md`.
-
-## Completion
-
-Finish only after `README.md` exists, has top navigation when appropriate, and preserves any existing content.
+Finish only when `README.md` exists, is accurate from verified facts, and contains no stale placeholders.
