@@ -1,33 +1,22 @@
 # Dotfiles
 
-Personal agent workflow dotfiles managed with [chezmoi](https://www.chezmoi.io/).
+Personal dotfiles managed with [chezmoi](https://www.chezmoi.io/).
 
-This repository installs shared instructions, reusable skills, and MCP server configuration for Codex and OpenCode. It is intentionally small: global behavior lives here, while each project keeps its own project-specific documentation and constraints.
+This repository currently focuses on installing shared instructions, reusable skills, and MCP server configurations for Codex and OpenCode. While it is kept lightweight to ensure global agent behaviors live here, it serves as a flexible foundation that can grow to manage other configurations and dotfiles as needed.
+
+- **Codex Settings** (`~/.codex/`): Configures web search, MCP servers, and shared instructions.
+- **OpenCode Settings** (`~/.config/opencode/`): Configures tool defaults, interface styling, and shared instructions.
+- **Shared Skills** (`~/.agents/skills/`): Installs reusable, specialized skills that agents can use.
 
 ## Contents
 
-- [Dotfiles](#dotfiles)
-  - [Contents](#contents)
-  - [What This Manages](#what-this-manages)
-  - [Prerequisites](#prerequisites)
-  - [Install](#install)
-  - [Daily Usage](#daily-usage)
-  - [Structure](#structure)
-  - [Agent Instructions](#agent-instructions)
-  - [Skills](#skills)
-  - [MCP Servers](#mcp-servers)
-  - [Chezmoi Mapping](#chezmoi-mapping)
-
-## What This Manages
-
-- `~/.codex/config.toml` with Codex web search and MCP server settings.
-- `~/.codex/AGENTS.md` as a symlink to this repo's root `AGENTS.md`.
-- `~/.config/opencode/opencode.jsonc` with OpenCode defaults, tools, and MCP server settings.
-- `~/.config/opencode/tui.jsonc` with OpenCode TUI preferences.
-- `~/.config/opencode/AGENTS.md` as a symlink to this repo's root `AGENTS.md`.
-- `~/.agents/skills/` with shared skill definitions for agents.
-
-The root `README.md` is source-repository documentation only. It is ignored by chezmoi and is not installed into the home directory.
+- [Prerequisites](#prerequisites)
+- [Install](#install)
+- [Automating Updates](#automating-updates)
+- [Structure](#structure)
+- [Agent Instructions](#agent-instructions)
+- [Skills](#skills)
+- [MCP Servers](#mcp-servers)
 
 ## Prerequisites
 
@@ -61,21 +50,45 @@ chezmoi init --source-path .
 chezmoi apply
 ```
 
-Preview changes before applying them:
+Every time this repository is updated, run:
 
 ```bash
-chezmoi diff
+chezmoi update
 ```
 
-## Daily Usage
+## Automating Updates
 
-| Command             | Description                                                    |
-| ------------------- | -------------------------------------------------------------- |
-| `chezmoi diff`        | Preview changes that would be applied to the home directory.   |
-| `chezmoi apply`       | Apply the current source state to the home directory.          |
-| `chezmoi update`      | Pull the latest remote changes and apply them.                 |
-| `chezmoi edit <file>` | Edit a managed target file through chezmoi's source directory. |
-| `chezmoi re-add`      | Import target-side changes back into the source directory.     |
+A simple pattern for keeping tools like OpenCode in sync is to wrap their launch command with a background update. This triggers `chezmoi update` asynchronously every time you open the tool — no waiting, no manual syncing.
+
+### macOS and Linux
+
+Add a shell function that runs the update silently in the background before launching:
+
+```bash
+echo 'opencode() { chezmoi update > /dev/null 2>&1 & command opencode "$@"; }' >> ~/.bashrc && source ~/.bashrc
+```
+
+> **Note:** Replace `~/.bashrc` with `~/.zshrc` (or your shell's profile file) if you're not using Bash.
+
+### Windows (PowerShell)
+
+```powershell
+if (!(Test-Path $PROFILE)) { New-Item -Type File -Path $PROFILE -Force }; Add-Content -Path $PROFILE -Value "`nfunction opencode { Start-Process -WindowStyle Hidden -FilePath 'chezmoi' -ArgumentList 'update'; & 'opencode.exe' @args }"; . $PROFILE
+```
+
+### How It Works
+
+The wrapper function intercepts calls to `opencode` and:
+
+1. Fires `chezmoi update` in the background (no terminal output, doesn't block)
+2. Immediately launches the real `opencode` with any arguments you passed
+
+You can adapt this pattern to **any CLI tool** — just replace `opencode` with the command you want to trigger updates on.
+
+### Removing the Auto-Update
+
+- **macOS / Linux:** Open your shell profile (`nano ~/.bashrc`), remove the `opencode()` function line, and save.
+- **Windows:** Run `notepad $PROFILE`, delete the `function opencode { ... }` block, and save.
 
 ## Structure
 
@@ -111,17 +124,15 @@ The global instructions emphasize simple, surgical changes, repo-first discovery
 
 ## Skills
 
-Skills are installed under `~/.agents/skills/`. Each skill exposes a short frontmatter description that agents can use before loading the full instructions.
+Skills are installed under `~/.agents/skills/`.
 
-| Skill              | Purpose                                                         |
-| ------------------ | --------------------------------------------------------------- |
-| `commit`             | Commit changes only when the user explicitly asks for a commit. |
-| `md-table-formatter` | Format Markdown tables after any table is created or modified.  |
-| `write-agents`       | Create a project `AGENTS.md` from scratch.                        |
-| `write-design`       | Create a project `DESIGN.md` from scratch.                        |
-| `write-readme`       | Create a project `README.md` from scratch.                        |
-
-These skills are deliberately narrow. Existing project documentation should be edited directly unless a skill's instructions say otherwise.
+| Skill              | Purpose                                                                        |
+| ------------------ | ------------------------------------------------------------------------------ |
+| `commit`             | Stage and commit changes using structured, conventional git commit guidelines. |
+| `md-table-formatter` | Format Markdown tables after any table is created or modified.                 |
+| `write-agents`       | Create a project `AGENTS.md` from scratch.                                       |
+| `write-design`       | Create a project `DESIGN.md` from scratch.                                       |
+| `write-readme`       | Create a project `README.md` from scratch.                                       |
 
 ## MCP Servers
 
@@ -133,17 +144,3 @@ Codex and OpenCode are configured with the same MCP servers:
 | `gh_grep`    | Remote URL    | Real-world code examples from public GitHub repositories.   |
 | `playwright` | Local `npx`     | Browser automation, UI checks, and end-to-end verification. |
 | `github`     | Local `npx`     | GitHub API workflows when repository work is authorized.    |
-
-OpenCode also enables `websearch` and `codesearch`, sets `default_agent` to `build`, enables `autoupdate`, and uses the `vercel` TUI theme.
-
-## Chezmoi Mapping
-
-Chezmoi translates source names into target paths in the home directory:
-
-| Source prefix | Destination behavior                                |
-| ------------- | --------------------------------------------------- |
-| `dot_`          | Becomes a hidden file or directory, such as `.codex`. |
-| `symlink_`      | Creates a symlink instead of a regular file.        |
-| `.tmpl`         | Renders the file as a chezmoi template.             |
-
-For example, `dot_config/opencode/opencode.jsonc` maps to `~/.config/opencode/opencode.jsonc` on macOS/Linux and `%USERPROFILE%\.config\opencode\opencode.jsonc` on Windows.
