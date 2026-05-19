@@ -17,10 +17,11 @@
       "args": [
         "-y",
         "@modelcontextprotocol/server-github"
-      ],
+      ]{{ with index . "github_pat" }},
       "env": {
-        "GITHUB_PERSONAL_ACCESS_TOKEN": "{{ .github_pat }}"
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "{{ . }}"
       }
+      {{- end }}
     }
   }
 }
