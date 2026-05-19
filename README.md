@@ -154,8 +154,7 @@ All supported agent tools are configured with the same MCP servers:
 The `github` MCP server needs local GitHub authentication. This public repository
 does not store tokens or other credentials. The MCP config files are chezmoi
 templates that read `github_pat` from `~/.config/chezmoi/chezmoi.toml` when it
-exists. Without that local file, the GitHub MCP server is configured without
-credentials and will not authenticate.
+exists. Without that local file, the GitHub MCP server is omitted.
 
 Use a fine-grained GitHub personal access token with only the permissions needed
 for the repositories or organizations you work with.

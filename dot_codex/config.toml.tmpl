@@ -12,9 +12,9 @@ url = "https://mcp.grep.app"
 command = "npx"
 args = ["@playwright/mcp@latest"]
 
+{{ with index . "github_pat" -}}
 [mcp_servers.github]
 command = "npx"
 args = ["-y", "@modelcontextprotocol/server-github"]
-{{ with index . "github_pat" -}}
 env = { GITHUB_PERSONAL_ACCESS_TOKEN = "{{ . }}" }
 {{- end }}

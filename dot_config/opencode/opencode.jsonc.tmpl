@@ -17,19 +17,19 @@
         "npx",
         "@playwright/mcp@latest"
       ]
-    },
+    }{{ with index . "github_pat" }},
     "github": {
       "type": "local",
       "command": [
         "npx",
         "-y",
         "@modelcontextprotocol/server-github"
-      ]{{ with index . "github_pat" }},
+      ],
       "environment": {
         "GITHUB_PERSONAL_ACCESS_TOKEN": "{{ . }}"
       }
-      {{- end }}
     }
+    {{- end }}
   },
   "tools": {
     "websearch": true,
