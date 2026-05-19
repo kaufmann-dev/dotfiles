@@ -1,4 +1,4 @@
-# Simplicity First
+# Simplicity Firstt
 Write the minimum code that solves the problem.
 - Do not add features beyond the request.
 - Do not create abstractions for single-use code.
