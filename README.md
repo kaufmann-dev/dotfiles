@@ -38,23 +38,20 @@ Some configured MCP servers run through `npx`, so Node.js/npm must also be avail
 
 ## Install
 
-Initialize this repository:
+Initialize and apply this repository:
 
 ```bash
-chezmoi init https://github.com/kaufmann-dev/dotfiles.git
+chezmoi init --apply https://github.com/kaufmann-dev/dotfiles.git
 ```
 
-Create the local chezmoi data file, then add your real GitHub personal access token:
+For a local checkout, run `chezmoi init --source-path . --apply` instead.
+
+**Optional**: enable the GitHub MCP server by copying the example data file, adding
+your GitHub personal access token, and applying again:
 
 ```bash
-mkdir -p ~/.config/chezmoi
-cp "$(chezmoi source-path)/dot_config/chezmoi/chezmoi.toml.example" ~/.config/chezmoi/chezmoi.toml
+cp ~/.config/chezmoi/chezmoi.toml.example ~/.config/chezmoi/chezmoi.toml
 $EDITOR ~/.config/chezmoi/chezmoi.toml
-```
-
-Then apply the dotfiles:
-
-```bash
 chezmoi apply
 ```
 
@@ -156,8 +153,9 @@ All supported agent tools are configured with the same MCP servers:
 
 The `github` MCP server needs local GitHub authentication. This public repository
 does not store tokens or other credentials. The MCP config files are chezmoi
-templates that read `github_pat` from `~/.config/chezmoi/chezmoi.toml`, which is
-ignored by git.
+templates that read `github_pat` from `~/.config/chezmoi/chezmoi.toml` when it
+exists. Without that local file, the GitHub MCP server is configured without
+credentials and will not authenticate.
 
 Use a fine-grained GitHub personal access token with only the permissions needed
 for the repositories or organizations you work with.
