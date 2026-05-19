@@ -1,27 +1,26 @@
 {
   "mcpServers": {
     "context7": {
-      "type": "http",
-      "url": "https://mcp.context7.com/mcp"
+      "serverUrl": "https://mcp.context7.com/mcp"
     },
     "gh_grep": {
-      "type": "http",
-      "url": "https://mcp.grep.app"
+      "serverUrl": "https://mcp.grep.app"
     },
     "playwright": {
-      "type": "stdio",
       "command": "npx",
       "args": [
         "@playwright/mcp@latest"
       ]
     },
     "github": {
-      "type": "stdio",
       "command": "npx",
       "args": [
         "-y",
         "@modelcontextprotocol/server-github"
-      ]
+      ],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "{{ .github_pat }}"
+      }
     }
   }
 }

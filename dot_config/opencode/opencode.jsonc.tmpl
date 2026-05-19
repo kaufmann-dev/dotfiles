@@ -24,7 +24,10 @@
         "npx",
         "-y",
         "@modelcontextprotocol/server-github"
-      ]
+      ],
+      "environment": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "{{ .github_pat }}"
+      }
     }
   },
   "tools": {
