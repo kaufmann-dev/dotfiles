@@ -46,6 +46,9 @@ If an update is needed and the file exists, make it as part of the same task.
 Do not ask for permission. Do not mention it unless something is ambiguous.
 If a file does not exist, do nothing — do not create it, do not suggest creating it.
 
+# Package Manager
+Use `pnpm` instead of `npm` for new projects.
+
 # MCP Servers
 - `github` — GitHub interactions (issues, PRs, remote file contents). Not for local git.
 - `playwright` — browser interaction and UI testing. Not for static HTML.
