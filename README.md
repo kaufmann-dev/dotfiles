@@ -38,16 +38,23 @@ Some configured MCP servers run through `npx`, so Node.js/npm must also be avail
 
 ## Install
 
-Initialize and apply this repository:
+Initialize this repository:
 
 ```bash
-chezmoi init --apply https://github.com/kaufmann-dev/dotfiles.git
+chezmoi init https://github.com/kaufmann-dev/dotfiles.git
 ```
 
-For a local checkout:
+Create the local chezmoi data file, then add your real GitHub personal access token:
 
 ```bash
-chezmoi init --source-path .
+mkdir -p ~/.config/chezmoi
+cp "$(chezmoi source-path)/dot_config/chezmoi/chezmoi.toml.example" ~/.config/chezmoi/chezmoi.toml
+$EDITOR ~/.config/chezmoi/chezmoi.toml
+```
+
+Then apply the dotfiles:
+
+```bash
 chezmoi apply
 ```
 
@@ -81,6 +88,7 @@ To remove the auto-update wrapper:
 
 ```text
 dotfiles/
+|-- .gitignore
 |-- AGENTS.md
 |-- README.md
 |-- dot_agents/
@@ -92,19 +100,21 @@ dotfiles/
 |       |-- write-design/
 |       `-- write-readme/
 |-- dot_codex/
-|   |-- config.toml
+|   |-- config.toml.tmpl
 |   `-- symlink_AGENTS.md.tmpl
 |-- dot_claude/
 |   `-- symlink_CLAUDE.md.tmpl
-|-- dot_claude.json
+|-- dot_claude.json.tmpl
 |-- dot_gemini/
 |   |-- antigravity/
-|   |   `-- mcp_config.json
-|   |-- settings.json
+|   |   `-- mcp_config.json.tmpl
+|   |-- settings.json.tmpl
 |   `-- symlink_GEMINI.md.tmpl
 `-- dot_config/
+    |-- chezmoi/
+    |   `-- chezmoi.toml.example
     `-- opencode/
-        |-- opencode.jsonc
+        |-- opencode.jsonc.tmpl
         |-- symlink_AGENTS.md.tmpl
         `-- tui.jsonc
 ```
@@ -145,17 +155,9 @@ All supported agent tools are configured with the same MCP servers:
 | `github`     | Local `npx`     | GitHub API workflows when repository work is authorized.    |
 
 The `github` MCP server needs local GitHub authentication. This public repository
-does not store tokens or other credentials. Set `GITHUB_PERSONAL_ACCESS_TOKEN`
-on each machine instead, then restart the agent tool.
-
-```bash
-# macOS & Linux (Add to ~/.bashrc or ~/.zshrc)
-echo 'export GITHUB_PERSONAL_ACCESS_TOKEN="github_pat_..."' >> ~/.bashrc
-source ~/.bashrc
-
-# Windows (PowerShell)
-setx GITHUB_PERSONAL_ACCESS_TOKEN "github_pat_..."
-```
+does not store tokens or other credentials. The MCP config files are chezmoi
+templates that read `github_pat` from `~/.config/chezmoi/chezmoi.toml`, which is
+ignored by git.
 
 Use a fine-grained GitHub personal access token with only the permissions needed
 for the repositories or organizations you work with.

@@ -1,0 +1,3 @@
+# Local chezmoi data
+/dot_config/chezmoi/chezmoi.toml
+/.config/chezmoi/chezmoi.toml
