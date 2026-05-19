@@ -11,17 +11,17 @@
       "args": [
         "@playwright/mcp@latest"
       ]
-    },
+    }{{ with index . "github_pat" }},
     "github": {
       "command": "npx",
       "args": [
         "-y",
         "@modelcontextprotocol/server-github"
-      ]{{ with index . "github_pat" }},
+      ],
       "env": {
         "GITHUB_PERSONAL_ACCESS_TOKEN": "{{ . }}"
       }
-      {{- end }}
     }
+    {{- end }}
   }
 }
