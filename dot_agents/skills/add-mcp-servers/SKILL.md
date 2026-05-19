@@ -1,5 +1,5 @@
 ---
-name: add-mcp-configs
+name: add-mcp-servers
 description: Add or update project-scoped MCP server configuration entries. Use when a user asks to install, add, change, or synchronize MCP configs for multiple agent tools.
 ---
 
