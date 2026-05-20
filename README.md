@@ -110,8 +110,11 @@ dotfiles/
 |-- dot_claude.json.tmpl
 |-- dot_gemini/
 |   |-- antigravity/
+|   |   `-- symlink_skills.tmpl
+|   |-- antigravity-cli/
+|   |   `-- settings.json.tmpl
+|   |-- config/
 |   |   `-- mcp_config.json.tmpl
-|   |-- settings.json.tmpl
 |   `-- GEMINI.md.tmpl
 `-- dot_config/
     |-- chezmoi/
