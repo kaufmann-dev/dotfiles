@@ -11,7 +11,7 @@ Supported harnesses:
 
 - Codex
 - OpenCode
-- Gemini CLI
+- Antigravity
 - Claude Code
 
 ## Workflow
@@ -20,7 +20,7 @@ Supported harnesses:
 2. Use these project locations:
    - Codex: `.codex/agents/<agent-name>.toml`
    - OpenCode: `.opencode/agents/<agent-name>.md`
-   - Gemini CLI: `.gemini/agents/<agent-name>.md`
+   - Antigravity: `.gemini/agents/<agent-name>.md`
    - Claude Code: `.claude/agents/<agent-name>.md`
 3. If a harness uses a different project subagent path in the current repo, follow the existing repo convention.
 4. Add the requested subagent to every supported harness the user asked for. If the user asks generally, update all supported harnesses that have project-local config or can safely receive one.
@@ -33,7 +33,7 @@ Use the schema already present in the target file when updating existing subagen
 
 - Codex uses TOML with `name`, `description`, and a multiline `developer_instructions` string.
 - OpenCode uses Markdown in `.opencode/agents/` with YAML frontmatter. Common fields include `description`, `mode: subagent`, `model`, `temperature`, and `maxSteps`.
-- Gemini CLI uses Markdown in `.gemini/agents/` with YAML frontmatter. Common fields include `name`, `description`, `kind: local`, `model`, `temperature`, and `max_turns`. Prefer not to pin tool allowlists unless the exact tool names are known for the target version.
+- Antigravity uses Markdown in `.gemini/agents/` with YAML frontmatter. Common fields include `name`, `description`, `kind: local`, `model`, `temperature`, and `max_turns`. Prefer not to pin tool allowlists unless the exact tool names are known for the target version.
 - Claude Code uses Markdown in `.claude/agents/` with YAML frontmatter. Common fields include `name`, `description`, `tools`, and `model`.
 
 ## Minimal Example
@@ -69,7 +69,7 @@ You are a Svelte 5 expert responsible for writing, editing, and validating Svelt
 Use the Svelte MCP server as the source of truth. Fetch current documentation before changing Svelte code, then validate changed Svelte code with the Svelte autofixer.
 ```
 
-Gemini CLI `.gemini/agents/svelte-file-editor.md`:
+Antigravity `.gemini/agents/svelte-file-editor.md`:
 
 ```md
 ---
