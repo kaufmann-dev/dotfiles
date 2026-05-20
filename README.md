@@ -90,40 +90,44 @@ dotfiles/
 |-- README.md
 |-- dot_agents/
 |   `-- skills/
-|       |-- add-mcp-configs/
+|       |-- add-mcp-servers/
+|       |-- add-subagents/
 |       |-- commit/
+|       |-- distill-agents/
+|       |-- improve-goal/
+|       |-- improve-prompt/
 |       |-- md-table-formatter/
 |       |-- write-agents/
 |       |-- write-design/
 |       `-- write-readme/
 |-- dot_codex/
 |   |-- config.toml.tmpl
-|   `-- symlink_AGENTS.md.tmpl
+|   `-- AGENTS.md.tmpl
 |-- dot_claude/
-|   `-- symlink_CLAUDE.md.tmpl
+|   `-- CLAUDE.md.tmpl
 |-- dot_claude.json.tmpl
 |-- dot_gemini/
 |   |-- antigravity/
 |   |   `-- mcp_config.json.tmpl
 |   |-- settings.json.tmpl
-|   `-- symlink_GEMINI.md.tmpl
+|   `-- GEMINI.md.tmpl
 `-- dot_config/
     |-- chezmoi/
     |   `-- chezmoi.toml.example
     `-- opencode/
         |-- opencode.jsonc.tmpl
-        |-- symlink_AGENTS.md.tmpl
+        |-- AGENTS.md.tmpl
         `-- tui.jsonc
 ```
 
 ## Agent Instructions
 
-`AGENTS.md` is the shared operating guide. Native instruction filenames receive it through symlinks created by chezmoi:
+`AGENTS.md` is the shared operating guide. Native instruction filenames are generated from it as templates by chezmoi:
 
-- `dot_codex/symlink_AGENTS.md.tmpl` maps to `~/.codex/AGENTS.md`.
-- `dot_config/opencode/symlink_AGENTS.md.tmpl` maps to `~/.config/opencode/AGENTS.md`.
-- `dot_gemini/symlink_GEMINI.md.tmpl` maps to `~/.gemini/GEMINI.md`.
-- `dot_claude/symlink_CLAUDE.md.tmpl` maps to `~/.claude/CLAUDE.md`.
+- `dot_codex/AGENTS.md.tmpl` maps to `~/.codex/AGENTS.md`.
+- `dot_config/opencode/AGENTS.md.tmpl` maps to `~/.config/opencode/AGENTS.md`.
+- `dot_gemini/GEMINI.md.tmpl` maps to `~/.gemini/GEMINI.md`.
+- `dot_claude/CLAUDE.md.tmpl` maps to `~/.claude/CLAUDE.md`.
 
 The global instructions emphasize simple, surgical changes, repo-first discovery, focused verification, and documentation ownership. Project-local `AGENTS.md` files remain more specific and should override these global defaults when they apply.
 
@@ -131,25 +135,29 @@ The global instructions emphasize simple, surgical changes, repo-first discovery
 
 Skills are installed under `~/.agents/skills/`.
 
-| Skill                | Purpose                                                                          |
-| -------------------- | -------------------------------------------------------------------------------- |
-| `add-mcp-configs`    | Add project-scoped MCP configs for multiple agent tools.                         |
-| `commit`             | Stage and commit changes using structured, conventional git commit guidelines.   |
-| `md-table-formatter` | Format Markdown tables after any table is created or modified.                   |
-| `write-agents`       | Create a project `AGENTS.md` from scratch.                                       |
-| `write-design`       | Create a project `DESIGN.md` from scratch.                                       |
-| `write-readme`       | Create a project `README.md` from scratch.                                       |
+| Skill                | Purpose                                                                        |
+| -------------------- | ------------------------------------------------------------------------------ |
+| `add-mcp-servers`    | Add or update project-scoped MCP server configuration entries.                 |
+| `add-subagents`      | Add or update project-scoped subagent definitions across multiple agent tools. |
+| `commit`             | Stage and commit changes using structured, conventional git commit guidelines. |
+| `distill-agents`     | Distill bloated instruction files (AGENTS.md, etc.) into lean versions.        |
+| `improve-goal`       | Improve goals, persistent objectives, and long-running task contracts.         |
+| `improve-prompt`     | Improve prompt and instruction files using general prompt-quality guidance.    |
+| `md-table-formatter` | Format Markdown tables after any table is created or modified.                 |
+| `write-agents`       | Create a project `AGENTS.md` from scratch.                                     |
+| `write-design`       | Create a project `DESIGN.md` from scratch.                                     |
+| `write-readme`       | Create a project `README.md` from scratch.                                     |
 
 ## MCP Servers
 
 All supported agent tools are configured with the same MCP servers:
 
-| MCP        | Configuration | Purpose                                                     |
-| ---------- | ------------- | ----------------------------------------------------------- |
+| MCP          | Configuration | Purpose                                                     |
+| ------------ | ------------- | ----------------------------------------------------------- |
 | `context7`   | Remote URL    | Current library and framework documentation.                |
 | `gh_grep`    | Remote URL    | Real-world code examples from public GitHub repositories.   |
-| `playwright` | Local `npx`     | Browser automation, UI checks, and end-to-end verification. |
-| `github`     | Local `npx`     | GitHub API workflows when repository work is authorized.    |
+| `playwright` | Local `npx`   | Browser automation, UI checks, and end-to-end verification. |
+| `github`     | Local `npx`   | GitHub API workflows when repository work is authorized.    |
 
 The `github` MCP server needs local GitHub authentication. This public repository
 does not store tokens or other credentials. The MCP config files are chezmoi

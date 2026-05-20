@@ -50,13 +50,15 @@ If a file does not exist, do nothing — do not create it, do not suggest creati
 Use `pnpm` instead of `npm` for new projects.
 
 # MCP Servers
+{{- if (index . "github_pat") }}
 - `github` — GitHub interactions (issues, PRs, remote file contents). Not for local git.
+{{- end }}
 - `playwright` — browser interaction and UI testing. Not for static HTML.
 - `gh_grep` — pattern search across remote or multi-repo scope. Use local `rg` for single cloned repos.
 - `context7` — version-specific library/framework docs. Not for general reasoning.
 
 # Skills
-- `add-mcp-configs` — add project-scoped MCP server configuration entries for multiple agent tools.
+- `add-mcp-servers` — add or update project-scoped MCP server configuration entries for multiple agent tools.
 - `write-readme` / `write-design` / `write-agents` — only when creating that file from scratch.
   For edits to existing files, apply changes directly (see Post-Change Documentation Sync).
 - `md-table-formatter` — every time a Markdown table is created or modified, no exceptions.
