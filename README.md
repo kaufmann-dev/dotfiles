@@ -2,22 +2,24 @@
 
 Personal dotfiles managed with [chezmoi](https://www.chezmoi.io/).
 
-Supported agent tools: Codex, OpenCode, Gemini CLI, Antigravity, and Claude Code.
+Supported agent tools: Codex, OpenCode, Antigravity, and Claude Code.
 
 This repository focuses on installing shared instructions, reusable skills, and MCP server configurations for supported agent tools. While it is kept lightweight to ensure global agent behaviors live here, it serves as a flexible foundation that can grow to manage other configurations and dotfiles as needed.
 
-- **Tool Settings** (`~/.codex/`, `~/.config/opencode/`, `~/.gemini/`, `~/.gemini/antigravity/`, `~/.claude/`, `~/.claude.json`): Configures native settings, MCP servers, and shared instructions.
+- **Tool Settings** (`~/.codex/`, `~/.config/opencode/`, `~/.gemini/config/`, `~/.gemini/antigravity-cli/`, `~/.claude/`, `~/.claude.json`): Configures native settings, MCP servers, and shared instructions.
 - **Shared Skills** (`~/.agents/skills/`): Installs reusable, specialized skills that agents can use.
 
 ## Contents
 
-- [Prerequisites](#prerequisites)
-- [Install](#install)
-- [Automating Updates](#automating-updates)
-- [Structure](#structure)
-- [Agent Instructions](#agent-instructions)
-- [Skills](#skills)
-- [MCP Servers](#mcp-servers)
+- [Dotfiles](#dotfiles)
+  - [Contents](#contents)
+  - [Prerequisites](#prerequisites)
+  - [Install](#install)
+  - [Automating Updates](#automating-updates)
+  - [Structure](#structure)
+  - [Agent Instructions](#agent-instructions)
+  - [Skills](#skills)
+  - [MCP Servers](#mcp-servers)
 
 ## Prerequisites
 

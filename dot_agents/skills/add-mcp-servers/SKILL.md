@@ -11,7 +11,7 @@ Supported harnesses:
 
 - Codex
 - OpenCode
-- Gemini CLI
+- Antigravity
 - Claude Code
 
 ## Workflow
@@ -20,7 +20,7 @@ Supported harnesses:
 2. Use these config locations:
    - Codex: `.codex/config.toml`
    - OpenCode: `opencode.json` in the project root; use `opencode.jsonc` only if it already exists.
-   - Gemini CLI: `.gemini/settings.json`
+   - Antigravity: `.gemini/settings.json`
    - Claude Code: `.mcp.json`
 3. If a harness uses a different project config path in the current repo, follow the existing repo convention.
 4. Add the requested server to every supported harness the user asked for. If the user asks generally, update all supported harnesses that have project-local config or can safely receive one.
@@ -32,7 +32,7 @@ Use the schema already present in the target file. Common shapes:
 
 - Codex: `[mcp_servers.<name>]` TOML tables with `url` or `command`/`args`.
 - OpenCode: `mcp.<name>` with `type: "remote"` plus `url`, or `type: "local"` plus a `command` array.
-- Gemini CLI: `mcpServers.<name>` with `httpUrl` for remote servers, or `command`/`args` for local servers.
+- Antigravity: `mcpServers.<name>` with `httpUrl` for remote servers, or `command`/`args` for local servers.
 - Claude Code: `mcpServers.<name>` with `type: "http"` plus `url`, or `type: "stdio"` plus `command`/`args`.
 
 ## Minimal Examples
@@ -59,7 +59,7 @@ OpenCode `opencode.json`:
 }
 ```
 
-Gemini CLI `.gemini/settings.json`:
+Antigravity `.gemini/settings.json`:
 
 ```json
 {
@@ -107,7 +107,7 @@ OpenCode `opencode.json`:
 }
 ```
 
-Gemini CLI `.gemini/settings.json`:
+Antigravity `.gemini/settings.json`:
 
 ```json
 {
