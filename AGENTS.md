@@ -1,27 +1,10 @@
-# Simplicity First
-Write the minimum code that solves the problem.
-- Do not add features beyond the request.
-- Do not create abstractions for single-use code.
-- Do not add configurability that was not requested.
-- Do not add defensive handling for impossible scenarios.
-
-# Surgical Changes
-Touch only what the request requires.
-- Do not refactor adjacent code unless necessary for the task.
-- Do not improve unrelated comments, formatting, or dead code.
-- Remove only unused code introduced by your own change.
-- Preserve unrelated worktree state.
-- Every changed line should trace back to the request.
-
 # Critical Evaluation
 Before executing any request, assess it silently. Then:
 - **Makes sense, no better option exists** → proceed without comment.
-- **Makes sense, but a better option exists** → proceed, then note the better option and why.
-- **Does not make sense or causes harm** → stop. Explain why, propose an alternative,
-  and ask: proceed with original, or implement the alternative?
+- **Makes sense, but a better option exists** → stop. Note the better option and why, and ask: proceed with original, or implement the alternative?
+- **Does not make sense or causes harm** → stop. Explain why, propose an alternative, and ask: proceed with original, or implement the alternative?
 
-"Better" means measurably less complexity, fewer side effects, or higher correctness —
-not stylistic preference. Do not block on minor tradeoffs.
+"Better" means measurably less complexity, fewer side effects, or higher correctness — not stylistic preference. Do not block on minor tradeoffs.
 
 # Uncertainty
 If something material is unclear and cannot be discovered, ask before proceeding.
@@ -46,9 +29,6 @@ If an update is needed and the file exists, make it as part of the same task.
 Do not ask for permission. Do not mention it unless something is ambiguous.
 If a file does not exist, do nothing — do not create it, do not suggest creating it.
 
-# Package Manager
-Use `pnpm` instead of `npm` for new projects.
-
 # MCP Servers
 {{- if (index . "github_pat") }}
 - `github` — GitHub interactions (issues, PRs, remote file contents). Not for local git.
@@ -58,8 +38,11 @@ Use `pnpm` instead of `npm` for new projects.
 - `context7` — version-specific library/framework docs. Not for general reasoning.
 
 # Skills
-- `add-mcp-servers` — add or update project-scoped MCP server configuration entries for multiple agent tools.
-- `write-readme` / `write-design` / `write-agents` — only when creating that file from scratch.
-  For edits to existing files, apply changes directly (see Post-Change Documentation Sync).
-- `md-table-formatter` — every time a Markdown table is created or modified, no exceptions.
-- `commit` — only when explicitly requested. Never volunteer it.
+- `add-mcp-servers` — add or update project-scoped MCP server configuration entries. Use when the user asks to install, add, change, or synchronize MCP configs for multiple agent tools.
+- `add-subagents` — add or update project-scoped subagent definitions. Use when the user asks to install, add, change, or synchronize subagents for multiple agent tools.
+- `commit` — makes a git commit. Use only when explicitly requested. Never volunteer it.
+- `distill-agents` — distills a bloated AGENTS.md or alternative instruction files into a lean, high-signal version. Use when the user asks to distill instruction files.
+- `improve-goal` — improves goals, persistent objectives, and long-running task contracts with measurable criteria and verification steps. Use when the user asks to revise, harden, or debug an objective.
+- `improve-prompt` — makes a prompt clearer, more effective, more concise, or better aligned with its intended behavior. Use when the user asks to improve a prompt.
+- `md-table-formatter` — formats Markdown tables for consistency. Run every time a markdown table is created or modified, no exceptions.
+- `write-readme` / `write-design` / `write-agents` — creates a new README.md, DESIGN.md, or AGENTS.md file from scratch. Use only when creating that file from scratch, never for editing existing files.
