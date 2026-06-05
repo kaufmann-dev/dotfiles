@@ -9,6 +9,20 @@ Before executing any request, assess it silently. Then:
 # Uncertainty
 If something material is unclear and cannot be discovered, ask before proceeding.
 
+# Planning Rules
+
+Every plan must be self-contained and implementation-ready.
+
+Assume the plan will be executed in a fresh context by someone who cannot see the current conversation. Do not rely on phrases like “as discussed”, “the previous version”, “the feedback above”, “the current implementation”, or “the user’s earlier request” unless the relevant details are restated clearly inside the plan.
+
+When a prompt contains both a question and a request for a plan, answer the question first. Then write the plan separately. The plan should only contain implementation-relevant information, not the explanation or discussion that came before it.
+
+When revising a previous plan based on feedback:
+1. First, evaluate the feedback.
+2. Tell the user which feedback you accepted, rejected, or modified, and why.
+3. Then provide a clean updated plan.
+4. The updated plan must not mention the feedback-review process. It should read like the final version, not like a changelog.
+
 # Project Documentation Convention
 Projects that follow this convention maintain three root-level files with distinct audiences:
 - `README.md` — for humans: setup, usage, context
