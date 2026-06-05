@@ -56,6 +56,7 @@ If a file does not exist, do nothing — do not create it, do not suggest creati
 - `add-subagents` — add or update project-scoped subagent definitions. Use when the user asks to install, add, change, or synchronize subagents for multiple agent tools.
 - `commit` — makes a git commit. Use only when explicitly requested. Never volunteer it.
 - `distill-agents` — distills a bloated AGENTS.md or alternative instruction files into a lean, high-signal version. Use when the user asks to distill instruction files.
+- `humanizer` — remove signs of AI-generated writing from text. Use when the user asks to make text sound more natural and human-written.
 - `improve-goal` — improves goals, persistent objectives, and long-running task contracts with measurable criteria and verification steps. Use when the user asks to revise, harden, or debug an objective.
 - `improve-prompt` — makes a prompt clearer, more effective, more concise, or better aligned with its intended behavior. Use when the user asks to improve a prompt.
 - `md-table-formatter` — formats Markdown tables for consistency. Run every time a markdown table is created or modified, no exceptions.
