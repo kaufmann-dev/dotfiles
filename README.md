@@ -99,6 +99,7 @@ dotfiles/
 |       |-- improve-goal/
 |       |-- improve-prompt/
 |       |-- md-table-formatter/
+|       |-- ui-cleanup/
 |       |-- write-agents/
 |       |-- write-design/
 |       `-- write-readme/
@@ -149,6 +150,7 @@ Skills are installed under `~/.agents/skills/`.
 | `improve-goal`       | Improve goals, persistent objectives, and long-running task contracts.         |
 | `improve-prompt`     | Improve prompt and instruction files using general prompt-quality guidance.    |
 | `md-table-formatter` | Format Markdown tables after any table is created or modified.                 |
+| `ui-cleanup`         | Clean up duplicated and inconsistent frontend UI when explicitly requested.    |
 | `write-agents`       | Create a project `AGENTS.md` from scratch.                                     |
 | `write-design`       | Create a project `DESIGN.md` from scratch.                                     |
 | `write-readme`       | Create a project `README.md` from scratch.                                     |

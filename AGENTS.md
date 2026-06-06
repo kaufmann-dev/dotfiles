@@ -60,4 +60,5 @@ If a file does not exist, do nothing — do not create it, do not suggest creati
 - `improve-goal` — improves goals, persistent objectives, and long-running task contracts with measurable criteria and verification steps. Use when the user asks to revise, harden, or debug an objective.
 - `improve-prompt` — makes a prompt clearer, more effective, more concise, or better aligned with its intended behavior. Use when the user asks to improve a prompt.
 - `md-table-formatter` — formats Markdown tables for consistency. Run every time a markdown table is created or modified, no exceptions.
+- `ui-cleanup` — cleans up duplicated and inconsistent frontend UI without redesigning it. Use only when the user explicitly asks to use this skill.
 - `write-readme` / `write-design` / `write-agents` — creates a new README.md, DESIGN.md, or AGENTS.md file from scratch. Use only when creating that file from scratch, never for editing existing files.
