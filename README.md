@@ -96,6 +96,7 @@ dotfiles/
 |       |-- add-subagents/
 |       |-- commit/
 |       |-- distill-agents/
+|       |-- humanizer/
 |       |-- improve-goal/
 |       |-- improve-prompt/
 |       |-- md-table-formatter/
@@ -147,6 +148,7 @@ Skills are installed under `~/.agents/skills/`.
 | `add-subagents`      | Add or update project-scoped subagent definitions across multiple agent tools. |
 | `commit`             | Stage and commit changes using structured, conventional git commit guidelines. |
 | `distill-agents`     | Distill bloated instruction files (AGENTS.md, etc.) into lean versions.        |
+| `humanizer`          | Remove signs of AI-generated writing from text.                                |
 | `improve-goal`       | Improve goals, persistent objectives, and long-running task contracts.         |
 | `improve-prompt`     | Improve prompt and instruction files using general prompt-quality guidance.    |
 | `md-table-formatter` | Format Markdown tables after any table is created or modified.                 |
