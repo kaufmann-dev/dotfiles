@@ -9,6 +9,9 @@ Before executing any request, assess it silently. Then:
 # Uncertainty
 If something material is unclear and cannot be discovered, ask before proceeding.
 
+# Tooling Preferences
+- Use `podman` instead of `docker` for all container operations.
+
 # Planning Rules
 
 Every plan must be self-contained and implementation-ready.
