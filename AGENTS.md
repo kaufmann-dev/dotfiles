@@ -9,6 +9,9 @@ Before executing any request, assess it silently. Then:
 # Uncertainty
 If something material is unclear and cannot be discovered, ask before proceeding.
 
+# Backwards Compatibility
+Never prioritize backwards compatibility. When introducing new features, implement them as if building the first version of the software—ignore legacy constraints and pre-existing patterns that conflict with the new feature's design. Simplicity and correctness in the new implementation take precedence over maintaining compatibility with older versions or patterns.
+
 # Tooling Preferences
 - Use `podman` instead of `docker` for all container operations.
 
