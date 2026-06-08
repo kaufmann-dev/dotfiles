@@ -1,6 +1,6 @@
 ---
 name: write-design
-description: Use only when creating DESIGN.md from scratch. Never for editing existing files.
+description: Create a DESIGN.md file compliant with the @google/design.md spec from evidence in the codebase. Use only when the user explicitly invokes this skill or asks to create a design doc.
 ---
 
 # Write DESIGN.md

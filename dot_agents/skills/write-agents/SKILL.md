@@ -1,6 +1,6 @@
 ---
 name: write-agents
-description: Create a missing repository- or subtree-scoped AGENTS.md from evidence in the codebase. Use when the user asks to generate, write, or add an AGENTS.md; do not use to revise or distill an existing instruction file.
+description: Create a missing repository- or subtree-scoped AGENTS.md from evidence in the codebase. Use only when the user explicitly invokes this skill or asks to create agent instructions.
 ---
 
 # Write AGENTS

@@ -1,6 +1,6 @@
 ---
 name: add-subagents
-description: Add or update project-scoped subagent definitions across multiple agent tools. Use when a user asks to install, add, change, or synchronize subagents for multiple agent tools.
+description: Add or update project-scoped subagent definitions across multiple agent tools. Use only when the user explicitly invokes this skill or asks for project-specific subagents.
 ---
 
 # Add Subagents

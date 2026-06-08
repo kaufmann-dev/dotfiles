@@ -1,6 +1,6 @@
 ---
 name: ui-cleanup
-description: Clean up duplicated and inconsistent frontend UI without redesigning or changing behavior. Use only when the user explicitly asks to use the ui-cleanup skill, names $ui-cleanup, or otherwise says to use this skill for a frontend UI cleanup; do not trigger for ordinary UI implementation, frontend refactoring, redesign, styling, or bug-fix requests unless explicitly invoked.
+description: Clean up duplicated and inconsistent frontend UI without redesigning or changing behavior. Use only when the user explicitly invokes this skill or asks for frontend cleanup.
 ---
 
 # UI Cleanup

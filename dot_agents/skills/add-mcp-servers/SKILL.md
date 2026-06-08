@@ -1,8 +1,8 @@
 ---
 name: add-mcp-servers
-description: Add or update project-scoped MCP server configuration entries. Use when a user asks to install, add, change, or synchronize MCP configs for multiple agent tools.
+description: Add or update project-scoped MCP server configuration entries. Use only when the user explicitly invokes this skill or asks for project-specific MCP configs.
 ---
-
+  
 # Add MCP Configs
 
 Install MCP servers into project-scoped config when the harness supports it. Do not edit user-global config unless the user explicitly asks for global setup.

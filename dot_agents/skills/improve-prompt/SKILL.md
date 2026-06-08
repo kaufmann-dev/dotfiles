@@ -1,6 +1,6 @@
 ---
 name: improve-prompt
-description: Use when the user asks to make a prompt clearer, more effective, more concise, or better aligned with its intended behavior.
+description: Improve prompt text in place. Use only when the user explicitly invokes this skill or asks to improve a prompt.
 ---
 
 # Improve Prompt

@@ -94,6 +94,7 @@ dotfiles/
 |   `-- skills/
 |       |-- add-mcp-servers/
 |       |-- add-subagents/
+|       |-- audit-complete/
 |       |-- audit-defect/
 |       |-- audit-rubric/
 |       |-- commit/
@@ -149,6 +150,7 @@ Skills are installed under `~/.agents/skills/`.
 | -------------------- | ------------------------------------------------------------------------------ |
 | `add-mcp-servers`    | Add or update project-scoped MCP server configuration entries.                 |
 | `add-subagents`      | Add or update project-scoped subagent definitions across multiple agent tools. |
+| `audit-complete`     | Perform a comprehensive, stateless codebase audit before a major release.      |
 | `audit-defect`       | Directly audit a codebase for concrete, actionable defects.                    |
 | `audit-rubric`       | Create a bounded, project-specific rubric and immediately audit against it.    |
 | `commit`             | Stage and commit changes using structured, conventional git commit guidelines. |

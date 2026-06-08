@@ -1,100 +1,153 @@
 ---
 name: audit-defect
-description: Directly audit a codebase for concrete, actionable defects. Use when the user asks for an immediate audit, defect review, bug hunt, safety review, or explicitly invokes this skill.
+description: Audit a codebase for concrete, actionable defects. Use only when the user explicitly invokes this skill or asks for a defect audit.
 ---
 
 # Actionable Defect Audit
 
-Audit the codebase directly for concrete, actionable defects.
+Find and report real defects with concrete evidence and realistic user impact. Do not fix code while using this skill.
 
-This is the problem-finder counterpart to a rubric-based audit. It is less constrained than a rubric audit, so keep the scope strict and avoid inventing issues.
+## Establish the Audit Boundary
 
-Do not fix code while using this skill.
+Derive the boundary from the user's request. If the user names files, features, commits, or risks, inspect those and directly affected behavior. Otherwise, perform a repository-wide audit focused on the highest-risk paths.
 
-## Scope
+Before looking for defects:
 
-Look only for:
+1. Read the applicable agent instructions.
+2. Inspect the repository structure, working-tree status, and relevant documentation.
+3. Identify the public contract from user-facing docs, interfaces, tests, schemas, and configuration.
+4. Identify the primary execution paths, trust boundaries, state mutations, external integrations, and recovery paths.
+5. Record any material area that cannot be inspected or verified.
 
-- correctness bugs
-- security issues
-- data loss risks
-- broken documented behavior
-- race conditions
-- test failures
+Do not treat uncommitted changes as defects merely because they are uncommitted. Do not modify or revert tracked changes.
+
+## Qualifying Defects
+
+Report only concrete problems in one or more of these categories:
+
+- incorrect behavior or results
+- security or privacy violations
+- data loss, corruption, or unsafe recovery
+- broken public or documented behavior
+- race conditions and invalid state transitions
+- failures hidden behind success output or exit status
 - user-visible regressions
-- unsafe mutation or recovery behavior
-- serious automation/scriptability breakage
+- unsafe automation or non-interactive behavior
+- missing validation at a meaningful trust boundary
+- test failures that expose a product defect
 
 Do not report:
 
-- style preferences
-- speculative refactors
-- theoretical edge cases without a plausible user path
-- issues already handled by existing behavior
-- “could be cleaner” maintainability comments
-- missing tests unless the untested behavior is safety-critical and cannot otherwise be verified
+- style preferences or naming opinions
+- speculative refactors or feature requests
+- maintainability concerns without a present failure mode
+- theoretical edge cases without a realistic trigger
+- behavior already prevented or handled by the code
+- missing tests unless they conceal a concrete defect or leave safety-critical behavior unverifiable
+- dependency age or known vulnerabilities without evidence that the repository is affected
 
-## Workflow
+## Audit Workflow
 
-1. Inspect enough of the project to understand its public contract and risky code paths.
-   - Read relevant docs, entry points, config/state handling, mutation paths, external integrations, tests, and CI/release files.
-   - Focus on code that can break users, lose data, leak secrets, corrupt state, or produce false success.
+### 1. Prioritize Risk
 
-2. Verify before reporting.
-   - Prefer running existing tests or focused checks when practical.
-   - Trace the actual code path.
-   - Do not report a finding unless there is concrete evidence and realistic user impact.
+Inspect likely high-impact paths first:
 
-3. Minimize findings.
-   - Report only actionable defects.
-   - Merge duplicate symptoms under one root cause.
-   - Omit low-confidence concerns.
-   - If nothing qualifies, say exactly:
+- destructive or irreversible operations
+- authentication, authorization, secrets, and untrusted input
+- persistence, migrations, synchronization, and concurrency
+- target selection, path handling, and command construction
+- error propagation, retries, rollback, and cleanup
+- defaults and configuration that alter safety or correctness
+- release, installation, and automation paths that can report false success
+
+Spend less time on low-impact leaf code unless evidence points there.
+
+### 2. Trace Candidate Defects
+
+For each candidate:
+
+1. Trace the complete relevant path, including callers, validation, error handling, and cleanup.
+2. Check whether another layer prevents or handles the suspected failure.
+3. Compare behavior with the applicable public contract.
+4. Construct a realistic trigger and identify the observable impact.
+5. Run the smallest useful existing test or focused non-destructive check when practical.
+6. Reject the candidate if evidence is incomplete, impact is merely hypothetical, or the claim depends on an unstated preference.
+
+Never run destructive, production-facing, credential-using, or externally mutating checks without explicit user approval.
+
+### 3. Consolidate and Rank
+
+- Merge multiple symptoms caused by the same root defect.
+- Prefer the smallest accurate claim supported by evidence.
+- Rank findings by user impact, likelihood, and reversibility.
+- Stop when the defined boundary is covered and no high-confidence candidate remains unverified.
+- Do not continue searching merely to produce more findings.
+
+## Severity
+
+- **Critical**: likely credential disclosure, remote compromise, irreversible corruption, major data loss, or destructive action against the wrong target.
+- **High**: serious user-visible breakage, broken safety boundary, common-path data corruption, or false success after a consequential failure.
+- **Medium**: meaningful public-contract violation, realistic race, incorrect state transition, or missing validation with material impact.
+- **Low**: limited but concrete user-visible defect with a realistic trigger and straightforward fix.
+
+Do not inflate severity based on hypothetical downstream consequences. Omit low-severity findings unless they are unambiguous and actionable.
+
+## Required Evidence
+
+A finding is valid only when all of the following are known:
+
+- the affected code location
+- the triggering conditions
+- the actual or inevitable behavior
+- the realistic user or system impact
+- why existing handling does not prevent the defect
+- a minimal direction for fixing the root cause
+
+Use confidence to describe evidence quality, not severity:
+
+- **High**: demonstrated by a test/check or inevitable from the traced code path.
+- **Medium**: strongly supported by the traced path but not practically demonstrated.
+- **Low**: materially uncertain; normally omit.
+
+## Output
+
+Do not pad the report. Report zero, one, or many findings depending only on what qualifies.
+
+Lead with findings ordered by severity. For each finding, use:
 
 ```text
-No actionable defects found under this audit scope.
+## [severity] Concise defect title
+
+- Evidence: exact file and line or symbol, plus the relevant behavior
+- Trigger: realistic reproduction path or failing scenario
+- Impact: concrete user or system consequence
+- Existing handling: why the defect is not already prevented or recovered
+- Minimal fix: smallest change that addresses the root cause
+- Confidence: high / medium / low
 ```
 
-## Required Finding Format
-
-For each finding, include:
-
-1. Severity: critical / high / medium / low
-2. Evidence: exact file, function, and relevant logic
-3. Reproduction path or plausible failing scenario
-4. Why this is a real defect, not a preference
-5. Minimal fix
-6. Confidence: high / medium / low
-7. False-positive risk: low / medium / high
-
-## Severity Rules
-
-- Critical: likely data loss, credential leak, destructive action without consent, remote compromise, or irreversible corruption.
-- High: serious user-visible breakage, broken safety boundary, wrong-target mutation, or false success after failure.
-- Medium: meaningful documented behavior mismatch, important compatibility issue, race condition, or missing validation around risky behavior.
-- Low: minor concrete user-visible defect with limited impact.
-
-Do not include low-severity findings unless they are concrete, user-visible, and cheap to fix.
-
-## Output Format
+After the findings, include:
 
 ```text
-# Actionable Defect Audit
+## Audit Coverage
 
-## Audit Scope
-[Briefly state what was inspected.]
-
-## Findings
-[Findings in the required format, or the exact no-finding sentence.]
-
-## Re-Audit Rule
-After fixes, re-audit only changed code and directly affected behavior. Report only regressions introduced by the fix or unresolved original findings.
+- Inspected: relevant areas and checks performed
+- Not verified: material limitations, or "None"
 ```
+
+If no finding qualifies, say exactly:
+
+```text
+No actionable defects found under the inspected scope.
+```
+
+Still include the audit coverage so the result does not imply uninspected areas were verified.
 
 ## Guardrails
 
-- Do not create a feature wishlist.
-- Do not expand the audit into broad refactoring.
-- Do not propose large rewrites when a minimal fix is enough.
-- Do not keep searching for weaker issues after no high-confidence actionable defects remain.
-- Treat “no actionable defects found” as a successful audit outcome.
+- Do not intentionally edit tracked files or perform repository mutations. Disposable artifacts produced by non-destructive verification are acceptable.
+- Do not turn the audit into a feature wishlist or broad refactor proposal.
+- Do not report a concern before checking nearby validation and error handling.
+- Do not present assumptions as verified facts.
+- Do not duplicate findings or split one root cause into several reports.
+- Treat a no-finding result as a valid outcome.

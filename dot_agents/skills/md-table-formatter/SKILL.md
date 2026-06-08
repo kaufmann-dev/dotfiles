@@ -1,6 +1,6 @@
 ---
 name: md-table-formatter
-description: Run every time a markdown table is created or modified in any file.
+description: Formats markdown tables with consistent spacing while preserving content, column count, and alignment. Run every time a markdown table is created or modified in any file.
 ---
 
 # Markdown Table Formatter
