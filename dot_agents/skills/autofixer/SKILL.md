@@ -60,24 +60,29 @@ An audit counts as a qualified clean confirmation only when adjudication yields 
 
 ### 3. Fix
 
-Select exactly one accepted root cause per repair round. Closely coupled symptoms from that root cause may be fixed together.
+Select one repair batch per repair round. The default batch is one accepted root cause. The coordinator may batch up to three accepted root causes when they are independent or coherently coupled:
+
+- Independent: separate causes, separable expected changes, and separately verifiable behavior.
+- Coherently coupled: one focused change is the simplest correct fix because separate fixes would duplicate work or create unnecessary churn.
+
+Do not batch when any finding is `needs evidence`, any fix needs approval, expected changes are broad or risky, findings may fight over the same behavior, or the coordinator cannot explain why the batch is safe in one sentence.
 
 Before delegation, pause for explicit approval if the fix requires a destructive action, credentials, external mutation, dependency update, major migration, or broad rewrite. If approval is denied, preserve the finding as unresolved, continue only with independent safe findings, and ultimately report `Blocked`, never `Converged`.
 
-Spawn a new fresh-context fixer subagent. Give it only:
+Spawn one new fresh-context fixer subagent per repair batch. Give it only:
 
-- the accepted finding and required behavior
+- the accepted finding or accepted findings in the batch, with required behavior for each
 - relevant scope and repository instructions
-- verification expectations
+- per-finding verification expectations
 - the requirement to preserve unrelated and pre-existing changes
 
-Do not require or disclose the auditor's proposed implementation. Require the smallest correct fix, focused tests where appropriate, and updates to existing documentation only when directly affected.
+Do not require or disclose the auditor's proposed implementation. Require the smallest correct fix or smallest correct combined patch, focused tests where appropriate, and updates to existing documentation only when directly affected. For batched repairs, require the final report to map changed files and tests back to each finding.
 
 ### 4. Verify
 
-Review the resulting diff and confirm it addresses only the accepted root cause and necessary directly affected behavior. Preserve unrelated and pre-existing changes.
+Review the resulting diff and confirm it addresses only the accepted repair batch and necessary directly affected behavior. Preserve unrelated and pre-existing changes.
 
-Run focused verification and relevant broader checks. Count the round as a failed repair attempt if there is no relevant diff, verification fails, or the same defect survives. After every repair attempt, return to step 1 with a completely fresh auditor.
+Run focused verification and relevant broader checks for each finding in the repair batch. Count the round as a failed repair attempt for each surviving root cause if there is no relevant diff, verification fails, or the same defect survives. If batch verification fails, split the batch on the next round unless the failure shows the findings are more tightly coupled. After every repair attempt, return to step 1 with a completely fresh auditor.
 
 Pause as blocked if concurrent or unattributable workspace changes make fixer changes unsafe to distinguish from user changes.
 
