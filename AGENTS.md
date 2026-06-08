@@ -14,6 +14,14 @@ Never prioritize backwards compatibility. When introducing new features, impleme
 
 # Tooling Preferences
 - Use `podman` instead of `docker` for all container operations.
+- Use the `playwright` MCP server for browser interaction and UI testing. Never use the Playwright CLI or another headless browser as a substitute.
+
+# Missing Tools and Permissions
+
+Do not compromise, substitute tools, reduce the task's scope, or use a workaround when required tools or permissions are unavailable.
+
+- **Missing tools** — Stop and fail the task. Tell the user which required tools are not installed or available and what must be installed or enabled before the task can continue.
+- **Insufficient permissions** — Stop and fail the task. Tell the user that the task cannot be completed with the available permissions and identify the permissions or access required to continue.
 
 # Planning Rules
 
