@@ -1,36 +1,81 @@
 ---
 name: write-agents
-description: Use only when creating AGENTS.md from scratch. Never for editing existing files.
+description: Create a missing repository- or subtree-scoped AGENTS.md from evidence in the codebase. Use when the user asks to generate, write, or add an AGENTS.md; do not use to revise or distill an existing instruction file.
 ---
 
 # Write AGENTS
 
-The global AGENTS.md covers general workflow. This file covers only what is specific to this project.
+Create a concise operating guide for agents working in the target directory. Optimize
+for correct execution, not for onboarding humans or describing the project.
 
-## Before Writing
-Read: `package.json` / `pyproject.toml` / `Makefile` / CI config.
-Derive all commands from these — do not invent.
+## 1. Determine Scope
 
-## Structure
+- Use the path requested by the user. Otherwise create `AGENTS.md` at the repository root.
+- Stop if the target file already exists; use an editing or distillation workflow instead.
+- Read every applicable parent `AGENTS.md` up to the repository root. Add only instructions
+  that are more specific than inherited instructions.
+- For a subtree file, inspect that subtree rather than documenting unrelated repository areas.
 
-Mirror this layout. Include only sections where you have non-obvious content to add:
+## 2. Gather Evidence
 
+Inspect before writing:
+
+- `README.md`, `CONTRIBUTING.md`, existing instruction files, and relevant docs
+- package manifests, lockfiles, task runners, build files, and tool configuration
+- CI workflows and hooks for commands that are expected to pass
+- representative source and test files for naming, layout, and local patterns
+- recent Git history only when commit or pull-request conventions are not documented
+
+Prefer executable configuration and CI over prose when sources disagree. Derive commands
+and rules from evidence; never invent missing commands, coverage targets, directory roles,
+or contribution requirements.
+
+## 3. Select Content
+
+Include a fact only when it changes how an agent should work and is not obvious from the
+files involved in a normal task. Prioritize:
+
+- exact setup, build, lint, test, formatting, generation, and targeted-test commands
+- required tool choices and non-default invocation details
+- architecture boundaries, generated-file ownership, and source-of-truth relationships
+- test locations, naming rules, fixtures, and verification expectations
+- repository-specific safety, security, configuration, and workflow constraints
+- commit or pull-request rules only when agents are expected to perform those actions
+
+Omit project history, product descriptions, generic engineering advice, exhaustive directory
+trees, and style rules already enforced automatically. Do not duplicate inherited instructions.
+
+## 4. Write the File
+
+- Use `# Repository Instructions` unless a more specific scope title is useful.
+- Choose descriptive sections based on the evidence; do not force a fixed template.
+- Put the most operationally important instructions first.
+- Write short imperative bullets. Use positive phrasing when it remains precise; use explicit
+  prohibitions when the forbidden action itself is the important constraint.
+- Show commands in fenced code blocks and paths, filenames, and identifiers in backticks.
+- Keep the file concise, usually 200-500 words, but let necessary commands and constraints
+  determine length. Omit empty or speculative sections.
+
+Common sections, only when relevant:
+
+```markdown
+# Repository Instructions
+
+## Build and Verification
+## Project Structure
+## Implementation Conventions
+## Testing
+## Generated Files and Configuration
+## Git and Pull Requests
 ```
-# Build & Test
-<exact install, build, lint, test commands — always include, even if in README, so the agent never has to look them up>
 
-# Tooling
-<non-obvious tool choices, e.g. uv not pip, pnpm not npm>
+Do not default to `# Repository Guidelines`: that framing tends to produce a human contributor
+guide. `AGENTS.md` should contain durable instructions that help an agent make correct changes.
 
-# Conventions
-<counterintuitive patterns not inferable from the code>
+## 5. Verify
 
-# Hard Limits
-<repo-specific absolutes — phrased as "always X", not "never Y">
-```
-
-## Rules
-- Include commands the agent needs to execute tasks, even if they appear in README.md. Omit all other content already covered by README.md or inferable from the codebase.
-- Phrase all constraints as "always X" — positive framing gets higher compliance than "don't X".
-- Leave style rules out — linters enforce those.
-- Optimise for signal density, not line count. Every line must change agent behavior — if cutting it would leave the agent acting identically, cut it.
+- Re-read the file against all applicable parent instructions and remove duplication or conflict.
+- Confirm every command and factual claim against its source.
+- Run cheap, non-destructive commands when practical, such as task-list or help commands.
+- Check that every line has a behavioral consequence. Remove anything that merely summarizes
+  the repository.
