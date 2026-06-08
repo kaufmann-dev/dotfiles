@@ -96,6 +96,7 @@ dotfiles/
 |       |-- add-subagents/
 |       |-- commit/
 |       |-- distill-agents/
+|       |-- german-humanizer/
 |       |-- humanizer/
 |       |-- improve-goal/
 |       |-- improve-prompt/
@@ -148,6 +149,7 @@ Skills are installed under `~/.agents/skills/`.
 | `add-subagents`      | Add or update project-scoped subagent definitions across multiple agent tools. |
 | `commit`             | Stage and commit changes using structured, conventional git commit guidelines. |
 | `distill-agents`     | Distill bloated instruction files (AGENTS.md, etc.) into lean versions.        |
+| `german-humanizer`   | Rewrite German text to sound natural and idiomatic without flattening it.      |
 | `humanizer`          | Remove signs of AI-generated writing from text.                                |
 | `improve-goal`       | Improve goals, persistent objectives, and long-running task contracts.         |
 | `improve-prompt`     | Improve prompt and instruction files using general prompt-quality guidance.    |

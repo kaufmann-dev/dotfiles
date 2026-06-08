@@ -29,25 +29,20 @@ When revising a previous plan based on feedback:
 3. Then provide a clean updated plan.
 4. The updated plan must not mention the feedback-review process. It should read like the final version, not like a changelog.
 
-# Project Documentation Convention
-Projects that follow this convention maintain three root-level files with distinct audiences:
-- `README.md` — for humans: setup, usage, context
-- `AGENTS.md` — for AI agents: instructions, constraints, workflow
-- `DESIGN.md` — for visual decisions: design tokens and style rationale per Google Material spec
+# Project Documentation
 
-These files may not exist in every project. Do not create them unless explicitly asked.
-Treat their presence as opt-in. If they exist, respect their structure and purpose.
+Projects may include documentation files, but they are optional. Do not treat missing documentation as a problem, and do not create documentation files unless explicitly asked.
 
-# Post-Change Documentation Sync
-After completing any change, check whether each documentation file exists in the project root.
-For each one that exists, silently assess whether the change affects its content:
-- `README.md` — update if setup steps, public API, or usage behavior changed
-- `DESIGN.md` — update if tokens, component styles, or visual decisions changed
-- `AGENTS.md` — update if build commands, tooling, conventions, or constraints changed
+When making a change, check whether existing documentation should be updated. Only update docs when the change materially affects documented setup, usage, behavior, architecture, tooling, workflows, conventions, constraints, or visual decisions.
 
-If an update is needed and the file exists, make it as part of the same task.
-Do not ask for permission. Do not mention it unless something is ambiguous.
-If a file does not exist, do nothing — do not create it, do not suggest creating it.
+Common documentation files:
+
+- `README.md` — human-facing project overview, setup, installation, usage, configuration, and public behavior.
+- `AGENTS.md` — agent-facing instructions, build commands, tooling, workflows, conventions, constraints, and implementation guidance.
+- `DESIGN.md` — compliant `DESIGN.md` per the `@google/design.md` spec: YAML front matter for machine-readable tokens plus Markdown prose for human-readable rationale.
+- `docs/` — additional project documentation for architecture, usage, behavior, decisions, guides, or deeper explanations.
+
+If a relevant documentation file already exists, update it as part of the same task. If it does not exist, do nothing: do not create it, suggest it, or report it as missing.
 
 # MCP Servers
 {{- if (index . "github_pat") }}
@@ -56,15 +51,3 @@ If a file does not exist, do nothing — do not create it, do not suggest creati
 - `playwright` — browser interaction and UI testing. Not for static HTML.
 - `gh_grep` — pattern search across remote or multi-repo scope. Use local `rg` for single cloned repos.
 - `context7` — version-specific library/framework docs. Not for general reasoning.
-
-# Skills
-- `add-mcp-servers` — add or update project-scoped MCP server configuration entries. Use when the user asks to install, add, change, or synchronize MCP configs for multiple agent tools.
-- `add-subagents` — add or update project-scoped subagent definitions. Use when the user asks to install, add, change, or synchronize subagents for multiple agent tools.
-- `commit` — makes a git commit. Use only when explicitly requested. Never volunteer it.
-- `distill-agents` — distills a bloated AGENTS.md or alternative instruction files into a lean, high-signal version. Use when the user asks to distill instruction files.
-- `humanizer` — remove signs of AI-generated writing from text. Use when the user asks to make text sound more natural and human-written.
-- `improve-goal` — improves goals, persistent objectives, and long-running task contracts with measurable criteria and verification steps. Use when the user asks to revise, harden, or debug an objective.
-- `improve-prompt` — makes a prompt clearer, more effective, more concise, or better aligned with its intended behavior. Use when the user asks to improve a prompt.
-- `md-table-formatter` — formats Markdown tables for consistency. Run every time a markdown table is created or modified, no exceptions.
-- `ui-cleanup` — cleans up duplicated and inconsistent frontend UI without redesigning it. Use only when the user explicitly asks to use this skill.
-- `write-readme` / `write-design` / `write-agents` — creates a new README.md, DESIGN.md, or AGENTS.md file from scratch. Use only when creating that file from scratch, never for editing existing files.
