@@ -97,6 +97,7 @@ dotfiles/
 |       |-- audit-complete/
 |       |-- audit-defect/
 |       |-- audit-rubric/
+|       |-- autofixer/
 |       |-- commit/
 |       |-- distill-agents/
 |       |-- humanizer/
@@ -153,6 +154,7 @@ Skills are installed under `~/.agents/skills/`.
 | `audit-complete`     | Perform a comprehensive, stateless codebase audit before a major release.      |
 | `audit-defect`       | Directly audit a codebase for concrete, actionable defects.                    |
 | `audit-rubric`       | Create a bounded, project-specific rubric and immediately audit against it.    |
+| `autofixer`          | Coordinate a bounded audit-fix-verify loop using fresh-context subagents.      |
 | `commit`             | Stage and commit changes using structured, conventional git commit guidelines. |
 | `distill-agents`     | Distill bloated instruction files (AGENTS.md, etc.) into lean versions.        |
 | `humanizer`          | Remove signs of AI-generated writing from text.                                |
