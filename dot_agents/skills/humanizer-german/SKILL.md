@@ -1,9 +1,9 @@
 ---
-name: german-humanizer
+name: humanizer-german
 description: Entfernt typische Muster KI-generierter deutscher Texte und überarbeitet sie zu natürlichem, idiomatischem Deutsch. Verwenden, wenn deutschsprachige Texte menschlicher, weniger generisch oder weniger nach Chatbot klingen sollen.
 ---
 
-# German-Humanizer
+# Humanizer German
 
 Überarbeite deutschsprachige Texte so, dass sie natürlich, präzise und zur
 jeweiligen Textsorte passend klingen. Arbeite als Redakteur, nicht als

@@ -94,15 +94,15 @@ dotfiles/
 |   `-- skills/
 |       |-- add-mcp-servers/
 |       |-- add-subagents/
+|       |-- audit-defect/
+|       |-- audit-rubric/
 |       |-- commit/
-|       |-- defect-audit/
 |       |-- distill-agents/
-|       |-- german-humanizer/
 |       |-- humanizer/
+|       |-- humanizer-german/
 |       |-- improve-goal/
 |       |-- improve-prompt/
 |       |-- md-table-formatter/
-|       |-- rubric-audit-planner/
 |       |-- ui-cleanup/
 |       |-- write-agents/
 |       |-- write-design/
@@ -149,15 +149,15 @@ Skills are installed under `~/.agents/skills/`.
 | ---------------------- | ------------------------------------------------------------------------------ |
 | `add-mcp-servers`      | Add or update project-scoped MCP server configuration entries.                 |
 | `add-subagents`        | Add or update project-scoped subagent definitions across multiple agent tools. |
+| `audit-defect`         | Directly audit a codebase for concrete, actionable defects.                    |
+| `audit-rubric`         | Create a bounded, project-specific rubric and immediately audit against it.    |
 | `commit`               | Stage and commit changes using structured, conventional git commit guidelines. |
-| `defect-audit`         | Audit a codebase directly for concrete, actionable defects.                    |
 | `distill-agents`       | Distill bloated instruction files (AGENTS.md, etc.) into lean versions.        |
-| `german-humanizer`     | Rewrite German text to sound natural and idiomatic without flattening it.      |
 | `humanizer`            | Remove signs of AI-generated writing from text.                                |
+| `humanizer-german`     | Rewrite German text to sound natural and idiomatic without flattening it.      |
 | `improve-goal`         | Improve goals, persistent objectives, and long-running task contracts.         |
 | `improve-prompt`       | Improve prompt and instruction files using general prompt-quality guidance.    |
 | `md-table-formatter`   | Format Markdown tables after any table is created or modified.                 |
-| `rubric-audit-planner` | Create a bounded, project-specific rubric and audit prompt.                    |
 | `ui-cleanup`           | Clean up duplicated and inconsistent frontend UI when explicitly requested.    |
 | `write-agents`         | Create a project `AGENTS.md` from scratch.                                     |
 | `write-design`         | Create a project `DESIGN.md` from scratch.                                     |

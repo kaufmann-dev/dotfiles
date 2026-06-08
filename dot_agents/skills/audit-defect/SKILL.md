@@ -1,13 +1,15 @@
 ---
-name: defect-audit
-description: Directly audit a codebase for concrete, actionable defects. Use when the user asks for an immediate audit, defect review, bug hunt, safety review, or explicitly invokes this skill. This skill reports only evidence-backed defects and does not create a rubric or audit prompt first.
+name: audit-defect
+description: Directly audit a codebase for concrete, actionable defects. Use when the user asks for an immediate audit, defect review, bug hunt, safety review, or explicitly invokes this skill.
 ---
 
-# Actionable Defect Auditor
+# Actionable Defect Audit
 
 Audit the codebase directly for concrete, actionable defects.
 
 This is the problem-finder counterpart to a rubric-based audit. It is less constrained than a rubric audit, so keep the scope strict and avoid inventing issues.
+
+Do not fix code while using this skill.
 
 ## Scope
 
@@ -65,8 +67,6 @@ For each finding, include:
 6. Confidence: high / medium / low
 7. False-positive risk: low / medium / high
 
-Only recommend implementation for findings with concrete user impact, high or medium confidence, and low or medium false-positive risk.
-
 ## Severity Rules
 
 - Critical: likely data loss, credential leak, destructive action without consent, remote compromise, or irreversible corruption.
@@ -86,9 +86,6 @@ Do not include low-severity findings unless they are concrete, user-visible, and
 
 ## Findings
 [Findings in the required format, or the exact no-finding sentence.]
-
-## Suggested Fix Order
-[Only include if there are findings. Order by severity and dependency.]
 
 ## Re-Audit Rule
 After fixes, re-audit only changed code and directly affected behavior. Report only regressions introduced by the fix or unresolved original findings.
