@@ -12,6 +12,32 @@ import sys
 import unicodedata
 
 
+def split_row(line: str) -> list[str] | None:
+    """Split a pipe-table row while preserving escaped pipe characters."""
+    trimmed = line.strip()
+    if not trimmed.startswith("|") or not trimmed.endswith("|"):
+        return None
+
+    cells = []
+    current = []
+    backslashes = 0
+
+    for ch in trimmed[1:-1]:
+        if ch == "|" and backslashes % 2 == 0:
+            cells.append("".join(current))
+            current = []
+        else:
+            current.append(ch)
+
+        if ch == "\\":
+            backslashes += 1
+        else:
+            backslashes = 0
+
+    cells.append("".join(current))
+    return cells
+
+
 def char_width(ch: str) -> int:
     """Return display width: 2 for CJK/wide chars, 1 otherwise."""
     code = ord(ch)
@@ -30,18 +56,15 @@ def display_width(text: str) -> int:
 
 
 def is_table_row(line: str) -> bool:
-    trimmed = line.strip()
-    if not trimmed.startswith("|") or not trimmed.endswith("|"):
-        return False
-    return len(trimmed.split("|")) > 2
+    cells = split_row(line)
+    return cells is not None and len(cells) > 0
 
 
 def is_separator_row(line: str) -> bool:
-    trimmed = line.strip()
-    if not trimmed.startswith("|") or not trimmed.endswith("|"):
-        return False
-    cells = trimmed.split("|")[1:-1]
-    return len(cells) > 0 and all(re.match(r"^\s*:?-+:?\s*$", c) for c in cells)
+    cells = split_row(line)
+    return cells is not None and len(cells) > 0 and all(
+        re.fullmatch(r"\s*:?-+:?\s*", cell) for cell in cells
+    )
 
 
 def get_alignment(cell: str) -> str:
@@ -58,7 +81,9 @@ def get_alignment(cell: str) -> str:
 def format_table(lines: list[str]) -> list[str]:
     sep_indices = {i for i, line in enumerate(lines) if is_separator_row(line)}
 
-    rows = [line.strip().split("|")[1:-1] for line in lines]
+    rows = [split_row(line) for line in lines]
+    if any(row is None for row in rows):
+        return lines
     if not rows:
         return lines
 
@@ -119,9 +144,26 @@ def format_markdown_tables(text: str) -> str:
     lines = text.split("\n")
     result = []
     i = 0
+    fence = None
 
     while i < len(lines):
         line = lines[i]
+        fence_match = re.match(r"^\s*(`{3,}|~{3,})", line)
+        if fence_match:
+            marker = fence_match.group(1)
+            if fence is None:
+                fence = (marker[0], len(marker))
+            elif marker[0] == fence[0] and len(marker) >= fence[1]:
+                fence = None
+            result.append(line)
+            i += 1
+            continue
+
+        if fence is not None:
+            result.append(line)
+            i += 1
+            continue
+
         if is_table_row(line):
             table_lines = [line]
             i += 1
@@ -129,8 +171,9 @@ def format_markdown_tables(text: str) -> str:
                 table_lines.append(lines[i])
                 i += 1
 
-            if len(table_lines) >= 2 and any(is_separator_row(l) for l in table_lines):
-                rows_split = [l.strip().split("|")[1:-1] for l in table_lines]
+            separator_count = sum(is_separator_row(l) for l in table_lines)
+            if len(table_lines) >= 2 and separator_count == 1:
+                rows_split = [split_row(l) for l in table_lines]
                 col_count = len(rows_split[0])
                 if all(len(r) == col_count for r in rows_split):
                     result.extend(format_table(table_lines))

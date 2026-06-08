@@ -11,7 +11,12 @@ Improve goal text in place. Write only what makes the objective clearer, more me
 
 1. **Identify the target**: Use the goal text the user pastes, a named goal file, or multiple goal files if the project specifies more than one target objective.
 
-2. **Check project context**: If a workspace is active, inspect the top-level structure only (package manager files, build configs, directory layout) to validate that commands and paths mentioned in the goal actually exist. Do not read source code or deep configs. If no workspace is active, rely entirely on what the user has provided in the chat.
+2. **Check project context**: If a workspace is active, inspect the files needed
+   to validate commands, paths, interfaces, and verification steps mentioned in
+   the goal. Start with top-level manifests and configs, then inspect deeper
+   source or configuration only when required to verify a material detail. If
+   no workspace is active, rely entirely on what the user has provided in the
+   chat.
 
 3. **Handle vagueness**:
    - **Assumable** — If success criteria can be inferred from common best practices for the project type, rewrite the goal and flag those assumptions explicitly.

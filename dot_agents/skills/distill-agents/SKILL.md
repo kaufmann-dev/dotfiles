@@ -20,7 +20,9 @@ GEMINI.md
 
 Use the first one found. Read it and count total lines.
 
-Also note which **sibling files** exist (any of AGENTS.md, CLAUDE.md, GEMINI.md not used as the target). These are synced in Step 4.
+Treat the selected file as the only target. Inspect sibling instruction files
+only when needed to identify conflicting or tool-specific rules. Never assume
+their contents should match.
 
 ## Step 2 — Classify every section
 
@@ -69,7 +71,9 @@ Cut if any are true:
 
 ## Step 3 — Write the distilled file
 
-Apply all classifications immediately. Output the distilled file and the report together in a single response — do not pause for confirmation mid-task, as this risks losing intermediate state. Mirror the source file's section structure where possible. Remove sections entirely if all their content was cut.
+Apply all classifications to the selected target. Output the distilled file and
+the report together in a single response. Mirror the source file's section
+structure where possible. Remove sections entirely if all their content was cut.
 
 **Output rules:**
 - Each section under 50 lines
@@ -90,11 +94,12 @@ CUT      § Section — reason
 
 ---
 
-## Step 4 — Save and sync
+## Step 4 — Save
 
-Write the distilled content directly to the target file, overwriting it. No backup — the project uses git.
-
-If sibling files were found in Step 1, copy the distilled content to those files verbatim as well. Report which files were written.
+Write the distilled content directly to the selected target and report that
+file. Preserve sibling instruction files because they may contain
+tool-specific behavior. Modify or synchronize additional files only when the
+user explicitly requests those exact files.
 
 ---
 
