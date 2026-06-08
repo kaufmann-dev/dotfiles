@@ -1,30 +1,38 @@
 ---
 name: audit-rubric
-description: Create a project-specific rubric and immediately audit the project against it. Use when the user wants a bounded rubric-based audit, wants to avoid endless AI nitpicking, or explicitly invokes this skill.
+description: Create a project-specific audit rubric or audit against an existing rubric. Use only when the user explicitly invokes this skill or asks for a rubric-based audit.
 ---
 
 # Rubric-Based Audit
 
-Create a project-specific rubric and immediately audit the project against that rubric.
-
-Complete the entire workflow in one invocation. Do not stop after creating the rubric, generate a prompt for another agent, or ask for confirmation before conducting the audit.
+Operate in exactly one of two modes. Keep every rubric and audit result under `docs/audits/`. Store reusable rubrics separately from dated audit results.
 
 Do not fix code while using this skill.
 
-## Workflow
+## Select a Mode
 
-1. Inspect the project enough to understand its public contract and real risk surfaces.
-   - Read docs, entry points, config/state handling, mutation paths, external integrations, tests, CI/release files, and any safety-sensitive code that exists.
-   - Do not include generic categories unless the project actually needs them.
+First inspect `docs/audits/` for suitable rubric files and previous audit results. Create `docs/audits/` before writing artifacts if it does not exist, but do not treat an empty directory as an existing rubric.
 
-2. Summarize:
-   - what the project does
-   - what users are promised
-   - where failure would matter
+- Use **Rubric creation mode** when the user explicitly asks for a new rubric, even if a rubric exists. Also use it when no suitable rubric exists.
+- Otherwise, use **Audit against existing rubric mode** when a suitable rubric exists or the user asks to audit, re-audit, recheck, verify fixes, or evaluate against a rubric.
+- If multiple rubrics exist, choose the most relevant one from its name and content. Ask the user only when ambiguity would make the audit invalid.
+- Never reconstruct an existing rubric from memory. Read and reuse the exact rubric file.
 
-3. Build a rubric from those risks.
-   - Each item must be project-specific, pass/fail, evidence-based, user-impacting, and realistically verifiable.
-   - Use this form:
+## Mode 1: Rubric Creation
+
+1. Inspect the project enough to understand:
+   - its public contract and user promises
+   - mutation paths
+   - configuration and state handling
+   - external integrations
+   - tests
+   - CI and release files
+   - real risk surfaces
+
+2. Create a project-specific rubric.
+   - Include only pass/fail, evidence-based, user-impacting, realistically verifiable requirements.
+   - Do not create generic wishlist categories.
+   - Use stable item IDs and this exact item structure:
 
 ```text
 A1. Concrete requirement
@@ -33,22 +41,70 @@ A1. Concrete requirement
 - Do not fail merely because ...
 ```
 
-4. Immediately audit the project against the completed rubric.
-   - Evaluate only the rubric; do not invent new categories.
-   - Verify relevant code paths and run focused checks when practical.
-   - Report a failure only with concrete evidence and realistic user impact.
-   - Mark uncertain items as `Not enough evidence`.
-   - Accept `No actionable defects found under this rubric.` as success.
+3. Save the reusable rubric under `docs/audits/`, normally as:
 
-5. Add re-audit rules:
-   - use the same rubric
-   - inspect only changed files and directly affected behavior
-   - report only unresolved original failures or regressions from the fix
-   - do not lower the threshold or add new categories
+```text
+docs/audits/audit-rubric.md
+```
 
-## Required Finding Format
+4. Immediately perform a full audit against the saved rubric unless the user explicitly asked only to create the rubric.
 
-For every failed rubric item, include:
+5. Save the audit as a separate dated document, normally:
+
+```text
+docs/audits/YYYY-MM-DD-audit.md
+```
+
+If that dated result file already exists, add a short numeric suffix so the new result does not overwrite it.
+
+## Mode 2: Audit Against Existing Rubric
+
+1. Read the exact existing rubric from `docs/audits/`.
+2. Read previous audit result documents from `docs/audits/` when present.
+3. Determine whether the request is a full audit or a re-audit after fixes.
+
+### Full Audit
+
+- Evaluate every rubric item.
+- Do not add, remove, rewrite, or reinterpret rubric items.
+- Mark uncertain items as `Not enough evidence`.
+- Save the result as a new dated audit document under `docs/audits/`.
+
+### Re-Audit After Fixes
+
+- Use the existing rubric and previous audit findings as the fixed evaluation boundary.
+- Determine changed files from version control when available, usually with `git status` and recent diffs. If changed files cannot be determined, inspect the smallest relevant code paths tied to previous failures.
+- Inspect only changed files and directly affected behavior where practical.
+- Report only unresolved previous failures or regressions caused by the fix.
+- If previous audit results contain no failed items, say there were no previous failures to verify and perform only a regression check of directly changed behavior against the existing rubric.
+- Do not perform a fresh bug hunt.
+- Do not add new rubric categories or lower the failure threshold.
+- Save the result as a new dated recheck document, normally:
+
+```text
+docs/audits/YYYY-MM-DD-recheck.md
+```
+
+If a dated audit or recheck file already exists, add a short numeric suffix so the new result does not overwrite it.
+
+## Evaluate and Verify
+
+- Verify relevant code paths and run focused checks when practical.
+- Report a failure only with concrete evidence and realistic user impact.
+- If docs and code disagree, identify the public contract before deciding what is wrong.
+- Missing tests are defects only when the untested behavior is safety-critical and cannot otherwise be verified.
+- Stop when every relevant rubric item has been evaluated.
+- Accept this as a successful result:
+
+```text
+No actionable defects found under this rubric.
+```
+
+## Audit Result Format
+
+State the rubric file used and whether the result is a full audit or recheck. Record the disposition of every relevant rubric item as `Pass`, `Fail`, or `Not enough evidence`.
+
+For every failed rubric item, include exactly:
 
 1. Rubric item ID
 2. Severity: critical / high / medium / low
@@ -68,31 +124,11 @@ For every failed rubric item, include:
 
 Do not report low-severity issues unless they are concrete, user-visible, and cheap to fix.
 
-## Output Format
-
-```text
-# Rubric-Based Audit
-
-## Project Understanding
-...
-
-## Risk Surfaces
-...
-
-## Audit Rubric
-...
-
-## Audit Results
-...
-
-## Re-Audit Rules
-...
-```
-
 ## Guardrails
 
-- The rubric is not a wishlist.
-- Missing tests are defects only when the untested behavior is safety-critical and cannot otherwise be verified.
+- Do not fix code while using this skill.
+- Do not turn the rubric into a wishlist.
+- Do not invent rubric items during an audit against an existing rubric.
+- Do not treat a re-audit as a fresh bug hunt.
 - Prefer minimal fixes over rewrites.
-- If docs and code disagree, identify the public contract before deciding what is wrong.
-- Stop when every rubric item has been evaluated. Do not keep auditing indefinitely.
+- Treat `No actionable defects found under this rubric.` as a successful result.

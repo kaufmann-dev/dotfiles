@@ -1,6 +1,6 @@
 ---
 name: humanizer-german
-description: Entfernt typische Muster KI-generierter deutscher Texte und überarbeitet sie zu natürlichem, idiomatischem Deutsch. Verwenden, wenn deutschsprachige Texte menschlicher, weniger generisch oder weniger nach Chatbot klingen sollen.
+description: Remove signs of AI-generated writing from text written in the German language. Use only when the user explicitly invokes this skill or asks to humanize German text.
 ---
 
 # Humanizer German

@@ -1,6 +1,6 @@
 ---
 name: humanizer
-description: Remove signs of AI-generated writing from text. Use when the user asks to make text sound more natural and human-written.
+description: Remove signs of AI-generated writing from text written in the English language. Use only when the user explicitly invokes this skill or asks to humanize English text.
 ---
 
 # Humanizer: Remove AI Writing Patterns

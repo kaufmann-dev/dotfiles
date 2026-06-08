@@ -1,6 +1,6 @@
 ---
 name: write-readme
-description: Create a missing README.md from repository evidence, tailored to the project's primary audience and project type. Use when the user asks to generate, write, or add a README from scratch; do not use to revise an existing README.
+description: Create a missing README.md from repository evidence, tailored to the project's primary audience and project type. Use only when the user explicitly invokes this skill or asks to create a README.
 ---
 
 # Write README

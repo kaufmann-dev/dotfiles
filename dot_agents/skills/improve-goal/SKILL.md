@@ -1,6 +1,6 @@
 ---
 name: improve-goal
-description: Improve goals, persistent objectives, and long-running task contracts. Use when the user asks to revise, harden, or debug an objective with measurable success criteria, verification steps, constraints, or stop conditions.
+description: Improve goals, persistent objectives, and long-running task contracts. Use only when the user explicitly invokes this skill or asks for goal improvement.
 ---
 
 # Improve Goal
