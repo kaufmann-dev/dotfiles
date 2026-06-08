@@ -1,13 +1,15 @@
 ---
-name: rubric-audit-planner
-description: Use in plan mode to inspect a project and create a project-specific audit rubric plus a bounded audit prompt. Use when the user wants a rubric-based audit, wants to avoid endless AI nitpicking, or explicitly invokes this skill.
+name: audit-rubric
+description: Create a project-specific rubric and immediately audit the project against it. Use when the user wants a bounded rubric-based audit, wants to avoid endless AI nitpicking, or explicitly invokes this skill.
 ---
 
-# Rubric Audit Planner
+# Rubric-Based Audit
 
-Create a project-specific rubric and a ready-to-run audit prompt that makes an AI evaluate fixed criteria instead of hunting for problems.
+Create a project-specific rubric and immediately audit the project against that rubric.
 
-Do not fix code. Do not create an implementation plan unless the user asks.
+Complete the entire workflow in one invocation. Do not stop after creating the rubric, generate a prompt for another agent, or ask for confirmation before conducting the audit.
+
+Do not fix code while using this skill.
 
 ## Workflow
 
@@ -31,13 +33,12 @@ A1. Concrete requirement
 - Do not fail merely because ...
 ```
 
-4. Generate a standalone audit prompt that tells the next agent:
-   - evaluate only this rubric
-   - do not invent new categories
-   - do not report style preferences, speculative refactors, or theoretical edge cases
-   - report a failure only with concrete evidence and realistic user impact
-   - mark uncertainty as "Not enough evidence"
-   - accept "No actionable defects found under this rubric" as success
+4. Immediately audit the project against the completed rubric.
+   - Evaluate only the rubric; do not invent new categories.
+   - Verify relevant code paths and run focused checks when practical.
+   - Report a failure only with concrete evidence and realistic user impact.
+   - Mark uncertain items as `Not enough evidence`.
+   - Accept `No actionable defects found under this rubric.` as success.
 
 5. Add re-audit rules:
    - use the same rubric
@@ -47,7 +48,7 @@ A1. Concrete requirement
 
 ## Required Finding Format
 
-Every failed rubric item in the generated audit prompt must require:
+For every failed rubric item, include:
 
 1. Rubric item ID
 2. Severity: critical / high / medium / low
@@ -57,8 +58,6 @@ Every failed rubric item in the generated audit prompt must require:
 6. Minimal fix
 7. Confidence: high / medium / low
 8. False-positive risk: low / medium / high
-
-Only recommend implementation for findings with concrete user impact, high or medium confidence, and low or medium false-positive risk.
 
 ## Severity Rules
 
@@ -72,7 +71,7 @@ Do not report low-severity issues unless they are concrete, user-visible, and ch
 ## Output Format
 
 ```text
-# Rubric-Based Audit Plan
+# Rubric-Based Audit
 
 ## Project Understanding
 ...
@@ -83,7 +82,7 @@ Do not report low-severity issues unless they are concrete, user-visible, and ch
 ## Audit Rubric
 ...
 
-## Ready-To-Run Audit Prompt
+## Audit Results
 ...
 
 ## Re-Audit Rules
@@ -96,4 +95,4 @@ Do not report low-severity issues unless they are concrete, user-visible, and ch
 - Missing tests are defects only when the untested behavior is safety-critical and cannot otherwise be verified.
 - Prefer minimal fixes over rewrites.
 - If docs and code disagree, identify the public contract before deciding what is wrong.
-- Stop at the rubric. Do not keep auditing indefinitely.
+- Stop when every rubric item has been evaluated. Do not keep auditing indefinitely.
