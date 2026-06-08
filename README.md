@@ -145,23 +145,23 @@ The global instructions emphasize simple, surgical changes, repo-first discovery
 
 Skills are installed under `~/.agents/skills/`.
 
-| Skill                  | Purpose                                                                        |
-| ---------------------- | ------------------------------------------------------------------------------ |
-| `add-mcp-servers`      | Add or update project-scoped MCP server configuration entries.                 |
-| `add-subagents`        | Add or update project-scoped subagent definitions across multiple agent tools. |
-| `audit-defect`         | Directly audit a codebase for concrete, actionable defects.                    |
-| `audit-rubric`         | Create a bounded, project-specific rubric and immediately audit against it.    |
-| `commit`               | Stage and commit changes using structured, conventional git commit guidelines. |
-| `distill-agents`       | Distill bloated instruction files (AGENTS.md, etc.) into lean versions.        |
-| `humanizer`            | Remove signs of AI-generated writing from text.                                |
-| `humanizer-german`     | Rewrite German text to sound natural and idiomatic without flattening it.      |
-| `improve-goal`         | Improve goals, persistent objectives, and long-running task contracts.         |
-| `improve-prompt`       | Improve prompt and instruction files using general prompt-quality guidance.    |
-| `md-table-formatter`   | Format Markdown tables after any table is created or modified.                 |
-| `ui-cleanup`           | Clean up duplicated and inconsistent frontend UI when explicitly requested.    |
-| `write-agents`         | Create a project `AGENTS.md` from scratch.                                     |
-| `write-design`         | Create a project `DESIGN.md` from scratch.                                     |
-| `write-readme`         | Create a project `README.md` from scratch.                                     |
+| Skill                | Purpose                                                                        |
+| -------------------- | ------------------------------------------------------------------------------ |
+| `add-mcp-servers`    | Add or update project-scoped MCP server configuration entries.                 |
+| `add-subagents`      | Add or update project-scoped subagent definitions across multiple agent tools. |
+| `audit-defect`       | Directly audit a codebase for concrete, actionable defects.                    |
+| `audit-rubric`       | Create a bounded, project-specific rubric and immediately audit against it.    |
+| `commit`             | Stage and commit changes using structured, conventional git commit guidelines. |
+| `distill-agents`     | Distill bloated instruction files (AGENTS.md, etc.) into lean versions.        |
+| `humanizer`          | Remove signs of AI-generated writing from text.                                |
+| `humanizer-german`   | Rewrite German text to sound natural and idiomatic without flattening it.      |
+| `improve-goal`       | Improve goals, persistent objectives, and long-running task contracts.         |
+| `improve-prompt`     | Improve prompt and instruction files using general prompt-quality guidance.    |
+| `md-table-formatter` | Format Markdown tables after any table is created or modified.                 |
+| `ui-cleanup`         | Clean up duplicated and inconsistent frontend UI when explicitly requested.    |
+| `write-agents`       | Create a repository- or subtree-scoped `AGENTS.md` from codebase evidence.     |
+| `write-design`       | Create a project `DESIGN.md` from scratch.                                     |
+| `write-readme`       | Create a project `README.md` from scratch.                                     |
 
 ## MCP Servers
 
