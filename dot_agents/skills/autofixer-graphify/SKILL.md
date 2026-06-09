@@ -1,6 +1,6 @@
 ---
 name: autofixer-graphify
-description: Coordinate the autofixer audit-fix-verify loop with Graphify repository graph context. Use only when the user explicitly asks for `autofixer-graphify`, graph-assisted autofixing, or combining `autofixer` with Graphify.
+description: Coordinate the autofixer audit-fix-verify loop with Graphify repository graph context. Use only when the user explicitly invokes this skill or asks for graph-assisted autofixing.
 ---
 
 # Autofixer Graphify
