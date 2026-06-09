@@ -15,7 +15,8 @@ Run auditors and fixers serially. Never run them concurrently because the worksp
 2. Record the initial working-tree state so pre-existing user changes can be distinguished and preserved.
 3. Identify available verification commands and operations that are prohibited or require approval.
 4. Stop as blocked immediately if fresh subagents are unavailable.
-5. Maintain a transient ledger only in coordinator context. Do not create a persistent ledger, audit document, script, or harness-specific subagent definition.
+5. Detect whether the user requested YOLO mode by explicitly pairing this skill request with terms such as `YOLO mode`, `yolo`, or `no approval for dangerous fixes`.
+6. Maintain a transient ledger only in coordinator context. Do not create a persistent ledger, audit document, script, or harness-specific subagent definition.
 
 Track in the ledger:
 
@@ -24,10 +25,23 @@ Track in the ledger:
 - verification outcomes
 - consecutive qualified clean-confirmation count
 - completed repair rounds
+- YOLO mode status
 - audit coverage and material limitations
 - workspace state needed to identify changes between audits
 
 Fingerprint findings by affected behavior, root cause, and relevant location. Do not rely only on wording or line numbers.
+
+## YOLO Mode
+
+YOLO mode is active only when the user explicitly requests it for this skill invocation.
+
+When YOLO mode is active:
+
+- Do not pause for approval before dangerous fixes, including destructive actions, credential use, external mutation, dependency updates, major migrations, or broad rewrites.
+- Still identify dangerous fixes, record that YOLO mode authorized proceeding without approval, and include the risky action in checkpoint or final reporting.
+- Still respect all stop conditions that are not approval gates, including workspace-conflict blocking, failed-attempt blocking, verification requirements, and stricter user-provided or harness-provided budgets.
+- Still stop after every five completed repair rounds and ask for confirmation before beginning another five-round block.
+- Never interpret YOLO mode as permission to bypass missing required tools, missing permissions, verification, fresh-context subagents, or user-specified scope.
 
 ## Run The Serial Loop
 
@@ -65,9 +79,9 @@ Select one repair batch per repair round. The default batch is one accepted root
 - Independent: separate causes, separable expected changes, and separately verifiable behavior.
 - Coherently coupled: one focused change is the simplest correct fix because separate fixes would duplicate work or create unnecessary churn.
 
-Do not batch when any finding is `needs evidence`, any fix needs approval, expected changes are broad or risky, findings may fight over the same behavior, or the coordinator cannot explain why the batch is safe in one sentence.
+Do not batch when any finding is `needs evidence`, expected changes are broad or risky, findings may fight over the same behavior, or the coordinator cannot explain why the batch is safe in one sentence. When YOLO mode is inactive, also do not batch when any fix needs approval.
 
-Before delegation, pause for explicit approval if the fix requires a destructive action, credentials, external mutation, dependency update, major migration, or broad rewrite. If approval is denied, preserve the finding as unresolved, continue only with independent safe findings, and ultimately report `Blocked`, never `Converged`.
+Before delegation, pause for explicit approval if YOLO mode is inactive and the fix requires a destructive action, credentials, external mutation, dependency update, major migration, or broad rewrite. If approval is denied, preserve the finding as unresolved, continue only with independent safe findings, and ultimately report `Blocked`, never `Converged`. If YOLO mode is active, proceed without approval and record the risky action in the ledger.
 
 Spawn one new fresh-context fixer subagent per repair batch. Give it only:
 
@@ -106,7 +120,9 @@ After every five completed repair rounds, stop before beginning another repair r
 
 ### Approval Required
 
-Report `Approval required` before any destructive action, credential use, external mutation, dependency update, major migration, or broad rewrite. Describe the accepted finding, proposed risky action, and why approval is required. Resume the serial loop only after explicit approval.
+When YOLO mode is inactive, report `Approval required` before any destructive action, credential use, external mutation, dependency update, major migration, or broad rewrite. Describe the accepted finding, proposed risky action, and why approval is required. Resume the serial loop only after explicit approval.
+
+When YOLO mode is active, do not use `Approval required` for dangerous fixes. Proceed with the fix, record the risky action as YOLO-authorized, and include it in the next checkpoint or final report.
 
 ### Blocked
 
@@ -130,6 +146,7 @@ Every final, checkpoint, or approval report must include:
 - verification performed and outcomes
 - audit coverage and limitations
 - completed repair rounds
+- YOLO mode status and any risky actions performed without approval
 - remaining working-tree changes, distinguishing pre-existing changes when possible
 
 For `Checkpoint reached`, ask permission for exactly five additional repair rounds. For `Approval required`, ask for explicit approval of the described action.
