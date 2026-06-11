@@ -100,13 +100,14 @@ dotfiles/
 |       |-- autofixer/
 |       |-- autofixer-graphify/
 |       |-- build-brief-generator/
-|       |-- commit/
+|       |-- coolify/
 |       |-- distill-agents/
 |       |-- humanizer/
 |       |-- humanizer-german/
 |       |-- improve-goal/
 |       |-- improve-prompt/
 |       |-- md-table-formatter/
+|       |-- svg-theme-converter/
 |       |-- ui-cleanup/
 |       |-- write-agents/
 |       |-- write-design/
@@ -149,27 +150,28 @@ The global instructions emphasize simple, surgical changes, repo-first discovery
 
 Skills are installed under `~/.agents/skills/`.
 
-| Skill                   | Purpose                                                                        |
-| ----------------------- | ------------------------------------------------------------------------------ |
-| `add-mcp-servers`       | Add or update project-scoped MCP server configuration entries.                 |
-| `add-subagents`         | Add or update project-scoped subagent definitions across multiple agent tools. |
-| `audit-complete`        | Perform a comprehensive, stateless codebase audit before a major release.      |
-| `audit-defect`          | Directly audit a codebase for concrete, actionable defects.                    |
-| `audit-rubric`          | Create a bounded, project-specific rubric and immediately audit against it.    |
-| `autofixer`             | Coordinate a bounded audit-fix-verify loop using fresh-context subagents.      |
-| `autofixer-graphify`    | Like `autofixer` but with Graphify-backed repository graph context.            |
-| `build-brief-generator` | Turns a product idea into a clear, complete, and practical AI Build Brief.     |
-| `commit`                | Stage and commit changes using structured, conventional git commit guidelines. |
-| `distill-agents`        | Distill bloated instruction files (AGENTS.md, etc.) into lean versions.        |
-| `humanizer`             | Remove signs of AI-generated writing from text.                                |
-| `humanizer-german`      | Rewrite German text to sound natural and idiomatic without flattening it.      |
-| `improve-goal`          | Improve goals, persistent objectives, and long-running task contracts.         |
-| `improve-prompt`        | Improve prompt and instruction files using general prompt-quality guidance.    |
-| `md-table-formatter`    | Format Markdown tables after any table is created or modified.                 |
-| `ui-cleanup`            | Clean up duplicated and inconsistent frontend UI when explicitly requested.    |
-| `write-agents`          | Create a repository- or subtree-scoped `AGENTS.md` from codebase evidence.     |
-| `write-design`          | Create a project `DESIGN.md` from scratch.                                     |
-| `write-readme`          | Create a project `README.md` from scratch.                                     |
+| Skill                   | Purpose                                                                           |
+| ----------------------- | --------------------------------------------------------------------------------- |
+| `add-mcp-servers`       | Add or update project-scoped MCP server configuration entries.                    |
+| `add-subagents`         | Add or update project-scoped subagent definitions across multiple agent tools.    |
+| `audit-complete`        | Perform a comprehensive, stateless codebase audit before a major release.         |
+| `audit-defect`          | Directly audit a codebase for concrete, actionable defects.                       |
+| `audit-rubric`          | Create a bounded, project-specific rubric and immediately audit against it.       |
+| `autofixer`             | Coordinate a bounded audit-fix-verify loop using fresh-context subagents.         |
+| `autofixer-graphify`    | Like `autofixer` but with Graphify-backed repository graph context.               |
+| `build-brief-generator` | Turns a product idea into a clear, complete, and practical AI Build Brief.        |
+| `coolify`               | Generate a project's Coolify/Nixpacks deployment config (nixpacks.toml + README). |
+| `distill-agents`        | Distill bloated instruction files (AGENTS.md, etc.) into lean versions.           |
+| `humanizer`             | Remove signs of AI-generated writing from text.                                   |
+| `humanizer-german`      | Rewrite German text to sound natural and idiomatic without flattening it.         |
+| `improve-goal`          | Improve goals, persistent objectives, and long-running task contracts.            |
+| `improve-prompt`        | Improve prompt and instruction files using general prompt-quality guidance.       |
+| `md-table-formatter`    | Format Markdown tables after any table is created or modified.                    |
+| `svg-theme-converter`   | Convert an SVG icon into a self-theming light/dark SVG via embedded CSS.          |
+| `ui-cleanup`            | Clean up duplicated and inconsistent frontend UI when explicitly requested.       |
+| `write-agents`          | Create a repository- or subtree-scoped `AGENTS.md` from codebase evidence.        |
+| `write-design`          | Create a project `DESIGN.md` from scratch.                                        |
+| `write-readme`          | Create a project `README.md` from scratch.                                        |
 
 ## MCP Servers
 
