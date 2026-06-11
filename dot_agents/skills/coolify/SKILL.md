@@ -26,6 +26,7 @@ Putting a Coolify-UI-only setting into `nixpacks.toml` does nothing — Coolify 
 | Build command | `nixpacks.toml` → `[phases.build].cmds` |
 | Start command | `nixpacks.toml` → `[start].cmd` |
 | Nix / apt packages | `nixpacks.toml` → `[phases.setup]` `nixPkgs` / `aptPkgs` |
+| Runtime version (Node / Python / Go / Ruby / …) | Native manifest pin (`package.json` `engines.node`, `.python-version`, `go.mod` `go`, `.ruby-version`, …) — **not** `nixpacks.toml` |
 | Build-time variables / static assets | `nixpacks.toml` → `[variables]` / `[staticAssets]` |
 | Base Directory | README section (Coolify UI) |
 | Publish Directory (static sites) | README section (Coolify UI) |
@@ -38,7 +39,7 @@ Inspect the repo before generating anything. Prefer executable code and config o
 
 - **Stack and package manager** — read manifests and lockfiles: `package.json` + lockfile (npm / yarn / pnpm / bun), `requirements.txt` / `pyproject.toml` / `poetry.lock` / `Pipfile`, `go.mod`, `Cargo.toml`, `composer.json` / `artisan` (PHP / Laravel), `Gemfile`, `*.csproj`, etc.
 - **Build and start commands** — `package.json` `scripts`, `Procfile`, framework config, server entrypoints.
-- **Runtime version pins** — `engines`, `.nvmrc`, `.python-version`, `runtime.txt`, the `go` directive in `go.mod`.
+- **Runtime version pins** — `engines`, `.nvmrc`, `.python-version`, `runtime.txt`, the `go` directive in `go.mod`. Record the detected version in the stack's **native** pin (see below); never carry it into `nixpacks.toml`. If the native pin is missing, the skill should add it (e.g. add `engines.node` to `package.json`) as part of generating the config.
 - **Static site signals** — a build output dir (`dist`, `build`, `out`, `public`), SSG/SPA frameworks (Vite, Astro, Hugo, CRA, Next static export), and the absence of a long-running server process.
 - **Monorepo / subdirectory app** — workspaces, `apps/*`, `packages/*`, or a deployable manifest nested below the repo root. Informs **Base Directory**.
 - **Deploy-time tooling** — database migrations or seeding that should run on deploy: `php artisan migrate`, Prisma / Drizzle / Knex migrate scripts, `manage.py migrate`, Rails `db:migrate`. Informs **Post-Deployment Command**.
@@ -53,6 +54,7 @@ Inspect the repo before generating anything. Prefer executable code and config o
   - `[phases.build]` — `cmds` for a non-default build command.
   - `[start]` — `cmd` for a non-default start command.
   - `[variables]` — build-time (non-secret) variables; `[staticAssets]` for files written into the image; `providers` only when genuinely required.
+- **Do not pin the runtime version here.** Pin it with the stack's native mechanism instead — `engines.node` in `package.json`, `.python-version` (or `requires-python`), the `go` directive in `go.mod`, `.ruby-version`, etc. This is a single source of truth shared with local tooling and CI, and Nixpacks' providers are version-aware: they map the native field to the correct nixpkgs archive, whereas a raw `nixPkgs = ["nodejs_24"]` in `[phases.setup]` references an attribute in Nixpacks' default archive and can fail for newer versions. **Exception:** use `nixPkgs` / `NIXPACKS_NODE_VERSION` for the runtime version only as a documented fallback when the host's bundled Nixpacks is too old to resolve the desired version via the native field.
 - **Do not invent a `PORT`.** Coolify/Nixpacks injects `PORT`; ensure the start command binds the app to `$PORT` rather than a hardcoded port.
 - **Never** put Base Directory, Publish Directory, Pre/Post Deployment Commands, or runtime secrets in this file — they belong in the README section.
 - **Update in place.** If `nixpacks.toml` already exists, read it, preserve intentional custom phases and keys, and change or add only what is needed. Confirm with the user before overwriting any non-trivial existing value.
@@ -74,7 +76,7 @@ Inspect the repo before generating anything. Prefer executable code and config o
 
 ## 4. Verify
 
-- Re-read `nixpacks.toml`: valid TOML, no restated provider defaults, no Coolify-UI-only fields leaked in, start command binds to `$PORT`.
+- Re-read `nixpacks.toml`: valid TOML, no restated provider defaults, no Coolify-UI-only fields leaked in, no runtime version pinned via `nixPkgs` when a native manifest pin exists, start command binds to `$PORT`.
 - Re-read the README section: every variable and command traces back to repo evidence, no invented capabilities, and re-running the skill would replace the section rather than duplicate it.
 - Run any available formatter on the touched files. If a Markdown table formatter is available in the environment, run it on the README tables.
 - In the final response, report: the detected stack, what went into `nixpacks.toml` versus the README Coolify section, and the exact Coolify UI fields the user still needs to set by hand.
