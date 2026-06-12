@@ -58,7 +58,7 @@ per-element edits beyond stripping their hardcoded colors.
 4. **Set light then dark.** Set the default (light) color on the `svg` selector,
    then override it inside `@media (prefers-color-scheme: dark)`.
 
-5. **Colors.** Default to light `#1a1a1a` and dark `#f5f5f5`. These are defaults —
+5. **Colors.** Default to light `#000000` and dark `#ffffff`. These are defaults —
    if the user names specific light/dark colors, use those instead.
 
 ## Templates
@@ -68,8 +68,8 @@ Fill icon:
 ```xml
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
   <style>
-    svg { fill: #1a1a1a; }
-    @media (prefers-color-scheme: dark) { svg { fill: #f5f5f5; } }
+    svg { fill: #000000; }
+    @media (prefers-color-scheme: dark) { svg { fill: #ffffff; } }
   </style>
   <path d="..." />
 </svg>
@@ -81,8 +81,8 @@ Stroke icon (note the preserved `fill="none"` and stroke-shape attributes):
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
      stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
   <style>
-    svg { stroke: #1a1a1a; }
-    @media (prefers-color-scheme: dark) { svg { stroke: #f5f5f5; } }
+    svg { stroke: #000000; }
+    @media (prefers-color-scheme: dark) { svg { stroke: #ffffff; } }
   </style>
   <path d="..." />
   <circle cx="12" cy="12" r="3" />
@@ -93,8 +93,8 @@ Mixed icon — theme both properties:
 
 ```xml
 <style>
-  svg { fill: #1a1a1a; stroke: #1a1a1a; }
-  @media (prefers-color-scheme: dark) { svg { fill: #f5f5f5; stroke: #f5f5f5; } }
+  svg { fill: #000000; stroke: #000000; }
+  @media (prefers-color-scheme: dark) { svg { fill: #ffffff; stroke: #ffffff; } }
 </style>
 ```
 
