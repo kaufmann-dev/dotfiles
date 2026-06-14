@@ -14,7 +14,20 @@ Never prioritize backwards compatibility. When introducing new features, impleme
 
 # Tooling Preferences
 - Use `podman` instead of `docker` for all container operations.
-- Use the `playwright` MCP server for browser interaction and UI testing. Never use the Playwright CLI or another headless browser as a substitute.
+- Use the playwright MCP server for browser interaction and UI testing when such testing is explicitly requested or genuinely necessary. Never use the Playwright CLI or another headless browser as a substitute.
+
+# Testing and Verification
+
+Do not run end-to-end tests by default.
+
+Only run end-to-end tests when:
+
+- the user explicitly asks for them, or
+- the change is high-risk and cannot be reasonably verified with cheaper checks such as type checks, linting, unit tests, build checks, targeted browser checks, or manual inspection.
+
+Prefer the smallest reliable verification method for the change.
+
+When finishing a task, do not perform broad E2E testing just to prove everything works. Instead, tell the user exactly what they should manually verify, including the relevant pages, flows, commands, or UI states.
 
 # Missing Tools and Permissions
 
