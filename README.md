@@ -193,3 +193,10 @@ exists. Without that local file, the GitHub MCP server is omitted.
 
 Use a fine-grained GitHub personal access token with only the permissions needed
 for the repositories or organizations you work with.
+
+The `playwright` MCP server needs its browser installed once per machine. The
+configs pass `--browser chromium`, so install Playwright's bundled Chromium:
+
+```sh
+npx --yes playwright install --with-deps chromium  # Linux (omit --with-deps on macOS/Windows)
+```
