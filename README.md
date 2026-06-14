@@ -102,6 +102,7 @@ dotfiles/
 |       |-- autofixer-graphify/
 |       |-- build-brief-generator/
 |       |-- coolify/
+|       |-- create-datatable/
 |       |-- distill-agents/
 |       |-- humanizer/
 |       |-- humanizer-german/
@@ -163,6 +164,7 @@ Skills are installed under `~/.agents/skills/`.
 | `autofixer-graphify`       | Like `autofixer` but with Graphify-backed repository graph context.               |
 | `build-brief-generator`    | Turns a product idea into a clear, complete, and practical AI Build Brief.        |
 | `coolify`                  | Generate a project's Coolify/Nixpacks deployment config (nixpacks.toml + README). |
+| `create-datatable`         | Create, extend, or review production-quality tabular data views.                  |
 | `distill-agents`           | Distill bloated instruction files (AGENTS.md, etc.) into lean versions.           |
 | `humanizer`                | Remove signs of AI-generated writing from text.                                   |
 | `humanizer-german`         | Rewrite German text to sound natural and idiomatic without flattening it.         |

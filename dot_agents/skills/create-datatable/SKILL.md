@@ -1,6 +1,6 @@
 ---
 name: create-datatable
-description: Create, extend, or review production-quality data tables across frontend and full-stack projects. Use when adding a table or list view, defining columns and row actions, implementing search/filter/sort/pagination, building a server-backed table API, improving table responsiveness or accessibility, or adding table loading, empty, error, selection, and mutation behavior.
+description: Create, extend, or review production-quality data tables across frontend and full-stack projects. Use when the user explicitly asks to build or improve a tabular data view, define table columns and row actions, implement table search/filter/sort/pagination, build a server-backed table API, or review table correctness, responsiveness, accessibility, states, selection, or mutations.
 ---
 
 # Create Data Table
@@ -56,7 +56,7 @@ The client table should render server-processed rows and must not apply conflict
 
 ### Choose Pagination Deliberately
 
-Use cursor/keyset pagination when results are large or mutable, deep navigation matters, and supported sorts can be expressed as stable database orderings.
+Use cursor/keyset pagination when results are large or mutable, deep sequential traversal matters, and supported sorts can be expressed as stable database orderings.
 
 Use offset/page pagination when users need page numbers, direct page jumps, or the data set is modest and the database cost is acceptable.
 
@@ -87,7 +87,7 @@ For a server-backed table, implement a complete vertical flow:
 3. Authorization and database query.
 4. Deterministic ordering and pagination.
 5. API or server-function response.
-6. Initial server-rendered data when the framework supports it.
+6. Initial server-rendered data when it matches the existing architecture or materially improves the required user experience.
 7. Client request/controller state.
 8. Presentational table and page-specific columns.
 9. Focused tests across the contract.
@@ -97,6 +97,8 @@ Prefer a shared typed sort registry when it can drive allowed values, initial di
 ## Build Correct Server Queries
 
 Validate and normalize every inbound search, filter, sort, and pagination value. Apply authorization before returning rows or counts.
+
+Enforce a bounded page size on the server. Validate page numbers, offsets, and cursor shapes before querying; do not trust client-side limits or controls.
 
 For search:
 
@@ -207,7 +209,7 @@ Use the project's design tokens and table primitives. Avoid one-off visual syste
 
 ## Implement Complete States
 
-Every data table must deliberately handle:
+Every data table must deliberately handle the applicable states:
 
 - Initial loading.
 - Refreshing with existing rows visible.
@@ -219,7 +221,7 @@ Every data table must deliberately handle:
 - Final page reached.
 - Mutation in progress when row actions exist.
 
-Distinguish an empty data source from a filtered result with zero matches. Use skeletons or a clear progress indicator for initial loading. During refresh, usually preserve rows and indicate busy state instead of replacing useful content with a spinner.
+Do not invent pagination, refresh, or mutation states for tables that do not support those behaviors. Distinguish an empty data source from a filtered result with zero matches. Use skeletons or a clear progress indicator for initial loading. During refresh, usually preserve rows and indicate busy state instead of replacing useful content with a spinner.
 
 Expose errors visibly and provide retry behavior when appropriate. Never leave failures only in the console.
 
@@ -260,6 +262,14 @@ Do not debounce controls where immediate response is expected and inexpensive.
 ## Handle Row Actions and Mutations
 
 Keep row actions independently accessible. Use a detail panel, dialog, or dedicated route when showing all row details would harm scanability.
+
+For every server mutation:
+
+- Validate and normalize mutation input independently of the table query.
+- Re-authorize the action against the target row on the server.
+- Return clear validation, authorization, not-found, and conflict errors.
+- Prevent duplicate or conflicting writes when retries or concurrent actions are possible.
+- Never rely on hidden controls, disabled buttons, or client-held row data for enforcement.
 
 For optimistic mutations:
 
@@ -326,6 +336,7 @@ For server-managed tables, test:
 - Cursor round trips and continuation predicates when cursors are used.
 - Null and duplicate sort values.
 - Clear API errors.
+- Mutation validation, authorization, conflict behavior, and duplicate-submit protection where row actions exist.
 - Optimistic success and rollback where meaningful.
 
 Run the project's formatter, typecheck, focused tests, lint, and build according to the change's risk. Do not run broad end-to-end tests by default.
