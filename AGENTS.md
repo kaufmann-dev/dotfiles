@@ -29,9 +29,9 @@ Find the root cause before changing code; do not ship a fix you cannot explain.
 - If two or more fixes have failed, stop patching. The diagnosis is wrong, not the fix. Restart from reproduction and confirm the actual cause before touching code again.
 - State the confirmed cause and the evidence that proves it before proposing the fix.
 
-When reviewing or attempting to fix a bug, start by reading the files in the `bugs/` folder to understand previously resolved issues and avoid repeating mistakes.
+When reviewing or attempting to fix a bug, start by reading the files in the `docs/bugs/` folder to understand previously resolved issues and avoid repeating mistakes.
 
-When you have successfully fixed a bug, create a new file in the `bugs/` folder. Use a descriptive filename (e.g., `issue-name-or-symptom.md`) and document: the bug description/symptom, the root cause you discovered, and the exact changes made to fix it.
+When you have successfully fixed a bug, create a new file in the `docs/bugs/` folder. Use a descriptive filename (e.g., `issue-name-or-symptom.md`) and document: the bug description/symptom, the root cause you discovered, and the exact changes made to fix it.
 
 # Testing and Verification
 
@@ -77,7 +77,7 @@ Common documentation files:
 - `AGENTS.md` — agent-facing instructions, build commands, tooling, workflows, conventions, constraints, and implementation guidance.
 - `DESIGN.md` — compliant `DESIGN.md` per the `@google/design.md` spec: YAML front matter for machine-readable tokens plus Markdown prose for human-readable rationale.
 - `docs/` — additional project documentation for architecture, usage, behavior, decisions, guides, or deeper explanations.
-- `bugs/` — one file per fixed bug, documenting the root cause and resolution for each issue resolved. 
+- `docs/bugs/` — one file per fixed bug, documenting the root cause and resolution for each issue resolved. 
 
 If a relevant documentation file already exists, update it as part of the same task. If it does not exist, do nothing: do not create it, suggest it, or report it as missing.
 
