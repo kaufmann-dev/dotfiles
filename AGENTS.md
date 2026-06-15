@@ -16,18 +16,23 @@ Never prioritize backwards compatibility. When introducing new features, impleme
 - Use `podman` instead of `docker` for all container operations.
 - Use the playwright MCP server for browser interaction and UI testing when such testing is explicitly requested or genuinely necessary. Never use the Playwright CLI or another headless browser as a substitute.
 
-# Testing and Verification
+# Diagnosis and Verification
 
-Do not run end-to-end tests by default.
+Use the smallest method that *reliably* answers the question in front of you. "Reliable" is the constraint that matters: a check that can pass while the code is broken, or a line of reasoning that is plausible but unconfirmed, is not cheaper — it sends you down the wrong path. This cuts two ways depending on the activity. Diagnosing why something is broken and verifying that a change works are different jobs and call for different methods.
 
-Only run end-to-end tests when:
+**Diagnosing a bug.** Find the root cause before changing code; do not ship a fix you cannot explain.
 
-- the user explicitly asks for them, or
-- the change is high-risk and cannot be reasonably verified with cheaper checks such as type checks, linting, unit tests, build checks, targeted browser checks, or manual inspection.
+- For runtime, behavioral, or "data is wrong/lost" bugs, reasoning from source alone about reactivity, event ordering, async timing, or framework internals is frequently plausible and wrong. Here, observing the running system is the *smallest reliable* method, not the largest — reach for it early instead of guessing from source.
+- Reproduce first. For "data lost" bugs, inspect the datastore directly to separate a save failure from a display failure: the value on screen and the row in storage can disagree, and which one is wrong tells you where the bug lives.
+- For code that maps an external API or data shape, verify field names and types against a real response (curl the endpoint, log the raw payload). Do not trust the names already in the code.
+- A passing test is not proof when its fixtures or mocks encode the same assumption as the code under test. A mock that reuses the code's own (wrong) field name makes a broken mapping look correct. When tests are green but behavior is broken, suspect the fixtures.
+- If two or more fixes have failed, stop patching. The diagnosis is wrong, not the fix. Restart from reproduction and confirm the actual cause before touching code again.
+- State the confirmed cause and the evidence that proves it before proposing the fix.
 
-Prefer the smallest reliable verification method for the change.
+**Verifying a change.** Prefer the smallest reliable check for what you changed — type checks, linting, unit tests, build checks, targeted browser checks, or manual inspection.
 
-When finishing a task, do not perform broad E2E testing just to prove everything works. Instead, tell the user exactly what they should manually verify, including the relevant pages, flows, commands, or UI states.
+- Do not run end-to-end tests by default. Run them only when the user explicitly asks, or when the change is high-risk and cannot be reasonably verified by the cheaper checks above.
+- When finishing a task, do not run broad E2E just to prove everything works. Instead, tell the user exactly what to manually verify, including the relevant pages, flows, commands, or UI states.
 
 # Missing Tools and Permissions
 
