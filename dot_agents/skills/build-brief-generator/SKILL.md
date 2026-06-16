@@ -69,7 +69,7 @@ If the user does not specify certain details, apply these defaults:
 * Do not add a database unless data must persist.
 * Do not add payments, analytics, admin panels, teams, roles, AI features, notifications, or integrations unless they are required or explicitly requested.
 * Do not hardcode a universal tech stack.
-* Do choose and explicitly name a suitable tech stack in the final Build Brief.
+* Do choose and explicitly name a suitable tech stack in the final Build Brief when the stack can be determined from the product type, user requirements, or known project context.
 * For an existing project, instruct the coding agent to inspect the repo and follow the existing stack, structure, conventions, and tooling.
 * For a new project with no specified stack, select a simple, mainstream, well-supported stack that fits the product type and explain why.
 
@@ -77,7 +77,7 @@ All applied assumptions must be explicitly listed in the final Build Brief.
 
 # STACK SELECTION RULE
 
-The final Build Brief must include a specific recommended tech stack.
+The final Build Brief must include a recommended tech stack.
 
 Do not hardcode one default stack for every product.
 
@@ -96,23 +96,29 @@ Choose the stack based on:
 Use this order:
 
 1. If the user specifies a tech stack, use that stack.
-2. If this is an existing project, instruct the coding agent to inspect the repo and use the existing stack, structure, conventions, and tooling.
-3. If no stack is specified and this is a new project, choose a simple, mainstream, well-supported stack appropriate for the product type.
-4. Prefer the least complex stack that can fully implement the MVP.
-5. Do not choose trendy or complex tools unless they clearly fit the product.
-6. Every selected stack must include a short reason.
+2. If this is an existing project and the stack is known from the conversation, name that stack and instruct the coding agent to follow the existing structure, conventions, and tooling.
+3. If this is an existing project and the stack is not known, do **not** invent or guess the stack. Write that the recommended stack is the existing project stack, to be confirmed by inspecting the repository before coding.
+4. If no stack is specified and this is a new project, choose a simple, mainstream, well-supported stack appropriate for the product type.
+5. Prefer the least complex stack that can fully implement the MVP.
+6. Do not choose trendy or complex tools unless they clearly fit the product.
+7. Every selected or repo-derived stack recommendation must include a short reason.
+
+For existing projects where the stack is unknown, use this wording or similar:
+
+`Recommended stack: Use the existing project stack after inspecting the repository. This fits because the feature should integrate with the current codebase instead of introducing a separate or conflicting stack. Do not introduce a new stack unless the repository has no usable existing structure or the user explicitly asks for a rewrite.`
 
 The Build Brief must not say only:
 
 `Use a simple, mainstream, well-supported stack.`
 
-Instead, it must name the recommended stack and briefly explain why it fits.
+Instead, for new projects, it must name the recommended stack and briefly explain why it fits.
 
 Good examples of how to write a stack recommendation:
 
 * "Recommended stack: [chosen stack]. This fits because the product is content-driven, does not need a backend, and should be fast and easy to deploy as a static site."
 * "Recommended stack: [chosen stack]. This fits because the product needs interactive screens, client-side state, and server-side routing."
 * "Recommended stack: [chosen stack]. This fits because the tool needs to run locally, ship as a single binary, and has no UI requirements."
+* "Recommended stack: Use the existing project stack after inspecting the repository. This fits because the feature should integrate cleanly with the current codebase and avoid unnecessary new dependencies."
 
 # NO FAKE SPECIFICITY RULE
 
@@ -164,10 +170,11 @@ If the product is being added to an existing project, the Build Brief must instr
 * Avoid large rewrites unless explicitly requested.
 * Avoid introducing new dependencies unless clearly necessary.
 * Keep changes focused on the requested feature or product.
+* Avoid guessing the stack if it is not already known from the conversation.
 
 # FINAL BUILD BRIEF FORMAT
 
-When ready, generate the Build Brief using exactly this structure:
+When ready, generate the Build Brief using this structure:
 
 # AI BUILD BRIEF — [Product Name]
 
@@ -303,7 +310,7 @@ The design direction should be practical enough for an AI coding agent to implem
 
 Include:
 
-* **Recommended tech stack:** Name the specific recommended stack and briefly explain why it fits this product.
+* **Recommended tech stack:** Name the specific recommended stack and briefly explain why it fits this product. For existing projects where the stack is unknown, state that the coding agent must inspect the repository and use the existing stack instead of guessing.
 * **Frontend requirements:**
 * **Backend requirements:**
 * **Database requirements:**
@@ -311,7 +318,11 @@ Include:
 * **Deployment requirements:**
 * **Existing project constraints:** if relevant
 
-The recommended stack must be specific. Do not leave it vague.
+The recommended stack must be specific when the project is new or when the existing stack is already known.
+
+For existing projects where the stack is unknown, do not invent a stack. Use this pattern:
+
+`Recommended stack: Use the existing project stack after inspecting the repository. This fits because the feature should integrate with the current codebase instead of introducing a separate or conflicting stack.`
 
 Bad:
 
@@ -462,6 +473,7 @@ Before producing the final Build Brief, silently verify:
 * Is anything overbuilt or invented?
 * Is the recommended tech stack specific?
 * Is the recommended tech stack justified by the product context?
+* For existing projects where the stack is unknown, does the brief avoid guessing the stack and instead instruct the agent to inspect the repository?
 * Is any stack being selected only because it is a universal default rather than because it fits the idea?
 * Could an AI coding agent start building from this brief without needing major clarification?
 
