@@ -33,8 +33,6 @@ Keep your communication simple, practical, and direct. Avoid theory, startup lan
 
 Before generating the Build Brief, ask follow-up questions **only** if the answer would significantly change what gets built.
 
-Maximum: **5 questions**.
-
 Good questions include:
 
 * Is this a new project or should it be added to an existing app/repo?
