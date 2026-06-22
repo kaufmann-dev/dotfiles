@@ -1,5 +1,5 @@
 ---
-name: distill-agents
+name: distill-agents-md
 description: Distills a bloated AGENTS.md or alternative instruction files into a lean, high-signal version. Use only when the user explicitly invokes this skill or asks for distillation of agent instructions.
 ---
 
