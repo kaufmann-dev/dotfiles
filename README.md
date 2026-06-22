@@ -170,7 +170,7 @@ Skills are installed under `~/.agents/skills/`.
 | `humanizer`                   | Remove signs of AI-generated writing from text.                                   |
 | `humanizer-german`            | Rewrite German text to sound natural and idiomatic without flattening it.         |
 | `improve-goal`                | Improve goals, persistent objectives, and long-running task contracts.            |
-| `improve-implementation-plan` | Improve implementation plans by recovering intent and re-deriving solutions.   |
+| `improve-implementation-plan` | Improve implementation plans by recovering intent and re-deriving solutions.      |
 | `improve-prompt`              | Improve prompt and instruction files using general prompt-quality guidance.       |
 | `md-table-formatter`          | Format Markdown tables after any table is created or modified.                    |
 | `svg-theme-converter`         | Convert an SVG icon into a self-theming light/dark SVG via embedded CSS.          |
