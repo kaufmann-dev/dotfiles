@@ -38,6 +38,19 @@ This section applies only when you are reviewing, fixing or hunting bugs. Skip i
 
 **After a confirmed fix:** create `docs/bugs/<descriptive-symptom>.md` documenting (a) the symptom, (b) the root cause you confirmed, (c) the exact changes made.
 
+## Development Servers and Containers
+
+Before starting a development server or container, reuse an existing one for this project instead of spawning a duplicate.
+
+1. **Check first.** Enumerate instances already running for *this project* — match containers by project name / label / compose project (`podman ps`); match dev servers by the project's expected port or process command.
+
+2. **Act on the count:**
+- **None running** → start exactly one.
+- **Exactly one running** → use it. Do not start another.
+- **More than one running** → keep exactly one and terminate the rest, then use the kept one. Keep a healthy, responding instance; if several are equally healthy, keep the oldest and stop the newer duplicates.
+
+If the instance you keep is unresponsive, restart that one rather than leaving a broken server in place.
+
 ## Testing and Verification
 
 After any change, confirm it with the smallest reliable check, preferring in this order: type check → lint → targeted unit test → build → targeted manual or browser check. (Reproducing a bug to diagnose it is a separate activity; see Debugging.)
