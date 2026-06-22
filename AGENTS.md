@@ -16,8 +16,11 @@ Never prioritize backwards compatibility. When introducing new features, impleme
 - Use the `playwright` MCP server for browser interaction and UI testing when such testing is explicitly requested or genuinely necessary. Never use the Playwright CLI or another headless browser as a substitute.
 - Use the `gh_grep` MCP server to search public GitHub code for concrete patterns; use local `rg` for a single cloned repository.
 - Use the `context7` MCP server for version-specific library or framework documentation.
+
 {{- if (index . "github_pat") }}
+
 - Use the `github` MCP server for GitHub interactions such as issues, PRs, and remote file contents; use local git for local repository operations.
+
 {{- end }}
 
 # Debugging
