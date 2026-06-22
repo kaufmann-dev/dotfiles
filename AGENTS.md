@@ -1,8 +1,7 @@
 # Critical Evaluation
 Before executing any request, assess it silently. Then:
-- **Makes sense, no better option exists** → proceed without comment.
-- **Makes sense, but a better option exists** → stop. Note the better option and why, and ask: proceed with original, or implement the alternative?
-- **Does not make sense or causes harm** → stop. Explain why, propose an alternative, and ask: proceed with original, or implement the alternative?
+- **No better option exists** → proceed without comment.
+- **Better option exists** → stop. Note the better option and why, and ask: proceed with original, or implement the alternative?
 
 "Better" means measurably less complexity, fewer side effects, or higher correctness — not stylistic preference. Do not block on minor tradeoffs.
 
@@ -14,7 +13,12 @@ Never prioritize backwards compatibility. When introducing new features, impleme
 
 # Tooling Preferences
 - Use `podman` instead of `docker` for all container operations.
-- Use the playwright MCP server for browser interaction and UI testing when such testing is explicitly requested or genuinely necessary. Never use the Playwright CLI or another headless browser as a substitute.
+- Use the `playwright` MCP server for browser interaction and UI testing when such testing is explicitly requested or genuinely necessary. Never use the Playwright CLI or another headless browser as a substitute.
+- Use the `gh_grep` MCP server to search public GitHub code for concrete patterns; use local `rg` for a single cloned repository.
+- Use the `context7` MCP server for version-specific library or framework documentation.
+{{- if (index . "github_pat") }}
+- Use the `github` MCP server for GitHub interactions such as issues, PRs, and remote file contents; use local git for local repository operations.
+{{- end }}
 
 # Debugging
 
@@ -67,24 +71,8 @@ When revising a previous plan based on feedback:
 
 # Project Documentation
 
-Projects may include documentation files, but they are optional. Do not treat missing documentation as a problem, and do not create documentation files unless explicitly asked.
+Projects may include documentation, but documentation is optional. Do not treat missing documentation as a problem, and do not create documentation unless explicitly asked.
 
-When making a change, check whether existing documentation should be updated. Only update docs when the change materially affects documented setup, usage, behavior, architecture, tooling, workflows, conventions, constraints, or visual decisions.
+When making a change, check whether any existing documentation should be updated. Only update documentation when the change materially affects documented setup, usage, behavior, architecture, tooling, workflows, conventions, constraints, or visual decisions.
 
-Common documentation files:
-
-- `README.md` — human-facing project overview, setup, installation, usage, configuration, and public behavior.
-- `AGENTS.md` — agent-facing instructions, build commands, tooling, workflows, conventions, constraints, and implementation guidance.
-- `DESIGN.md` — compliant `DESIGN.md` per the `@google/design.md` spec: YAML front matter for machine-readable tokens plus Markdown prose for human-readable rationale.
-- `docs/` — additional project documentation for architecture, usage, behavior, decisions, guides, or deeper explanations.
-- `docs/bugs/` — one file per fixed bug, documenting the root cause and resolution for each issue resolved. 
-
-If a relevant documentation file already exists, update it as part of the same task. If it does not exist, do nothing: do not create it, suggest it, or report it as missing.
-
-# MCP Servers
-{{- if (index . "github_pat") }}
-- `github` — GitHub interactions (issues, PRs, remote file contents). Not for local git.
-{{- end }}
-- `playwright` — browser interaction and UI testing. Not for static HTML.
-- `gh_grep` — pattern search across remote or multi-repo scope. Use local `rg` for single cloned repos.
-- `context7` — version-specific library/framework docs. Not for general reasoning.
+If relevant documentation already exists, update it as part of the same task. If it does not exist, do nothing: do not create it, suggest it, or report it as missing.
