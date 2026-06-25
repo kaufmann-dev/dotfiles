@@ -60,18 +60,12 @@ Every plan is self-contained and implementation-ready. Assume it will be execute
 
 Do not create documentation unless explicitly asked.
 
-After changing project files, check existing Markdown documentation with:
+After changing project files:
 
-```sh
-git ls-files '*.md'
-```
-
-Use the listed filenames to judge whether the changes just made could affect any existing documentation.
-
-Do not read every Markdown file automatically. First judge from the filenames and the nature of the change.
-
-If a Markdown file may describe the changed setup, behavior, architecture, tooling, workflow, conventions, constraints, or visual design, read that file and update it in the same task.
-
-If no existing Markdown file appears relevant, do nothing.
+- Check existing Markdown documentation with `git ls-files '*.md'`.
+- Use the listed filenames to judge whether the changes just made could affect any existing documentation.
+- Do not read every Markdown file automatically. First judge from the filenames and the nature of the change.
+- If a Markdown file may describe the changed setup, behavior, architecture, tooling, workflow, conventions, constraints, or visual design, read that file and update it in the same task. Never read or update a Markdown file inside `docs/bugs/`.
+- If no existing Markdown file appears relevant, do nothing.
 
 Do not finish with documentation that is outdated or contradicted by the changes just made.
