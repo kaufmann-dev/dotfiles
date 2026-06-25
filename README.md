@@ -112,6 +112,7 @@ dotfiles/
 |       |-- md-table-formatter/
 |       |-- svg-theme-converter/
 |       |-- ui-cleanup/
+|       |-- ui-design-principles/
 |       |-- write-agents-md/
 |       |-- write-design-md/
 |       `-- write-readme-md/
@@ -175,6 +176,7 @@ Skills are installed under `~/.agents/skills/`.
 | `md-table-formatter`          | Format Markdown tables after any table is created or modified.                    |
 | `svg-theme-converter`         | Convert an SVG icon into a self-theming light/dark SVG via embedded CSS.          |
 | `ui-cleanup`                  | Clean up duplicated and inconsistent frontend UI when explicitly requested.       |
+| `ui-design-principles`        | Apply accessible, responsive, and complete UI design defaults.                    |
 | `write-agents-md`             | Create a repository- or subtree-scoped `AGENTS.md` from codebase evidence.        |
 | `write-design-md`             | Create a project `DESIGN.md` from scratch.                                        |
 | `write-readme-md`             | Create a project `README.md` from scratch.                                        |
