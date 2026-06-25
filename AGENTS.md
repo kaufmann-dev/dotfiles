@@ -22,22 +22,6 @@ If something material is unclear and cannot be discovered, ask before proceeding
 - Use the `context7` MCP server for version-specific library or framework documentation.
 - {{- if (index . "github_pat") }} Use the `github` MCP server for GitHub interactions such as issues, PRs, and remote file contents; use local git for local repository operations. {{- end }}
 
-## Debugging
-
-This section applies only when you are reviewing, fixing or hunting bugs. Skip it otherwise.
-
-**Before touching code,** read `docs/bugs/*.md` to learn from previously resolved issues and avoid repeating past mistakes
-
-- Find the root cause before changing code; do not ship a fix you cannot explain.
-- For runtime, behavioral, or "data is wrong/lost" bugs, reasoning from source alone about reactivity, event ordering, async timing, or framework internals is frequently plausible and wrong. Reproduce and observe the running system before writing a fix — for these bugs that is the cheapest reliable way to find the cause, not the most expensive.
-- For "data lost" bugs, inspect the datastore directly to separate a save failure from a display failure: the value on screen and the row in storage can disagree, and which one is wrong tells you where the bug lives.
-- For code that maps an external API or data shape, verify field names and types against a real response (curl the endpoint, log the raw payload). Do not trust the names already in the code.
-- A passing test is not proof when its fixtures or mocks encode the same assumption as the code under test. A mock that reuses the code's own (wrong) field name makes a broken mapping look correct. When tests are green but behavior is broken, suspect the fixtures.
-- If two or more fixes have failed, stop patching. The diagnosis is wrong, not the fix. Restart from reproduction and confirm the actual cause before touching code again.
-- State the confirmed cause and the evidence that proves it before proposing the fix.
-
-**After a confirmed fix:** create `docs/bugs/<descriptive-symptom>.md` documenting (a) the symptom, (b) the root cause you confirmed, (c) the exact changes made.
-
 ## Development Servers and Containers
 
 Only start a development server or container if the user explicitly asks for it, or if it is genuinely important for testing and verification.
@@ -74,7 +58,20 @@ Every plan is self-contained and implementation-ready. Assume it will be execute
 
 ## Project Documentation
 
-Projects may include documentation files (e.g. `AGENTS.md`, `README.md`, `DESIGN.md`, `docs/*.md`). Do not treat missing documentation as a problem, and do not create documentation unless explicitly asked.
+Do not create documentation unless explicitly asked.
 
-- When a change materially affects documented setup, usage, behavior, architecture, tooling, workflows, conventions, constraints, or visual decisions, update the existing documentation in the same task.
-- If the relevant documentation does not already exist, do nothing.
+After changing project files, check existing Markdown documentation with:
+
+```sh
+git ls-files '*.md'
+```
+
+Use the listed filenames to judge whether the changes just made could affect any existing documentation.
+
+Do not read every Markdown file automatically. First judge from the filenames and the nature of the change.
+
+If a Markdown file may describe the changed setup, behavior, architecture, tooling, workflow, conventions, constraints, or visual design, read that file and update it in the same task.
+
+If no existing Markdown file appears relevant, do nothing.
+
+Do not finish with documentation that is outdated or contradicted by the changes just made.
