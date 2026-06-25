@@ -40,6 +40,8 @@ This section applies only when you are reviewing, fixing or hunting bugs. Skip i
 
 ## Development Servers and Containers
 
+Only start a development server or container if the user explicitly asks for it, or if it is genuinely important for testing and verification.
+
 Before starting a development server or container, enumerate instances already running for *this project*. Then, **act on the count:**
 - **None running** → start exactly one.
 - **Exactly one running** → use it. Do not start another.
