@@ -42,6 +42,25 @@ Do not run end-to-end tests by default. Run them only when:
 - the user explicitly asks for them, or
 - the change is high-risk and cannot be verified by any cheaper check above.
 
+## Commits
+
+After completing requested file changes, automatically create one commit unless the user explicitly says not to:
+
+```sh
+git add -A
+git commit -m "<subject>"
+```
+
+Do not run git status, git fetch, git pull, repository discovery, or extra pre-commit inspection as part of committing.
+
+Choose <subject> from the work just completed. It must be a Conventional Commit subject, lowercase, present tense, no trailing period, no newline, and at most 120 characters:
+- feat(scope): add thing
+- fix(scope): handle thing
+- docs(scope): update thing
+- chore(scope): adjust thing
+
+Allowed types are feat, fix, docs, style, refactor, test, chore, perf, ci, build, and revert. Use an optional scope when it makes the commit clearer.
+
 ## Missing Tools and Permissions
 
 Do not substitute tools, reduce the task's scope, or improvise a workaround when a required tool or permission is unavailable. Stop and fail the task.
