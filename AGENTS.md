@@ -53,7 +53,7 @@ git commit -m "<subject>"
 
 Do not run git status, git fetch, git pull, repository discovery, or extra pre-commit inspection as part of committing.
 
-Choose <subject> from the work just completed. It must be a Conventional Commit subject, lowercase, present tense, no trailing period, no newline, and at most 120 characters:
+Choose `<subject>` from the work just completed. It must be a Conventional Commit subject, lowercase, present tense, no trailing period, no newline, and at most 120 characters:
 - feat(scope): add thing
 - fix(scope): handle thing
 - docs(scope): update thing
