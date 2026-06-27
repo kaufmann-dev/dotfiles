@@ -26,6 +26,8 @@ After a confirmed fix, create:
 
 Document:
 
-1. The symptom.
-2. The confirmed root cause.
-3. The exact changes made.
+1. The fix timestamp, generated with: `date '+%Y-%m-%d %H:%M:%S %Z (%z)'`
+2. The current Git commit, generated with: `git rev-parse HEAD`
+3. The symptom.
+4. The confirmed root cause.
+5. The exact changes made.
