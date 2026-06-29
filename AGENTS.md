@@ -37,10 +37,12 @@ If the instance you keep is unresponsive, restart that one rather than leaving a
 
 After any change, confirm it with the smallest reliable check, preferring in this order: type check → lint → targeted unit test → build → targeted manual or browser check. (Reproducing a bug to diagnose it is a separate activity; see Debugging.)
 
-Do not run end-to-end tests by default. Run them only when:
+If a chosen check reports unrelated or pre-existing issues, fix them too instead of ignoring them or limiting fixes to touched files, then rerun the check.
 
+Do not run end-to-end tests by default. Run them only when:
 - the user explicitly asks for them, or
-- the change is high-risk and cannot be verified by any cheaper check above.
+- the change is high-risk and cannot be verified by any cheaper check above, or
+- the check cannot be done more cheaply by asking the user to verify it themselves.
 
 ## Commits
 
