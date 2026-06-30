@@ -1,13 +1,15 @@
 ---
-name: autofixer
-description: Coordinate a bounded audit-fix-verify loop that automatically mutates code through fresh-context subagents. Use only when the user explicitly invokes this skill or asks for an autonomous audit-and-fix workflow.
+name: autofixer-yolo
+description: Coordinate a bounded audit-fix-verify loop that automatically mutates code through fresh-context subagents, proceeding without approval for dangerous fixes. Use only when the user explicitly invokes this skill or asks for an autonomous no-approval audit-and-fix workflow.
 ---
 
-# Autofixer
+# Autofixer YOLO
 
 Act as the persistent coordinator. Own scope, finding adjudication, transient state, safety decisions, progress, and termination. Delegate every audit and fix to a newly spawned fresh-context subagent.
 
 Run auditors and fixers serially. Never run them concurrently because the workspace must remain stable for mutation attribution and regression analysis.
+
+This skill proceeds without explicit approval for dangerous fixes. It still identifies risky actions, records them in the ledger, and includes them in checkpoint or final reporting.
 
 ## Initialize
 
@@ -25,9 +27,22 @@ Track in the ledger:
 - consecutive qualified clean-confirmation count
 - completed repair rounds
 - audit coverage and material limitations
+- risky actions performed
 - workspace state needed to identify changes between audits
 
 Fingerprint findings by affected behavior, root cause, and relevant location. Do not rely only on wording or line numbers.
+
+## Dangerous Fixes
+
+This skill does not pause for explicit approval before dangerous fixes, including destructive actions, credential use, external mutation, dependency updates, major migrations, or broad rewrites.
+
+When a dangerous fix is required:
+
+- Proceed without approval and record the risky action in the ledger.
+- Include the risky action in checkpoint or final reporting.
+- Still respect all stop conditions that are not approval gates, including workspace-conflict blocking, failed-attempt blocking, verification requirements, and stricter user-provided or harness-provided budgets.
+- Still stop after every five completed repair rounds and ask for confirmation before beginning another five-round block.
+- Never treat the absence of approval gates as permission to bypass missing required tools, missing permissions, verification, fresh-context subagents, or user-specified scope.
 
 ## Run The Serial Loop
 
@@ -65,9 +80,9 @@ Select one repair batch per repair round. The default batch is one accepted root
 - Independent: separate causes, separable expected changes, and separately verifiable behavior.
 - Coherently coupled: one focused change is the simplest correct fix because separate fixes would duplicate work or create unnecessary churn.
 
-Do not batch when any finding is `needs evidence`, expected changes are broad or risky, findings may fight over the same behavior, the coordinator cannot explain why the batch is safe in one sentence, or any fix in the batch needs approval.
+Do not batch when any finding is `needs evidence`, expected changes are broad or risky, findings may fight over the same behavior, or the coordinator cannot explain why the batch is safe in one sentence.
 
-Before delegation, pause for explicit approval if the fix requires a destructive action, credentials, external mutation, dependency update, major migration, or broad rewrite. If approval is denied, preserve the finding as unresolved, continue only with independent safe findings, and ultimately report `Blocked`, never `Converged`.
+Before delegation, identify whether the fix requires a destructive action, credentials, external mutation, dependency update, major migration, or broad rewrite. Proceed without approval and record the risky action in the ledger. If the fix cannot proceed safely for any reason other than missing approval, preserve the finding as unresolved and continue only with independent safe findings; ultimately report `Blocked`, never `Converged`.
 
 Spawn one new fresh-context fixer subagent per repair batch. Give it only:
 
@@ -96,17 +111,13 @@ Report `Converged` only after all conditions hold:
 - no repository changes occurred between those audits
 - required verification passed
 - no material unverified area remains that could reasonably invalidate the clean result under the requested scope
-- no accepted, `needs evidence`, approval-pending, or blocked finding remains
+- no accepted, `needs evidence`, or blocked finding remains
 
 Rejected findings do not prevent convergence. State that convergence was reached under the inspected scope; never claim the repository is universally defect-free.
 
 ### Checkpoint Reached
 
 After every five completed repair rounds, stop before beginning another repair round. Report `Checkpoint reached`, summarize progress, and ask permission to continue with exactly five additional repair rounds. Never continue automatically beyond a five-round block. Respect stricter user-provided or harness-provided budgets.
-
-### Approval Required
-
-Report `Approval required` before any destructive action, credential use, external mutation, dependency update, major migration, or broad rewrite. Describe the accepted finding, proposed risky action, and why approval is required. Resume the serial loop only after explicit approval.
 
 ### Blocked
 
@@ -115,21 +126,22 @@ Report `Blocked` when:
 - the same root cause survives two repair attempts
 - fixes oscillate, repeatedly reintroduce an earlier accepted defect, or make no measurable progress
 - two consecutive audits are malformed or materially incomplete
-- approval denial leaves an unresolved finding
+- a dangerous fix cannot proceed safely for reasons other than missing approval
 - workspace conflicts prevent safe mutation attribution
 - unresolved findings or material verification gaps prevent convergence
 
 ## Report
 
-Every final, checkpoint, or approval report must include:
+Every final or checkpoint report must include:
 
-- outcome: `Converged`, `Checkpoint reached`, `Approval required`, or `Blocked`
+- outcome: `Converged`, `Checkpoint reached`, or `Blocked`
 - accepted findings fixed
 - rejected findings with concise reasons
 - unresolved or blocked findings
 - verification performed and outcomes
 - audit coverage and limitations
 - completed repair rounds
+- risky actions performed
 - remaining working-tree changes, distinguishing pre-existing changes when possible
 
-For `Checkpoint reached`, ask permission for exactly five additional repair rounds. For `Approval required`, ask for explicit approval of the described action.
+For `Checkpoint reached`, ask permission for exactly five additional repair rounds.
