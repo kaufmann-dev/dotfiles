@@ -29,23 +29,22 @@ Read `references/graph-contract.md` before creating graph slices, auditor prompt
 2. Record the initial working-tree state so pre-existing user changes can be distinguished and preserved.
 3. Identify available verification commands and operations that are prohibited or require approval.
 4. Stop as blocked immediately if fresh subagents are unavailable.
-5. Detect whether the user requested YOLO mode by explicitly pairing this skill request with terms such as `YOLO mode`, `yolo`, or `no approval for dangerous fixes`.
-6. Run `scripts/check_graphify.py`.
-7. Compute the first workspace epoch:
+5. Run `scripts/check_graphify.py`.
+6. Compute the first workspace epoch:
 
    ```bash
    python dot_agents/skills/autofixer-graphify/scripts/graph_epoch.py --workspace .
    ```
 
-8. Build the first transient Graphify snapshot:
+7. Build the first transient Graphify snapshot:
 
    ```bash
    python dot_agents/skills/autofixer-graphify/scripts/graph_snapshot.py --workspace . --epoch-json <epoch.json>
    ```
 
-9. Default to code-oriented extraction only. Treat PDFs, office documents, images, videos, audio, and broad documentation extraction as deep semantic extraction.
-10. If deep semantic files are in scope, stop for explicit approval before including them. Without approval, exclude them and record the exclusion as a graph coverage limitation.
-11. Maintain a transient ledger only in coordinator context. Do not create a persistent ledger, audit document, script, or harness-specific subagent definition.
+8. Default to code-oriented extraction only. Treat PDFs, office documents, images, videos, audio, and broad documentation extraction as deep semantic extraction.
+9. If deep semantic files are in scope, stop for explicit approval before including them. Without approval, exclude them and record the exclusion as a graph coverage limitation.
+10. Maintain a transient ledger only in coordinator context. Do not create a persistent ledger, audit document, script, or harness-specific subagent definition.
 
 Track in the ledger:
 - accepted, rejected, and unresolved finding fingerprints
@@ -53,7 +52,6 @@ Track in the ledger:
 - verification outcomes
 - consecutive qualified clean-confirmation count
 - completed repair rounds
-- YOLO mode status
 - audit coverage and material limitations (including graph coverage limitations)
 - workspace state needed to identify changes between audits
 - whether any repair rounds used batching
@@ -61,17 +59,6 @@ Track in the ledger:
 Fingerprint findings by affected behavior, root cause, and relevant location. Do not rely only on wording or line numbers.
 
 Runtime graph output must be transient and untracked. Do not commit Graphify output, persistent ledgers, or harness-specific subagent definitions.
-
-## YOLO Mode
-
-YOLO mode is active only when the user explicitly requests it for this skill invocation.
-
-When YOLO mode is active:
-- Do not pause for approval before dangerous fixes, including destructive actions, credential use, external mutation, dependency updates, major migrations, or broad rewrites.
-- Still identify dangerous fixes, record that YOLO mode authorized proceeding without approval, and include the risky action in checkpoint or final reporting.
-- Still respect all stop conditions that are not approval gates, including workspace-conflict blocking, failed-attempt blocking, verification requirements, and stricter user-provided or harness-provided budgets.
-- Still stop after every five completed repair rounds and ask for confirmation before beginning another five-round block.
-- Never interpret YOLO mode as permission to bypass missing required tools, missing permissions, verification, fresh-context subagents, or user-specified scope.
 
 ## Graph Slices
 
@@ -117,9 +104,9 @@ After adjudication, the coordinator selects repair batches. The coordinator may 
 
 Use graph context as advisory input for likely affected files, callers, dependents, shared tests, entrypoint reachability, and module neighborhoods. Do not require formal graph proof before batching.
 
-Do not batch when any finding is `needs evidence`, expected changes are broad or risky, findings may fight over the same behavior, or the coordinator cannot explain why the batch is safe in one sentence. When YOLO mode is inactive, also do not batch when any fix needs approval.
+Do not batch when any finding is `needs evidence`, expected changes are broad or risky, findings may fight over the same behavior, the coordinator cannot explain why the batch is safe in one sentence, or any fix in the batch needs approval.
 
-Before delegation, pause for explicit approval if YOLO mode is inactive and the fix requires a destructive action, credentials, external mutation, dependency update, major migration, or broad rewrite. If approval is denied, preserve the finding as unresolved, continue only with independent safe findings, and ultimately report `Blocked`, never `Converged`. If YOLO mode is active, proceed without approval and record the risky action in the ledger.
+Before delegation, pause for explicit approval if the fix requires a destructive action, credentials, external mutation, dependency update, major migration, or broad rewrite. If approval is denied, preserve the finding as unresolved, continue only with independent safe findings, and ultimately report `Blocked`, never `Converged`.
 
 Spawn one new fresh-context fixer subagent per repair batch. Give it only:
 - the accepted finding or accepted findings in the batch, with required behavior for each
@@ -171,9 +158,7 @@ After every five completed repair rounds, stop before beginning another repair r
 
 ### Approval Required
 
-When YOLO mode is inactive, report `Approval required` before any destructive action, credential use, external mutation, dependency update, major migration, or broad rewrite. Describe the accepted finding, proposed risky action, and why approval is required. Resume the serial loop only after explicit approval.
-
-When YOLO mode is active, do not use `Approval required` for dangerous fixes. Proceed with the fix, record the risky action as YOLO-authorized, and include it in the next checkpoint or final report.
+Report `Approval required` before any destructive action, credential use, external mutation, dependency update, major migration, or broad rewrite. Describe the accepted finding, proposed risky action, and why approval is required. Resume the serial loop only after explicit approval.
 
 ### Blocked
 
@@ -196,7 +181,6 @@ Every final, checkpoint, or approval report must include:
 - verification performed and outcomes
 - audit coverage and limitations (including graph coverage limitations)
 - completed repair rounds
-- YOLO mode status and any risky actions performed without approval
 - remaining working-tree changes, distinguishing pre-existing changes when possible
 - whether any repair rounds used batching
 
