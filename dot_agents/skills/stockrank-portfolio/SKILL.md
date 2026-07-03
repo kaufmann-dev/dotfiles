@@ -8,7 +8,7 @@ description: Execute Stockrank final portfolio work folders by following task.tx
 Use this skill from `runs/<id>/portfolio/work/`.
 
 1. Validate the current directory contains `task.txt`, upstream score/proposal files, `current.csv`, and `current.md`.
-2. Parse the expected harness from `run.toml` if accessible through the run root, then ask the user to confirm that this session is running in that harness. Abort if they do not confirm.
+2. Parse the expected harness from `run.toml` if accessible through the run root and use it as the expected execution context.
 3. Follow `task.txt` exactly and write `portfolio.toml`.
 4. Verify that `portfolio.toml` is parseable TOML with `summary` and `positions`.
 5. Verify the position weights sum to approximately 1.0.
