@@ -1,5 +1,0 @@
-interface:
-  display_name: "Stockrank Proposals"
-  short_description: "Run proposal construction work folders"
-  default_prompt: "Use $stockrank-proposals to execute this Stockrank proposal work folder."
-
