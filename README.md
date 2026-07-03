@@ -112,6 +112,9 @@ dotfiles/
 |       |-- improve-implementation-plan/
 |       |-- improve-prompt/
 |       |-- md-table-formatter/
+|       |-- stockrank-portfolio/
+|       |-- stockrank-proposals/
+|       |-- stockrank-scores/
 |       |-- svg-theme-converter/
 |       |-- ui-cleanup/
 |       |-- ui-design-principles/
@@ -178,6 +181,9 @@ Skills are installed under `~/.agents/skills/`.
 | `improve-implementation-plan` | Improve implementation plans by recovering intent and re-deriving solutions.                   |
 | `improve-prompt`              | Improve prompt and instruction files using general prompt-quality guidance.                    |
 | `md-table-formatter`          | Format Markdown tables after any table is created or modified.                                 |
+| `stockrank-portfolio`         | Execute final Stockrank portfolio allocation work folders.                                     |
+| `stockrank-proposals`         | Execute Stockrank proposal construction work folders.                                          |
+| `stockrank-scores`            | Execute Stockrank ticker scoring work folders.                                                 |
 | `svg-theme-converter`         | Convert an SVG icon into a self-theming light/dark SVG via embedded CSS.                       |
 | `ui-cleanup`                  | Clean up duplicated and inconsistent frontend UI when explicitly requested.                    |
 | `ui-design-principles`        | Apply accessible, responsive, and complete UI design defaults.                                 |
