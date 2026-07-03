@@ -1,5 +1,0 @@
-interface:
-  display_name: "Stockrank Portfolio"
-  short_description: "Run final portfolio allocation work"
-  default_prompt: "Use $stockrank-portfolio to execute this Stockrank portfolio work folder."
-

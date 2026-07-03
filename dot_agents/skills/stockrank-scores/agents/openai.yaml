@@ -1,5 +1,0 @@
-interface:
-  display_name: "Stockrank Scores"
-  short_description: "Run ticker scoring work folders"
-  default_prompt: "Use $stockrank-scores to execute this Stockrank score work folder."
-
