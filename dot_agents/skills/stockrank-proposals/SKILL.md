@@ -9,7 +9,7 @@ Use this skill from a `runs/<id>/proposals/work/<mode>__<harness>/` folder.
 
 1. Validate the current directory contains `task.txt`, `scores.csv`, `rationales.csv`, and `report.md`.
 2. Parse the expected mode and harness from the current folder name, splitting on `__`.
-3. Ask the user to confirm that this session is running in the expected harness. Abort if they do not confirm.
+3. Use the parsed mode and harness as the expected execution context.
 4. Follow `task.txt` exactly and write `proposal.toml`.
 5. Verify that `proposal.toml` is parseable TOML with `mode`, `harness`, `summary`, and `positions`.
 6. Verify that `mode` and `harness` match the folder name.
