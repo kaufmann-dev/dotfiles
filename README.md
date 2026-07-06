@@ -201,14 +201,23 @@ All supported agent tools are configured with the same MCP servers:
 | `gh_grep`    | Remote URL    | Real-world code examples from public GitHub repositories.   |
 | `playwright` | Local `npx`   | Browser automation, UI checks, and end-to-end verification. |
 | `github`     | Local `npx`   | GitHub API workflows when repository work is authorized.    |
+| `massive`    | Local stdio   | Financial market data (stocks, options, crypto, fundamentals). |
 
-The `github` MCP server needs local GitHub authentication. This public repository
-does not store tokens or other credentials. The MCP config files are chezmoi
-templates that read `github_pat` from `~/.config/chezmoi/chezmoi.toml` when it
-exists. Without that local file, the GitHub MCP server is omitted.
+The `github` and `massive` MCP servers need local credentials. This public
+repository does not store tokens or other credentials. The MCP config files are
+chezmoi templates that read the following keys from
+`~/.config/chezmoi/chezmoi.toml` when it exists. Without that local file, the
+corresponding MCP server is omitted:
 
-Use a fine-grained GitHub personal access token with only the permissions needed
-for the repositories or organizations you work with.
+- `github_pat` — a fine-grained GitHub personal access token with only the
+  permissions needed for the repositories or organizations you work with.
+- `massive_api_key` — a [Massive.com API key](https://massive.com/?utm_campaign=mcp&utm_medium=referral&utm_source=github).
+
+The `massive` MCP server requires [Astral UV](https://docs.astral.sh/uv/) and
+the `mcp_massive` binary installed on `PATH`:
+```sh
+uv tool install "mcp_massive @ git+https://github.com/massive-com/mcp_massive@v0.10.0"
+```
 
 The `playwright` MCP server needs its browser installed once per machine. The
 configs pass `--browser chromium`, so install Playwright's bundled Chromium:
