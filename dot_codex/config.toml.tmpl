@@ -23,6 +23,11 @@ command = "npx"
 args = ["-y", "@modelcontextprotocol/server-github"]
 env = { GITHUB_PERSONAL_ACCESS_TOKEN = "{{ . }}" }
 {{- end }}
+{{ with index . "massive_api_key" -}}
+[mcp_servers.massive]
+command = "mcp_massive"
+env = { MASSIVE_API_KEY = "{{ . }}" }
+{{- end }}
 
 [notice]
 hide_full_access_warning = true

@@ -31,6 +31,16 @@
         "GITHUB_PERSONAL_ACCESS_TOKEN": "{{ . }}"
       }
     }
+    {{- end }}{{ with index . "massive_api_key" }},
+    "massive": {
+      "type": "local",
+      "command": [
+        "mcp_massive"
+      ],
+      "environment": {
+        "MASSIVE_API_KEY": "{{ . }}"
+      }
+    }
     {{- end }}
   },
   "tools": {
