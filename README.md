@@ -48,8 +48,8 @@ chezmoi init --apply https://github.com/kaufmann-dev/dotfiles.git
 
 For a local checkout, run `chezmoi init --source-path . --apply` instead.
 
-**Optional**: enable the GitHub MCP server by copying the example data file, adding
-your GitHub personal access token, and applying again:
+**Optional**: enable the GitHub and Massive MCP servers by copying the example
+data file, adding your credentials, and applying again:
 
 ```bash
 cp ~/.config/chezmoi/chezmoi.toml.example ~/.config/chezmoi/chezmoi.toml
