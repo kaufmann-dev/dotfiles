@@ -21,6 +21,7 @@ If something material is unclear and cannot be discovered, ask before proceeding
 - Use the `gh_grep` MCP server to search public GitHub code for concrete patterns; use local `rg` for a single cloned repository.
 - Use the `context7` MCP server for version-specific library or framework documentation.
 - {{- if (index . "github_pat") }} Use the `github` MCP server for GitHub interactions such as issues, PRs, and remote file contents; use local git for local repository operations. {{- end }}
+- {{- if (index . "massive_api_key") }} Use the `massive` MCP server for stock market data. {{- end }}
 
 ## Development Servers and Containers
 
