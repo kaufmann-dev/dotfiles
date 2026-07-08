@@ -195,14 +195,14 @@ Skills are installed under `~/.agents/skills/`.
 
 All supported agent tools are configured with the same MCP servers:
 
-| MCP          | Configuration | Purpose                                                     |
-| ------------ | ------------- | ----------------------------------------------------------- |
-| `context7`   | Remote URL    | Current library and framework documentation.                |
-| `gh_grep`    | Remote URL    | Real-world code examples from public GitHub repositories.   |
-| `playwright` | Local `npx`   | Browser automation, UI checks, and end-to-end verification. |
-| `github`     | Local `npx`   | GitHub API workflows when repository work is authorized.    |
-| `massive`    | Local stdio   | Financial market data (stocks, options, crypto, fundamentals). |
-| `portfolio_arena` | Remote HTTP | Portfolio Arena admin data and operations.               |
+| MCP               | Configuration | Purpose                                                        |
+| ----------------- | ------------- | -------------------------------------------------------------- |
+| `context7`        | Remote URL    | Current library and framework documentation.                   |
+| `gh_grep`         | Remote URL    | Real-world code examples from public GitHub repositories.      |
+| `playwright`      | Local `npx`   | Browser automation, UI checks, and end-to-end verification.    |
+| `github`          | Local `npx`   | GitHub API workflows when repository work is authorized.       |
+| `massive`         | Local stdio   | Financial market data (stocks, options, crypto, fundamentals). |
+| `portfolio_arena` | Remote HTTP   | Portfolio Arena admin data and operations.                     |
 
 The `github`, `massive`, and `portfolio_arena` MCP servers need local credentials. This public
 repository does not store tokens or other credentials. The MCP config files are
