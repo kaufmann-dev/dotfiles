@@ -48,7 +48,7 @@ chezmoi init --apply https://github.com/kaufmann-dev/dotfiles.git
 
 For a local checkout, run `chezmoi init --source-path . --apply` instead.
 
-**Optional**: enable the GitHub and Massive MCP servers by copying the example
+**Optional**: enable the GitHub, Massive, and Portfolio Arena MCP servers by copying the example
 data file, adding your credentials, and applying again:
 
 ```bash
@@ -202,8 +202,9 @@ All supported agent tools are configured with the same MCP servers:
 | `playwright` | Local `npx`   | Browser automation, UI checks, and end-to-end verification. |
 | `github`     | Local `npx`   | GitHub API workflows when repository work is authorized.    |
 | `massive`    | Local stdio   | Financial market data (stocks, options, crypto, fundamentals). |
+| `portfolio_arena` | Remote HTTP | Portfolio Arena admin data and operations.               |
 
-The `github` and `massive` MCP servers need local credentials. This public
+The `github`, `massive`, and `portfolio_arena` MCP servers need local credentials. This public
 repository does not store tokens or other credentials. The MCP config files are
 chezmoi templates that read the following keys from
 `~/.config/chezmoi/chezmoi.toml` when it exists. Without that local file, the
@@ -212,6 +213,7 @@ corresponding MCP server is omitted:
 - `github_pat` — a fine-grained GitHub personal access token with only the
   permissions needed for the repositories or organizations you work with.
 - `massive_api_key` — a [Massive.com API key](https://massive.com/?utm_campaign=mcp&utm_medium=referral&utm_source=github).
+- `portfolio_arena_api_key` — a Portfolio Arena API key (generate one via the admin dashboard at <https://arena.kaufmann.dev>).
 
 The `massive` MCP server requires [Astral UV](https://docs.astral.sh/uv/) and
 the `mcp_massive` binary installed on `PATH`:

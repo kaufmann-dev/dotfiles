@@ -28,6 +28,11 @@ env = { GITHUB_PERSONAL_ACCESS_TOKEN = "{{ . }}" }
 command = "mcp_massive"
 env = { MASSIVE_API_KEY = "{{ . }}" }
 {{- end }}
+{{ with index . "portfolio_arena_api_key" -}}
+[mcp_servers.portfolio_arena]
+url = "https://arena.kaufmann.dev/mcp"
+http_headers = { Authorization = "Bearer {{ . }}" }
+{{- end }}
 
 [notice]
 hide_full_access_warning = true
