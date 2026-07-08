@@ -1,3 +1,4 @@
 [data]
 github_pat = "github_pat_replace_me"
 massive_api_key = "massive_api_key_replace_me"
+portfolio_arena_api_key = "portfolio_arena_api_key_replace_me"

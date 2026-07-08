@@ -41,6 +41,14 @@
         "MASSIVE_API_KEY": "{{ . }}"
       }
     }
+    {{- end }}{{ with index . "portfolio_arena_api_key" }},
+    "portfolio_arena": {
+      "type": "remote",
+      "url": "https://arena.kaufmann.dev/mcp",
+      "headers": {
+        "Authorization": "Bearer {{ . }}"
+      }
+    }
     {{- end }}
   },
   "tools": {
