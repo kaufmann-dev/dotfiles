@@ -1,6 +1,6 @@
 ---
 name: dicom-surface
-description: Use the dicom-surface CLI to turn DICOM image series into STL, PLY, or OBJ meshes. Use only when the user explicitly invokes this skill or when the user explicitly requests a mesh from a DICOM series.
+description: Use the dicom-surface CLI to turn DICOM image series into STL, PLY, or OBJ meshes. Use only when the user explicitly invokes this skill, explicitly asks to use dicom-surface, or explicitly requests a surface mesh from DICOM data.
 ---
 
 # DICOM Surface
@@ -10,38 +10,42 @@ are needed.
 
 ## Convert a scan
 
-Inspect the available series and presets first:
+Inspect the available series, then convert the recommended one:
 
 ```sh
 dicom-surface list <dicom-directory>
-dicom-surface presets
+dicom-surface convert <dicom-directory> -o <output.stl>
 ```
 
-Use the recommended series unless the user chooses another. Select another
-series by its displayed row ID, complete SeriesInstanceUID, or description:
+The output extension selects STL, PLY, or OBJ. To choose another series, use
+its displayed row ID, complete SeriesInstanceUID, or description:
 
 ```sh
 dicom-surface convert <dicom-directory> --series <selector> \
   --preset <preset> -o <output.stl>
 ```
 
-Omit `--series` or `--preset` to use the defaults. The output extension
-selects STL, PLY, or OBJ.
+Run `dicom-surface presets` when choosing a tissue preset. The default `bone`
+preset is for CT; use `--preset auto` for MR, CBCT, ultrasound, or other
+uncalibrated intensities.
 
-## Advanced conversion options
+## Advanced conversion options (rarely needed)
 
-Override only the stages the user wants to control:
+Use these only when the user needs to tune a processing stage:
 
 - Segmentation: `--threshold <value|auto>`, `--median-mm <mm>`,
   `--closing-mm <mm>`, `--opening-mm <mm>`, and
-  `--min-island-mm3 <volume>`.
-- Component retention: `--all-islands` keeps every segmented island;
-  `--all-components` keeps every extracted surface shell.
+  `--min-island-mm3 <volume>`. Morphology values are kernel extents, not
+  radii.
+- Component retention: `--all-islands` keeps every island that survives the
+  minimum-volume filter; `--all-components` keeps every extracted surface
+  shell.
 - Surface grid: `--resample-mm <mm>` uses an isotropic grid; `0` keeps the
   native grid. Coarser grids can erase thin structures.
 - Finishing: `--smooth-iters <count>`, `--smooth-force <value>`,
   `--simplify-error-mm <mm>`, and `--post-smooth-iters <count>`. A simplify
-  error of `0` disables simplification.
+  error of `0` disables simplification; other values are estimated QEM limits,
+  not certified Hausdorff bounds.
 - Boundary handling: `--no-cap` leaves anatomy open where it reaches the scan
   boundary instead of adding a flat cap.
 - Automation: `--json <report.json>` writes results and provenance;
@@ -69,3 +73,6 @@ dicom-surface merge <directory-a> <directory-b> \
 Merge only scans of the same person and overlapping anatomy. Never add
 `--force` unless the user explicitly accepts bypassing identity, modality, or
 registration safety checks.
+
+When both series are in one directory, omit `<directory-b>` and select them
+with `--series-a` and `--series-b`.
