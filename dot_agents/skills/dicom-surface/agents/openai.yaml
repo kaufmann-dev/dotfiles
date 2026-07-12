@@ -1,4 +1,0 @@
-interface:
-  display_name: "DICOM Surface"
-  short_description: "Develop and verify the dicom-surface CLI"
-  default_prompt: "Use $dicom-surface to implement and verify a change in the dicom-surface repository."
