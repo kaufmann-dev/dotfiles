@@ -1,17 +1,56 @@
 ---
 name: dicom-surface
-description: Work on the dicom-surface Python CLI and DICOM-to-mesh pipeline. Use for any implementation, debugging, review, testing, packaging, or documentation task in the kaufmann-dev/dicom-surface repository.
+description: Use the dicom-surface CLI to turn DICOM image series into STL, PLY, or OBJ meshes. Use when listing or selecting DICOM series, choosing segmentation presets or thresholds, converting scans, merging scans, validating meshes, or repairing meshes.
 ---
 
 # DICOM Surface
 
-Implement the requested change using the repository's existing conventions.
+Run `dicom-surface COMMAND --help` when options beyond these common workflows
+are needed.
 
-- Keep test data synthetic. Never add patient DICOM files, identifiers, or
-  derived meshes.
-- Treat mesh validity as distinct from anatomical or clinical correctness.
-- Keep shared pipeline behavior shared instead of duplicating it per command.
-- Add focused regression coverage for behavior changes.
-- Run the nearest test with `uv run pytest -q tests/test_<area>.py`; run
-  `uv run pytest -q` for cross-cutting changes.
-- Update existing documentation when public behavior or constraints change.
+## Convert a scan
+
+Inspect the available series first:
+
+```sh
+dicom-surface list <dicom-directory>
+dicom-surface presets
+```
+
+Use the recommended series unless the user chooses another. Select another
+series by its displayed row ID, complete SeriesInstanceUID, or description:
+
+```sh
+dicom-surface convert <dicom-directory> --series <selector> \
+  --preset <preset> -o <output.stl>
+```
+
+Omit `--series` or `--preset` to use the defaults. Use `--threshold <value>`
+only when an explicit intensity threshold is intended. The output extension
+selects STL, PLY, or OBJ.
+
+## Validate or repair a mesh
+
+```sh
+dicom-surface validate <mesh.stl>
+dicom-surface repair <mesh.stl> -o <repaired.stl>
+```
+
+Always write repairs to a separate file. Validation measures mesh quality; it
+does not prove anatomical correctness.
+
+## Merge two scans
+
+List both directories and select the intended series before merging:
+
+```sh
+dicom-surface merge <directory-a> <directory-b> \
+  --series-a <selector> --series-b <selector> -o <output.stl>
+```
+
+Merge only scans of the same person and overlapping anatomy. Never add
+`--force` unless the user explicitly accepts bypassing identity, modality, or
+registration safety checks.
+
+Keep DICOM data local and private. Do not present generated meshes as suitable
+for diagnosis, treatment planning, or other clinical decisions.
