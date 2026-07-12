@@ -1,6 +1,6 @@
 ---
 name: dicom-surface
-description: Use the dicom-surface CLI to turn DICOM image series into STL, PLY, or OBJ meshes. Use when listing or selecting DICOM series, choosing segmentation presets or thresholds, converting scans, merging scans, validating meshes, or repairing meshes.
+description: Use the dicom-surface CLI to turn DICOM image series into STL, PLY, or OBJ meshes. Use only when the user explicitly invokes this skill or when the user explicitly requests a mesh from a DICOM series.
 ---
 
 # DICOM Surface
@@ -10,7 +10,7 @@ are needed.
 
 ## Convert a scan
 
-Inspect the available series first:
+Inspect the available series and presets first:
 
 ```sh
 dicom-surface list <dicom-directory>
@@ -25,9 +25,27 @@ dicom-surface convert <dicom-directory> --series <selector> \
   --preset <preset> -o <output.stl>
 ```
 
-Omit `--series` or `--preset` to use the defaults. Use `--threshold <value>`
-only when an explicit intensity threshold is intended. The output extension
+Omit `--series` or `--preset` to use the defaults. The output extension
 selects STL, PLY, or OBJ.
+
+## Advanced conversion options
+
+Override only the stages the user wants to control:
+
+- Segmentation: `--threshold <value|auto>`, `--median-mm <mm>`,
+  `--closing-mm <mm>`, `--opening-mm <mm>`, and
+  `--min-island-mm3 <volume>`.
+- Component retention: `--all-islands` keeps every segmented island;
+  `--all-components` keeps every extracted surface shell.
+- Surface grid: `--resample-mm <mm>` uses an isotropic grid; `0` keeps the
+  native grid. Coarser grids can erase thin structures.
+- Finishing: `--smooth-iters <count>`, `--smooth-force <value>`,
+  `--simplify-error-mm <mm>`, and `--post-smooth-iters <count>`. A simplify
+  error of `0` disables simplification.
+- Boundary handling: `--no-cap` leaves anatomy open where it reaches the scan
+  boundary instead of adding a flat cap.
+- Automation: `--json <report.json>` writes results and provenance;
+  `--quiet` suppresses normal progress output.
 
 ## Validate or repair a mesh
 
@@ -51,6 +69,3 @@ dicom-surface merge <directory-a> <directory-b> \
 Merge only scans of the same person and overlapping anatomy. Never add
 `--force` unless the user explicitly accepts bypassing identity, modality, or
 registration safety checks.
-
-Keep DICOM data local and private. Do not present generated meshes as suitable
-for diagnosis, treatment planning, or other clinical decisions.
