@@ -113,7 +113,7 @@ Skills are installed under `~/.agents/skills/`.
 | `coolify`                     | Generate a project's Coolify/Nixpacks deployment config (nixpacks.toml + README).              |
 | `create-datatable`            | Create, extend, or review production-quality tabular data views.                               |
 | `debugging`                   | Debug bugs by reproducing behavior, confirming root cause, and documenting fixes.              |
-| `dicom-surface`               | Convert, merge, validate, and repair DICOM-derived surface meshes.                             |
+| `medsurface`                  | Convert medical image volumes into meshes, merge scans, and validate or repair meshes.         |
 | `distill-agents-md`           | Distill bloated instruction files (AGENTS.md, etc.) into lean versions.                        |
 | `humanizer`                   | Remove signs of AI-generated writing from text.                                                |
 | `humanizer-german`            | Rewrite German text to sound natural and idiomatic without flattening it.                      |
