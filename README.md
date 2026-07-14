@@ -161,9 +161,5 @@ the `mcp_massive` binary installed on `PATH`:
 uv tool install "mcp_massive @ git+https://github.com/massive-com/mcp_massive@v0.10.0"
 ```
 
-The `playwright` MCP server needs its browser installed once per machine. The
-configs pass `--browser chromium`, so install Playwright's bundled Chromium:
-
-```sh
-npx --yes playwright install --with-deps chromium  # Linux (omit --with-deps on macOS/Windows)
-```
+The `playwright` MCP server launches the locally installed Google Chrome Beta channel. Install
+Google Chrome Beta before using browser automation; the configs pass `--browser chrome-beta`.

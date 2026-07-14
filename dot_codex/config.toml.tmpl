@@ -15,7 +15,7 @@ url = "https://mcp.grep.app"
 
 [mcp_servers.playwright]
 command = "npx"
-args = ["@playwright/mcp@latest", "--browser", "chromium"]
+args = ["--yes", "@playwright/mcp@latest", "--browser", "chrome-beta"]
 
 {{ with index . "github_pat" -}}
 [mcp_servers.github]
