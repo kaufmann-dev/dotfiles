@@ -1,7 +1,7 @@
 interface:
   display_name: "UI Design Principles"
-  short_description: "Apply accessible and responsive UI design defaults"
-  default_prompt: "Use $ui-design-principles to review and improve this interface design."
+  short_description: "Apply context-sensitive UI design guardrails"
+  default_prompt: "Use $ui-design-principles to improve this interface without unnecessary redesign."
 
 policy:
   allow_implicit_invocation: true

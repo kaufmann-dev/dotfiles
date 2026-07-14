@@ -1,37 +1,37 @@
 ---
 name: ui-design-principles
-description: Design principles for building or reviewing user interfaces. Use this whenever creating, editing, or critiquing any frontend UI — components, screens, layouts, or design systems — or when the user mentions responsive or mobile-first design, hover states, touch targets, empty / loading / error states, keyboard navigation, color contrast, accessibility, visual hierarchy, or component consistency. Apply these as defaults when generating UI, even if the user does not explicitly ask for a design review.
+description: Context-sensitive design guardrails for building or reviewing user interfaces. Use this whenever creating, editing, or critiquing frontend UI, or when the user mentions responsive design, interaction states, keyboard navigation, accessibility, visual hierarchy, or component consistency. Preserve the product's intent, established patterns, and appropriate density; do not turn these guardrails into an unrelated redesign.
 ---
 
 # UI Design Principles
 
-Defaults for building interfaces that are accessible, responsive, and complete. Apply them as you build, and use them as a checklist when reviewing existing UI.
+Use these principles as guardrails, not as a mandate to redesign. Preserve the existing interaction model, visual language, and information density unless the task or a concrete usability defect requires a change. Do not invent states, flows, components, abstractions, or design-system work unrelated to the request.
 
-Two kinds of rules: **hard rules** (accessibility, states) have an objective bar — hold them unless there's a stated reason not to. **Defaults** (mobile-first, progressive disclosure) are strong starting points a clear product context can override. When a rule forbids something, prefer "do X instead of Y" over a bare "never Y."
+Prefer native platform behavior and the smallest change that fully solves the problem.
 
-## Responsive
+## Accessibility
 
-1. **Default to mobile-first** — design the small screen first, then enhance for larger viewports. Exception: explicitly desktop-primary products (dashboards, IDEs, admin tools), which should still degrade gracefully on small screens.
-2. **Don't rely on input that may be absent** — no hover-only actions, no two-handed or high-precision gestures without a simple single-pointer alternative.
+1. **Preserve native keyboard semantics** — use native interactive elements whenever possible. Make every control keyboard-reachable with a visible focus indicator, and support the standard keys for that control: for example, Enter activates links, while Enter and Space activate buttons. Keep focus order aligned with DOM order unless the interface has a deliberate, accessible alternative.
+2. **Do not gate functionality by input method** — provide a click, tap, or keyboard path for hover affordances and gestures that require precision or multiple pointers. Allow hover to enhance an interaction without duplicating purely decorative effects.
+3. **Do not use color as the only meaningful signal** — pair status and meaning with text, an icon, shape, pattern, or accessible name.
+4. **Meet applicable contrast requirements** — target WCAG AA: 4.5:1 for normal text and 3:1 for large text. Provide 3:1 non-text contrast for visual information needed to identify controls, states, or meaningful icons; do not apply this requirement to decorative elements or redundant boundaries.
+5. **Size targets for the interaction context** — favor targets around 44px for touch-primary interfaces. Dense pointer-primary interfaces may use smaller visible controls when targets remain at least 24px, have adequate spacing, and are comfortably operable. Separate destructive actions from likely confirmation actions.
 
-## Accessibility (hard bar)
+## Responsive behavior
 
-3. **Keyboard-operable** — every interactive element works with Tab / Enter / Space and shows a visible focus indicator. Focus order follows DOM order.
-4. **Hover is never the only path** — every hover affordance also has a tap, click, or focus equivalent. Hover may enhance, never gate.
-5. **Color is never the only signal** — back it with text, an icon, or a label.
-6. **Contrast** — at least 4.5:1 for body text, 3:1 for large text, icons, and control borders.
-7. **Target size** — interactive targets at least ~44px (24px is the absolute floor); space destructive actions away from confirming ones.
+6. **Support the product's relevant viewport range** — use mobile-first construction when it fits the product, but preserve desktop-primary density and workflows for dashboards, editors, admin tools, and similar interfaces. Make those interfaces degrade gracefully on smaller screens without restructuring them solely to satisfy a mobile-first pattern.
+7. **Choose an explicit overflow behavior when content can exceed its bounds** — wrap, truncate, scroll, paginate, or use an overflow menu according to the content and workflow. Do not add pagination or virtualization without evidence that the expected data scale requires it.
 
 ## States & data
 
-8. **Design every state** — default, hover, focus, active, disabled, loading, error, success. Loading confirms input registered; error messages are human, specific, and tell the user how to recover.
-9. **Handle zero, one, and unbounded items** — pick an explicit overflow strategy (truncate, wrap, scroll, paginate, or overflow menu). A component that only looks right with 3–5 items is unfinished.
-10. **Always design a real empty state** — never a blank screen; confirm nothing is wrong and point to the next action.
+8. **Implement states that can actually occur** — cover the reachable default, interaction, disabled, loading, error, and success states relevant to the component's lifecycle. Do not invent state or supporting logic merely to complete a checklist. Make asynchronous feedback timely and errors specific, human-readable, and recoverable.
+9. **Handle realistic cardinality** — verify zero, one, typical, and plausible high-volume content according to product constraints. Do not treat all collections as unbounded.
+10. **Use an empty state when absence could be confusing** — explain empty data-backed views and offer a next step when one exists. Allow a region to remain visually quiet when its emptiness is already clear or intentional.
 
 ## Hierarchy & consistency
 
-11. **One clear hierarchy per screen** — the primary action is unmistakably dominant via size, weight, color, and spacing.
-12. **Use shared tokens** for color, type, spacing, and motion — never hardcode values. Reuse existing components and patterns before inventing new ones.
-13. **Progressive disclosure** — show the common path simply; tuck advanced options behind a secondary layer rather than removing them.
+11. **Reflect the workflow's actual hierarchy** — emphasize a primary action only when the screen genuinely has one. Keep peer actions visually equal when the workflow does not establish a single dominant choice.
+12. **Reuse established patterns before creating new ones** — use shared components and tokens for repeated or system-level decisions. Allow justified component-local values; do not expand or refactor the design system unless the task benefits from it.
+13. **Apply progressive disclosure selectively** — move genuinely infrequent or cognitively expensive options behind a secondary layer only when that improves the common workflow. Keep important and frequent functionality visible and preserve discoverability.
 
-When reviewing, report each failure with the element, what's wrong, the rule it breaks, and the concrete fix.
+When reviewing, report only relevant failures. For each one, identify the element, provide concrete evidence of the problem, and recommend the smallest effective fix. Distinguish objective accessibility defects from contextual design preferences.
