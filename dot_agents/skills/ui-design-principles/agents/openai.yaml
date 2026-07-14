@@ -4,4 +4,4 @@ interface:
   default_prompt: "Use $ui-design-principles to improve this interface without unnecessary redesign."
 
 policy:
-  allow_implicit_invocation: true
+  allow_implicit_invocation: false

@@ -129,7 +129,7 @@ Skills marked No require explicit invocation with `$skill-name`.
 | `stockrank-scores`            | Execute Stockrank ticker scoring work folders.                                                 | No          |
 | `svg-theme-converter`         | Convert an SVG icon into a self-theming light/dark SVG via embedded CSS.                       | Yes         |
 | `ui-cleanup`                  | Clean up duplicated and inconsistent frontend UI when explicitly requested.                    | No          |
-| `ui-design-principles`        | Apply accessible, responsive, and complete UI design defaults.                                 | Yes         |
+| `ui-design-principles`        | Apply accessible, responsive, and complete UI design defaults.                                 | No          |
 | `write-agents-md`             | Create a repository- or subtree-scoped `AGENTS.md` from codebase evidence.                     | Yes         |
 | `write-design-md`             | Create a project `DESIGN.md` from scratch.                                                     | Yes         |
 | `write-readme-md`             | Create a project `README.md` from scratch.                                                     | Yes         |
