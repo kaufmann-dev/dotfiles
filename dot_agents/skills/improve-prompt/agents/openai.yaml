@@ -1,0 +1,7 @@
+interface:
+  display_name: "Improve Prompt"
+  short_description: "Make prompts clearer, tighter, and more precise"
+  default_prompt: "Use $improve-prompt to improve this prompt without changing its intent."
+
+policy:
+  allow_implicit_invocation: false

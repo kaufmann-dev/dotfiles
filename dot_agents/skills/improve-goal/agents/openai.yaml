@@ -1,0 +1,7 @@
+interface:
+  display_name: "Improve Goal"
+  short_description: "Make goals measurable, durable, and verifiable"
+  default_prompt: "Use $improve-goal to make this goal clearer, measurable, and verifiable."
+
+policy:
+  allow_implicit_invocation: false

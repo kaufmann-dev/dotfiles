@@ -1,0 +1,7 @@
+interface:
+  display_name: "Coolify Deployment"
+  short_description: "Generate Coolify and Nixpacks deployment config"
+  default_prompt: "Use $coolify to prepare this project for deployment through Coolify and Nixpacks."
+
+policy:
+  allow_implicit_invocation: true

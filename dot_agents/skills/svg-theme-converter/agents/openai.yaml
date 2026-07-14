@@ -1,0 +1,7 @@
+interface:
+  display_name: "SVG Theme Converter"
+  short_description: "Make standalone SVG icons adapt to color scheme"
+  default_prompt: "Use $svg-theme-converter to make this standalone SVG adapt to light and dark mode."
+
+policy:
+  allow_implicit_invocation: true

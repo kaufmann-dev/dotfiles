@@ -1,0 +1,7 @@
+interface:
+  display_name: "Autofixer Graphify"
+  short_description: "Autofix with Graphify repository context"
+  default_prompt: "Use $autofixer-graphify to run a graph-assisted audit, fix, and verify loop."
+
+policy:
+  allow_implicit_invocation: false

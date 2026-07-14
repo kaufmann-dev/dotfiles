@@ -1,0 +1,7 @@
+interface:
+  display_name: "Write DESIGN.md"
+  short_description: "Create a spec-compliant visual design document"
+  default_prompt: "Use $write-design-md to create a DESIGN.md from this project's visual system."
+
+policy:
+  allow_implicit_invocation: true

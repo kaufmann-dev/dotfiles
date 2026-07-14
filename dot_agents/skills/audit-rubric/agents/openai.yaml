@@ -1,0 +1,7 @@
+interface:
+  display_name: "Audit Rubric"
+  short_description: "Create or apply a project-specific audit rubric"
+  default_prompt: "Use $audit-rubric to create or apply an audit rubric for this project."
+
+policy:
+  allow_implicit_invocation: false

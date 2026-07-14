@@ -1,0 +1,7 @@
+interface:
+  display_name: "Add MCP Servers"
+  short_description: "Add project-scoped MCP server configurations"
+  default_prompt: "Use $add-mcp-servers to add the requested MCP server to this project."
+
+policy:
+  allow_implicit_invocation: false

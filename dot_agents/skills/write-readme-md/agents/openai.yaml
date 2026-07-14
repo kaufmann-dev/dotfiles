@@ -1,0 +1,7 @@
+interface:
+  display_name: "Write README.md"
+  short_description: "Create a repository README from codebase evidence"
+  default_prompt: "Use $write-readme-md to create a README from this repository's evidence."
+
+policy:
+  allow_implicit_invocation: true

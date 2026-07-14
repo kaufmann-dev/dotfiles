@@ -1,0 +1,7 @@
+interface:
+  display_name: "Write AGENTS.md"
+  short_description: "Create evidence-based repository agent instructions"
+  default_prompt: "Use $write-agents-md to create agent instructions from this repository's evidence."
+
+policy:
+  allow_implicit_invocation: true

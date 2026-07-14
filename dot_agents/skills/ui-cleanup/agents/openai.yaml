@@ -1,0 +1,7 @@
+interface:
+  display_name: "UI Cleanup"
+  short_description: "Consolidate inconsistent UI without redesigning"
+  default_prompt: "Use $ui-cleanup to consolidate this frontend UI without changing its design or behavior."
+
+policy:
+  allow_implicit_invocation: false

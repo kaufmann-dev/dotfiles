@@ -1,0 +1,7 @@
+interface:
+  display_name: "Authentik OIDC Migration"
+  short_description: "Migrate Kaufmann apps to Authentik OIDC"
+  default_prompt: "Use $authentik-oidc-migration to migrate this application to Kaufmann ID."
+
+policy:
+  allow_implicit_invocation: false
