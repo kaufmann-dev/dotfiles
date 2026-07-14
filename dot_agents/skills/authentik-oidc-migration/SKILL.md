@@ -1,6 +1,6 @@
 ---
 name: authentik-oidc-migration
-description: Migrate a Kaufmann application from app-local authentication to OIDC through https://auth.kaufmann.dev while preserving app-owned data and authorization when needed. Use only when the user explicitly invokes this skill or asks to replace an application's local login with Kaufmann Authentik/Kaufmann ID.
+description: Migrate a Kaufmann application from app-local authentication to Kaufmann Authentik OIDC while preserving app-owned data and authorization when needed. Use only when the user explicitly invokes this skill.
 ---
 
 # Authentik OIDC Migration

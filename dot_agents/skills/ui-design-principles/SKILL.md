@@ -1,6 +1,6 @@
 ---
 name: ui-design-principles
-description: Context-sensitive design guardrails for building or reviewing user interfaces. Use this whenever creating, editing, or critiquing frontend UI, or when the user mentions responsive design, interaction states, keyboard navigation, accessibility, visual hierarchy, or component consistency. Preserve the product's intent, established patterns, and appropriate density; do not turn these guardrails into an unrelated redesign.
+description: Provide context-sensitive design guardrails for building or reviewing user interfaces. Use only when the user explicitly invokes this skill.
 ---
 
 # UI Design Principles

@@ -1,6 +1,6 @@
 ---
 name: add-mcp-servers
-description: Add or update project-scoped MCP server configuration entries. Use only when the user explicitly invokes this skill or asks for project-specific MCP configs.
+description: Add or update project-scoped MCP server configuration entries. Use only when the user explicitly invokes this skill.
 ---
   
 # Add MCP Configs

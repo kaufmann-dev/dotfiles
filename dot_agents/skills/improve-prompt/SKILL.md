@@ -1,6 +1,6 @@
 ---
 name: improve-prompt
-description: Improve prompt text in place. Use only when the user explicitly invokes this skill or asks to improve a prompt.
+description: Improve prompt text in place. Use only when the user explicitly invokes this skill.
 ---
 
 # Improve Prompt

@@ -1,6 +1,6 @@
 ---
 name: stockrank-proposals
-description: Execute Stockrank proposal work folders by following task.txt and validating proposal.toml outputs.  Use only when the user explicitly invokes this skill.
+description: Execute Stockrank proposal work folders by following task.txt and validating proposal.toml outputs. Use only when the user explicitly invokes this skill.
 ---
 
 You are constructing a portfolio proposal based on the scores and rationales of multiple stock tickers.

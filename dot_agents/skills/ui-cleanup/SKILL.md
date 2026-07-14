@@ -1,6 +1,6 @@
 ---
 name: ui-cleanup
-description: Clean up duplicated and inconsistent frontend UI without redesigning or changing behavior. Use only when the user explicitly invokes this skill or asks for frontend cleanup.
+description: Clean up duplicated and inconsistent frontend UI without redesigning or changing behavior. Use only when the user explicitly invokes this skill.
 ---
 
 # UI Cleanup

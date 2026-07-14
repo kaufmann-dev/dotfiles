@@ -1,6 +1,6 @@
 ---
 name: medsurface
-description: Use the medsurface CLI to list and select medical image volumes; convert DICOM, NIfTI, NRRD, or MetaImage volumes into STL, PLY, or OBJ meshes; register and merge scans; and validate or repair meshes. Use only when the user explicitly invokes this skill, asks to use medsurface, or requests a surface mesh from supported medical imaging data.
+description: Use the medsurface CLI to select medical image volumes, convert or merge them into surface meshes, and validate or repair meshes. Use when the user asks to use medsurface or requests a surface mesh from supported medical imaging data.
 ---
 
 # medsurface

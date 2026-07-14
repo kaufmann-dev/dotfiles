@@ -1,6 +1,6 @@
 ---
 name: distill-agents-md
-description: Distills a bloated AGENTS.md or alternative instruction files into a lean, high-signal version. Use only when the user explicitly invokes this skill or asks for distillation of agent instructions.
+description: Distill a bloated AGENTS.md or alternative instruction file into a lean, high-signal version. Use when the user asks to distill agent instructions.
 ---
 
 # distill-agents

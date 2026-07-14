@@ -1,6 +1,6 @@
 ---
 name: build-brief-generator
-description: Turns a messy, casual product idea into a clear, complete, practical AI Build Brief ready for AI coding agents. Use only when the user explicitly invokes this skill or asks for help turning an idea into a buildable brief.
+description: Turn a messy product idea into a clear, complete, practical AI Build Brief ready for coding agents. Use only when the user explicitly invokes this skill.
 ---
 
 # IDENTITY

@@ -1,6 +1,6 @@
 ---
 name: audit-defect
-description: Audit a codebase for concrete, actionable defects. Use only when the user explicitly invokes this skill or asks for a defect audit.
+description: Audit a codebase for concrete, actionable defects. Use only when the user explicitly invokes this skill.
 ---
 
 # Actionable Defect Audit

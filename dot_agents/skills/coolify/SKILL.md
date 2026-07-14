@@ -1,6 +1,6 @@
 ---
 name: coolify
-description: Inspect a project and generate its Coolify deployment configuration — a minimal nixpacks.toml for build-time settings plus a managed "Coolify Deployment" section in the README for the settings Coolify reads from its own UI (Base Directory, Publish Directory, Pre/Post Deployment Commands, environment variables). Use only when the user explicitly invokes this skill or asks to generate Coolify / Nixpacks deployment config.
+description: Inspect a project and generate its Coolify deployment configuration, including minimal Nixpacks settings and a managed README deployment section. Use when a project needs Coolify or Nixpacks deployment configuration.
 ---
 
 # Coolify Deployment Config
