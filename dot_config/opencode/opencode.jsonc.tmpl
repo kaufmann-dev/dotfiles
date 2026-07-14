@@ -15,9 +15,10 @@
       "type": "local",
       "command": [
         "npx",
+        "--yes",
         "@playwright/mcp@latest",
         "--browser",
-        "chromium"
+        "chrome-beta"
       ]
     }{{ with index . "github_pat" }},
     "github": {
