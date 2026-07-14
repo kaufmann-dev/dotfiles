@@ -1,0 +1,7 @@
+interface:
+  display_name: "Humanizer German"
+  short_description: "Make German writing sound natural and idiomatic"
+  default_prompt: "Use $humanizer-german to rewrite this German text naturally and idiomatically."
+
+policy:
+  allow_implicit_invocation: false

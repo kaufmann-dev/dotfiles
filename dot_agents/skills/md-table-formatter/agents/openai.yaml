@@ -1,0 +1,7 @@
+interface:
+  display_name: "Markdown Table Formatter"
+  short_description: "Format Markdown tables with consistent spacing"
+  default_prompt: "Use $md-table-formatter to format the Markdown tables in this file."
+
+policy:
+  allow_implicit_invocation: true

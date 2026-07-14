@@ -98,38 +98,41 @@ The global instructions emphasize simple, surgical changes, repo-first discovery
 
 Skills are installed under `~/.agents/skills/`.
 
-| Skill                         | Purpose                                                                                        |
-| ----------------------------- | ---------------------------------------------------------------------------------------------- |
-| `add-mcp-servers`             | Add or update project-scoped MCP server configuration entries.                                 |
-| `add-subagents`               | Add or update project-scoped subagent definitions across multiple agent tools.                 |
-| `audit-complete`              | Perform a comprehensive, stateless codebase audit before a major release.                      |
-| `audit-defect`                | Directly audit a codebase for concrete, actionable defects.                                    |
-| `audit-rubric`                | Create a bounded, project-specific rubric and immediately audit against it.                    |
-| `authentik-oidc-migration`    | Migrate Kaufmann apps from local authentication to Authentik OIDC.                             |
-| `autofixer`                   | Coordinate a bounded audit-fix-verify loop using fresh-context subagents.                      |
-| `autofixer-graphify`          | Like `autofixer` but with Graphify-backed repository graph context.                            |
-| `autofixer-yolo`              | Coordinate a bounded audit-fix-verify loop that proceeds without approval for dangerous fixes. |
-| `build-brief-generator`       | Turns a product idea into a clear, complete, and practical AI Build Brief.                     |
-| `coolify`                     | Generate a project's Coolify/Nixpacks deployment config (nixpacks.toml + README).              |
-| `create-datatable`            | Create, extend, or review production-quality tabular data views.                               |
-| `debugging`                   | Debug bugs by reproducing behavior, confirming root cause, and documenting fixes.              |
-| `medsurface`                  | Convert medical image volumes into meshes, merge scans, and validate or repair meshes.         |
-| `distill-agents-md`           | Distill bloated instruction files (AGENTS.md, etc.) into lean versions.                        |
-| `humanizer`                   | Remove signs of AI-generated writing from text.                                                |
-| `humanizer-german`            | Rewrite German text to sound natural and idiomatic without flattening it.                      |
-| `improve-goal`                | Improve goals, persistent objectives, and long-running task contracts.                         |
-| `improve-implementation-plan` | Improve implementation plans by recovering intent and re-deriving solutions.                   |
-| `improve-prompt`              | Improve prompt and instruction files using general prompt-quality guidance.                    |
-| `md-table-formatter`          | Format Markdown tables after any table is created or modified.                                 |
-| `stockrank-portfolio`         | Execute final Stockrank portfolio allocation work folders.                                     |
-| `stockrank-proposals`         | Execute Stockrank proposal construction work folders.                                          |
-| `stockrank-scores`            | Execute Stockrank ticker scoring work folders.                                                 |
-| `svg-theme-converter`         | Convert an SVG icon into a self-theming light/dark SVG via embedded CSS.                       |
-| `ui-cleanup`                  | Clean up duplicated and inconsistent frontend UI when explicitly requested.                    |
-| `ui-design-principles`        | Apply accessible, responsive, and complete UI design defaults.                                 |
-| `write-agents-md`             | Create a repository- or subtree-scoped `AGENTS.md` from codebase evidence.                     |
-| `write-design-md`             | Create a project `DESIGN.md` from scratch.                                                     |
-| `write-readme-md`             | Create a project `README.md` from scratch.                                                     |
+The Auto-invoke column shows whether an agent may select a skill implicitly when it is relevant.
+Skills marked No require explicit invocation with `$skill-name`.
+
+| Skill                         | Purpose                                                                                        | Auto-invoke |
+| ----------------------------- | ---------------------------------------------------------------------------------------------- | ----------- |
+| `add-mcp-servers`             | Add or update project-scoped MCP server configuration entries.                                 | No          |
+| `add-subagents`               | Add or update project-scoped subagent definitions across multiple agent tools.                 | No          |
+| `audit-complete`              | Perform a comprehensive, stateless codebase audit before a major release.                      | No          |
+| `audit-defect`                | Directly audit a codebase for concrete, actionable defects.                                    | No          |
+| `audit-rubric`                | Create a bounded, project-specific rubric and immediately audit against it.                    | No          |
+| `authentik-oidc-migration`    | Migrate Kaufmann apps from local authentication to Authentik OIDC.                             | No          |
+| `autofixer`                   | Coordinate a bounded audit-fix-verify loop using fresh-context subagents.                      | No          |
+| `autofixer-graphify`          | Like `autofixer` but with Graphify-backed repository graph context.                            | No          |
+| `autofixer-yolo`              | Coordinate a bounded audit-fix-verify loop that proceeds without approval for dangerous fixes. | No          |
+| `build-brief-generator`       | Turns a product idea into a clear, complete, and practical AI Build Brief.                     | No          |
+| `coolify`                     | Generate a project's Coolify/Nixpacks deployment config (nixpacks.toml + README).              | Yes         |
+| `create-datatable`            | Create, extend, or review production-quality tabular data views.                               | Yes         |
+| `debugging`                   | Debug bugs by reproducing behavior, confirming root cause, and documenting fixes.              | Yes         |
+| `distill-agents-md`           | Distill bloated instruction files (AGENTS.md, etc.) into lean versions.                        | Yes         |
+| `humanizer`                   | Remove signs of AI-generated writing from text.                                                | No          |
+| `humanizer-german`            | Rewrite German text to sound natural and idiomatic without flattening it.                      | No          |
+| `improve-goal`                | Improve goals, persistent objectives, and long-running task contracts.                         | No          |
+| `improve-implementation-plan` | Improve implementation plans by recovering intent and re-deriving solutions.                   | No          |
+| `improve-prompt`              | Improve prompt and instruction files using general prompt-quality guidance.                    | No          |
+| `md-table-formatter`          | Format Markdown tables after any table is created or modified.                                 | Yes         |
+| `medsurface`                  | Convert medical image volumes into meshes, merge scans, and validate or repair meshes.         | Yes         |
+| `stockrank-portfolio`         | Execute final Stockrank portfolio allocation work folders.                                     | No          |
+| `stockrank-proposals`         | Execute Stockrank proposal construction work folders.                                          | No          |
+| `stockrank-scores`            | Execute Stockrank ticker scoring work folders.                                                 | No          |
+| `svg-theme-converter`         | Convert an SVG icon into a self-theming light/dark SVG via embedded CSS.                       | Yes         |
+| `ui-cleanup`                  | Clean up duplicated and inconsistent frontend UI when explicitly requested.                    | No          |
+| `ui-design-principles`        | Apply accessible, responsive, and complete UI design defaults.                                 | Yes         |
+| `write-agents-md`             | Create a repository- or subtree-scoped `AGENTS.md` from codebase evidence.                     | Yes         |
+| `write-design-md`             | Create a project `DESIGN.md` from scratch.                                                     | Yes         |
+| `write-readme-md`             | Create a project `README.md` from scratch.                                                     | Yes         |
 
 ## MCP Servers
 

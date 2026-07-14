@@ -1,0 +1,7 @@
+interface:
+  display_name: "Create Data Table"
+  short_description: "Build and review production-quality data tables"
+  default_prompt: "Use $create-datatable to build a complete, accessible data table for this project."
+
+policy:
+  allow_implicit_invocation: true

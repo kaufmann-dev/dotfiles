@@ -1,0 +1,7 @@
+interface:
+  display_name: "Add Subagents"
+  short_description: "Add project-scoped subagent definitions"
+  default_prompt: "Use $add-subagents to add the requested subagent definitions to this project."
+
+policy:
+  allow_implicit_invocation: false

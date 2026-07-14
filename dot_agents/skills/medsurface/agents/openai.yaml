@@ -1,0 +1,7 @@
+interface:
+  display_name: "medsurface"
+  short_description: "Convert medical image volumes into surface meshes"
+  default_prompt: "Use $medsurface to convert this medical image volume into a validated surface mesh."
+
+policy:
+  allow_implicit_invocation: true

@@ -1,0 +1,7 @@
+interface:
+  display_name: "Autofixer"
+  short_description: "Run a bounded audit, fix, and verify loop"
+  default_prompt: "Use $autofixer to audit, repair, and verify this codebase until convergence."
+
+policy:
+  allow_implicit_invocation: false

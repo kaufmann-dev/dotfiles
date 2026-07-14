@@ -1,0 +1,7 @@
+interface:
+  display_name: "Defect Audit"
+  short_description: "Find concrete, actionable codebase defects"
+  default_prompt: "Use $audit-defect to audit this codebase for actionable defects."
+
+policy:
+  allow_implicit_invocation: false

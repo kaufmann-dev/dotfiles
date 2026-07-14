@@ -1,0 +1,7 @@
+interface:
+  display_name: "Improve Implementation Plan"
+  short_description: "Re-derive implementation plans from true intent"
+  default_prompt: "Use $improve-implementation-plan to re-derive this plan from the intended outcome."
+
+policy:
+  allow_implicit_invocation: false

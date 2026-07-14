@@ -1,0 +1,7 @@
+interface:
+  display_name: "Distill Agent Instructions"
+  short_description: "Condense agent instructions into high-signal rules"
+  default_prompt: "Use $distill-agents-md to distill this agent instruction file."
+
+policy:
+  allow_implicit_invocation: true

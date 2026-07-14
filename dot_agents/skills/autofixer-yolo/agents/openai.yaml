@@ -1,0 +1,7 @@
+interface:
+  display_name: "Autofixer YOLO"
+  short_description: "Autofix without dangerous-action approvals"
+  default_prompt: "Use $autofixer-yolo to audit and repair this codebase without approval pauses."
+
+policy:
+  allow_implicit_invocation: false

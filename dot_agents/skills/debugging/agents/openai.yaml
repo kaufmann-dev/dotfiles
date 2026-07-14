@@ -1,0 +1,7 @@
+interface:
+  display_name: "Debugging"
+  short_description: "Reproduce bugs, find root causes, and fix them"
+  default_prompt: "Use $debugging to reproduce this bug, confirm its root cause, and fix it."
+
+policy:
+  allow_implicit_invocation: true

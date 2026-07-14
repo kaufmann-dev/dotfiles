@@ -1,0 +1,7 @@
+interface:
+  display_name: "Complete Codebase Audit"
+  short_description: "Audit an entire codebase for concrete defects"
+  default_prompt: "Use $audit-complete to perform a comprehensive audit of this codebase."
+
+policy:
+  allow_implicit_invocation: false

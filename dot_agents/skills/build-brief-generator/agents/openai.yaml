@@ -1,0 +1,7 @@
+interface:
+  display_name: "Build Brief Generator"
+  short_description: "Turn product ideas into build-ready briefs"
+  default_prompt: "Use $build-brief-generator to turn this product idea into an implementation-ready brief."
+
+policy:
+  allow_implicit_invocation: false
