@@ -1,6 +1,6 @@
 ---
 name: audit-rubric
-description: Create a project-specific audit rubric or audit against an existing rubric. Use only when the user explicitly invokes this skill or asks for a rubric-based audit.
+description: Create a project-specific audit rubric or audit against an existing rubric. Use only when the user explicitly invokes this skill.
 ---
 
 # Rubric-Based Audit

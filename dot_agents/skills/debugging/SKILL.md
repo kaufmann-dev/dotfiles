@@ -1,6 +1,6 @@
 ---
 name: debugging
-description: Use when reviewing, fixing, reproducing, or hunting bugs.
+description: Reproduce bugs, identify root causes, and implement verified fixes. Use when reviewing, fixing, reproducing, or hunting bugs.
 ---
 
 # Debugging

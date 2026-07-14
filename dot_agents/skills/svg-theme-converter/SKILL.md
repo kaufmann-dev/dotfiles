@@ -1,6 +1,6 @@
 ---
 name: svg-theme-converter
-description: Convert a standard SVG icon into a self-theming SVG that adapts to light and dark mode via an embedded CSS prefers-color-scheme media query. Handles fill-based and stroke-based icons with any number of shapes. Use only when the user explicitly invokes this skill or asks to make an SVG icon theme-aware / dark-mode aware.
+description: Convert fill-based or stroke-based SVG icons into self-theming SVGs that adapt to light and dark mode through embedded CSS. Use when the user asks to make a standalone SVG icon theme-aware or dark-mode aware.
 ---
 
 # SVG Theme Converter

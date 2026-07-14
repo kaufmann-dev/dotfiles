@@ -1,6 +1,6 @@
 ---
 name: improve-implementation-plan
-description: Review and improve implementation plans by recovering true intent and re-deriving solutions from first principles. Use only when the user explicitly invokes this skill or asks for plan improvement.
+description: Review and improve implementation plans by recovering true intent and re-deriving solutions from first principles. Use only when the user explicitly invokes this skill.
 ---
 
 # Improve Implementation Plan

@@ -1,6 +1,6 @@
 ---
 name: autofixer
-description: Coordinate a bounded audit-fix-verify loop that automatically mutates code through fresh-context subagents. Use only when the user explicitly invokes this skill or asks for an autonomous audit-and-fix workflow.
+description: Coordinate a bounded audit-fix-verify loop that automatically mutates code through fresh-context subagents. Use only when the user explicitly invokes this skill.
 ---
 
 # Autofixer

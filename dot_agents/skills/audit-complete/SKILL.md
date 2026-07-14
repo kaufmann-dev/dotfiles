@@ -1,6 +1,6 @@
 ---
 name: audit-complete
-description: Perform a comprehensive, evidence-based codebase audit. Use only when the user explicitly invokes this skill or asks for a complete audit.
+description: Perform a comprehensive, evidence-based codebase audit. Use only when the user explicitly invokes this skill.
 ---
 
 # Complete Codebase Audit

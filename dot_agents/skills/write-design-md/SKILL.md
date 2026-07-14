@@ -1,6 +1,6 @@
 ---
 name: write-design-md
-description: Create a DESIGN.md file compliant with the @google/design.md spec from evidence in the codebase. Use only when the user explicitly invokes this skill or asks to create a design doc.
+description: Create a DESIGN.md file compliant with the @google/design.md spec from codebase evidence. Use when the user asks to create a visual design document.
 ---
 
 # Write DESIGN.md

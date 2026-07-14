@@ -1,6 +1,6 @@
 ---
 name: humanizer-german
-description: Remove signs of AI-generated writing from text written in the German language. Use only when the user explicitly invokes this skill or asks to humanize German text.
+description: Remove signs of AI-generated writing from text written in the German language. Use only when the user explicitly invokes this skill.
 ---
 
 # Humanizer German

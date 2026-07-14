@@ -1,6 +1,6 @@
 ---
 name: improve-goal
-description: Improve goals, persistent objectives, and long-running task contracts. Use only when the user explicitly invokes this skill or asks for goal improvement.
+description: Improve goals, persistent objectives, and long-running task contracts. Use only when the user explicitly invokes this skill.
 ---
 
 # Improve Goal

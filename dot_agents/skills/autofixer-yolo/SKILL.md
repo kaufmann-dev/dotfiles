@@ -1,6 +1,6 @@
 ---
 name: autofixer-yolo
-description: Coordinate a bounded audit-fix-verify loop that automatically mutates code through fresh-context subagents, proceeding without approval for dangerous fixes. Use only when the user explicitly invokes this skill or asks for an autonomous no-approval audit-and-fix workflow.
+description: Coordinate a bounded audit-fix-verify loop that automatically mutates code through fresh-context subagents, proceeding without approval for dangerous fixes. Use only when the user explicitly invokes this skill.
 ---
 
 # Autofixer YOLO
