@@ -124,9 +124,6 @@ Skills marked No require explicit invocation with `$skill-name`.
 | `improve-prompt`              | Improve prompt and instruction files using general prompt-quality guidance.                    | No          |
 | `md-table-formatter`          | Format Markdown tables after any table is created or modified.                                 | Yes         |
 | `medsurface`                  | Convert medical image volumes into meshes, merge scans, and validate or repair meshes.         | Yes         |
-| `stockrank-portfolio`         | Execute final Stockrank portfolio allocation work folders.                                     | No          |
-| `stockrank-proposals`         | Execute Stockrank proposal construction work folders.                                          | No          |
-| `stockrank-scores`            | Execute Stockrank ticker scoring work folders.                                                 | No          |
 | `svg-theme-converter`         | Convert an SVG icon into a self-theming light/dark SVG via embedded CSS.                       | Yes         |
 | `ui-cleanup`                  | Clean up duplicated and inconsistent frontend UI when explicitly requested.                    | No          |
 | `ui-design-principles`        | Apply accessible, responsive, and complete UI design defaults.                                 | No          |
