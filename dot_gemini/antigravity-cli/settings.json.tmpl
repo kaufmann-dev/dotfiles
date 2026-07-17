@@ -5,24 +5,11 @@
     },
     "gh_grep": {
       "httpUrl": "https://mcp.grep.app"
-    },
-    "playwright": {
-      "command": "npx",
-      "args": [
-        "--yes",
-        "@playwright/mcp@latest",
-        "--browser",
-        "chrome-beta"
-      ]
     }{{ with index . "github_pat" }},
     "github": {
-      "command": "npx",
-      "args": [
-        "-y",
-        "@modelcontextprotocol/server-github"
-      ],
-      "env": {
-        "GITHUB_PERSONAL_ACCESS_TOKEN": "{{ . }}"
+      "httpUrl": "https://api.githubcopilot.com/mcp/",
+      "headers": {
+        "Authorization": "Bearer {{ . }}"
       }
     }
     {{- end }}{{ with index . "massive_api_key" }},

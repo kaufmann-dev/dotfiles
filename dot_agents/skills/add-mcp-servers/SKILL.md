@@ -84,56 +84,6 @@ Claude Code `.mcp.json`:
 }
 ```
 
-Local stdio server named `playwright` using `npx @playwright/mcp@latest`:
-
-Codex `.codex/config.toml`:
-
-```toml
-[mcp_servers.playwright]
-command = "npx"
-args = ["@playwright/mcp@latest"]
-```
-
-OpenCode `opencode.json`:
-
-```json
-{
-  "mcp": {
-    "playwright": {
-      "type": "local",
-      "command": ["npx", "@playwright/mcp@latest"]
-    }
-  }
-}
-```
-
-Antigravity `.gemini/settings.json`:
-
-```json
-{
-  "mcpServers": {
-    "playwright": {
-      "command": "npx",
-      "args": ["@playwright/mcp@latest"]
-    }
-  }
-}
-```
-
-Claude Code `.mcp.json`:
-
-```json
-{
-  "mcpServers": {
-    "playwright": {
-      "type": "stdio",
-      "command": "npx",
-      "args": ["@playwright/mcp@latest"]
-    }
-  }
-}
-```
-
 ## Rules
 
 1. Do not add credentials or tokens to config files; reference environment variables instead.

@@ -7,26 +7,12 @@
     "gh_grep": {
       "type": "http",
       "url": "https://mcp.grep.app"
-    },
-    "playwright": {
-      "type": "stdio",
-      "command": "npx",
-      "args": [
-        "--yes",
-        "@playwright/mcp@latest",
-        "--browser",
-        "chrome-beta"
-      ]
     }{{ with index . "github_pat" }},
     "github": {
-      "type": "stdio",
-      "command": "npx",
-      "args": [
-        "-y",
-        "@modelcontextprotocol/server-github"
-      ],
-      "env": {
-        "GITHUB_PERSONAL_ACCESS_TOKEN": "{{ . }}"
+      "type": "http",
+      "url": "https://api.githubcopilot.com/mcp/",
+      "headers": {
+        "Authorization": "Bearer {{ . }}"
       }
     }
     {{- end }}{{ with index . "massive_api_key" }},

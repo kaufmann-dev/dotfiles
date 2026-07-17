@@ -13,15 +13,10 @@ url = "https://mcp.context7.com/mcp"
 [mcp_servers.gh_grep]
 url = "https://mcp.grep.app"
 
-[mcp_servers.playwright]
-command = "npx"
-args = ["--yes", "@playwright/mcp@latest", "--browser", "chrome-beta"]
-
 {{ with index . "github_pat" -}}
 [mcp_servers.github]
-command = "npx"
-args = ["-y", "@modelcontextprotocol/server-github"]
-env = { GITHUB_PERSONAL_ACCESS_TOKEN = "{{ . }}" }
+url = "https://api.githubcopilot.com/mcp/"
+http_headers = { Authorization = "Bearer {{ . }}" }
 {{- end }}
 {{ with index . "massive_api_key" -}}
 [mcp_servers.massive]

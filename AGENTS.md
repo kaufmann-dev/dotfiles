@@ -17,7 +17,7 @@ If something material is unclear and cannot be discovered, ask before proceeding
 
 ## Tooling Preferences
 - Use `podman` instead of `docker` for all container operations.
-- Use the `playwright` MCP server for browser interaction and UI testing when such testing is explicitly requested or genuinely necessary. Never use the Playwright CLI or another headless browser as a substitute.
+- Use `agent-browser` for browser interaction and UI testing when such testing is explicitly requested or genuinely necessary. Run `agent-browser --help` before first use in a task.
 - Use the `gh_grep` MCP server to search public GitHub code for concrete patterns; use local `rg` for a single cloned repository.
 - Use the `context7` MCP server for version-specific library or framework documentation.
 - {{- if (index . "github_pat") }} Use the `github` MCP server for GitHub interactions such as issues, PRs, and remote file contents; use local git for local repository operations. {{- end }}
