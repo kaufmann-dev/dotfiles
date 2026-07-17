@@ -20,6 +20,7 @@ This repository focuses on installing shared instructions, reusable skills, and 
   - [Agent Instructions](#agent-instructions)
   - [Skills](#skills)
   - [MCP Servers](#mcp-servers)
+  - [Browser Automation](#browser-automation)
 
 ## Prerequisites
 
@@ -36,7 +37,8 @@ sh -c "$(curl -fsLS get.chezmoi.io)" -- -b ~/.local/bin
 winget install twpayne.chezmoi
 ```
 
-Some configured MCP servers run through `npx`, so Node.js/npm must also be available for full MCP support.
+Install `agent-browser` separately when browser automation is needed. The dotfiles configure agents
+to use the command but do not install programs.
 
 ## Install
 
@@ -135,14 +137,13 @@ Skills marked No require explicit invocation with `$skill-name`.
 
 All supported agent tools are configured with the same MCP servers:
 
-| MCP               | Configuration | Purpose                                                        |
-| ----------------- | ------------- | -------------------------------------------------------------- |
-| `context7`        | Remote URL    | Current library and framework documentation.                   |
-| `gh_grep`         | Remote URL    | Real-world code examples from public GitHub repositories.      |
-| `playwright`      | Local `npx`   | Browser automation, UI checks, and end-to-end verification.    |
-| `github`          | Local `npx`   | GitHub API workflows when repository work is authorized.       |
-| `massive`         | Local stdio   | Financial market data (stocks, options, crypto, fundamentals). |
-| `portfolio_arena` | Remote HTTP   | Portfolio Arena admin data and operations.                     |
+| MCP               | Configuration | Purpose                                                   |
+| ----------------- | ------------- | --------------------------------------------------------- |
+| `context7`        | Remote HTTP   | Current library and framework documentation.              |
+| `gh_grep`         | Remote HTTP   | Real-world code examples from public GitHub repositories. |
+| `github`          | Remote HTTP   | GitHub API workflows when repository work is authorized.  |
+| `massive`         | Local stdio   | Financial market data when `mcp_massive` is installed.    |
+| `portfolio_arena` | Remote HTTP   | Portfolio Arena admin data and operations.                |
 
 The `github`, `massive`, and `portfolio_arena` MCP servers need local credentials. This public
 repository does not store tokens or other credentials. The MCP config files are
@@ -155,11 +156,15 @@ corresponding MCP server is omitted:
 - `massive_api_key` — a [Massive.com API key](https://massive.com/?utm_campaign=mcp&utm_medium=referral&utm_source=github).
 - `portfolio_arena_api_key` — a Portfolio Arena API key (generate one via the admin dashboard at <https://arena.kaufmann.dev>).
 
-The `massive` MCP server requires [Astral UV](https://docs.astral.sh/uv/) and
-the `mcp_massive` binary installed on `PATH`:
+The Massive entry is generated only when `massive_api_key` is configured. Machines using it also
+need [Astral UV](https://docs.astral.sh/uv/) and the `mcp_massive` binary on `PATH`:
+
 ```sh
 uv tool install "mcp_massive @ git+https://github.com/massive-com/mcp_massive@v0.10.0"
 ```
 
-The `playwright` MCP server launches the locally installed Google Chrome Beta channel. Install
-Google Chrome Beta before using browser automation; the configs pass `--browser chrome-beta`.
+## Browser Automation
+
+The shared agent instructions use `agent-browser` for browser automation. Install the command and
+a compatible Chromium browser in the environment, then run `agent-browser --help` before first use.
+Agent-browser skills remain a per-project opt-in rather than a global dotfiles installation.

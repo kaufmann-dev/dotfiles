@@ -147,8 +147,8 @@ end-to-end checks. Add focused tests that prove the applicable behavior:
 - Local password login, reset, registration, and change routes no longer work.
 - The client secret is absent from browser output and public configuration.
 
-Where browser interaction is necessary, use the available Playwright MCP server. Do not use the
-Playwright CLI or another headless-browser substitute. Do not claim a live Authentik login was
+Where browser interaction is necessary, use `agent-browser` and read `agent-browser --help`
+before first use. Do not claim a live Authentik login was
 verified unless the required access and provider configuration were available.
 
 ## Final Report
