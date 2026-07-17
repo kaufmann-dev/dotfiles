@@ -15,8 +15,9 @@ url = "https://mcp.grep.app"
 
 {{ with index . "github_pat" -}}
 [mcp_servers.github]
-url = "https://api.githubcopilot.com/mcp/"
-http_headers = { Authorization = "Bearer {{ . }}" }
+command = "npx"
+args = ["-y", "@modelcontextprotocol/server-github"]
+env = { GITHUB_PERSONAL_ACCESS_TOKEN = "{{ . }}" }
 {{- end }}
 {{ with index . "massive_api_key" -}}
 [mcp_servers.massive]

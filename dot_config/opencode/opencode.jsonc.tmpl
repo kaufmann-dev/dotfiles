@@ -12,11 +12,14 @@
       "url": "https://mcp.grep.app"
     }{{ with index . "github_pat" }},
     "github": {
-      "type": "remote",
-      "url": "https://api.githubcopilot.com/mcp/",
-      "oauth": false,
-      "headers": {
-        "Authorization": "Bearer {{ . }}"
+      "type": "local",
+      "command": [
+        "npx",
+        "-y",
+        "@modelcontextprotocol/server-github"
+      ],
+      "environment": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "{{ . }}"
       }
     }
     {{- end }}{{ with index . "massive_api_key" }},
