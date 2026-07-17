@@ -37,8 +37,9 @@ sh -c "$(curl -fsLS get.chezmoi.io)" -- -b ~/.local/bin
 winget install twpayne.chezmoi
 ```
 
-Install `agent-browser` separately when browser automation is needed. The dotfiles configure agents
-to use the command but do not install programs.
+Some configured MCP servers run through `npx`, so Node.js/npm must be available for full MCP
+support. Install `agent-browser` separately when browser automation is needed. The dotfiles
+configure agents to use the command but do not install programs.
 
 ## Install
 
@@ -141,7 +142,7 @@ All supported agent tools are configured with the same MCP servers:
 | ----------------- | ------------- | --------------------------------------------------------- |
 | `context7`        | Remote HTTP   | Current library and framework documentation.              |
 | `gh_grep`         | Remote HTTP   | Real-world code examples from public GitHub repositories. |
-| `github`          | Remote HTTP   | GitHub API workflows when repository work is authorized.  |
+| `github`          | Local `npx`   | GitHub API workflows when repository work is authorized.  |
 | `massive`         | Local stdio   | Financial market data when `mcp_massive` is installed.    |
 | `portfolio_arena` | Remote HTTP   | Portfolio Arena admin data and operations.                |
 
