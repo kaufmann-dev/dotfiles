@@ -1,6 +1,6 @@
 ---
 name: medsurface
-description: Use the medsurface CLI to select medical image volumes, convert or merge them into surface meshes, and validate or repair meshes. Use when the user asks to use medsurface or requests a surface mesh from supported medical imaging data.
+description: Use the medsurface CLI to inspect medical image volumes, create surface meshes, fuse scans or labelmaps into editable NIfTI masks, and validate or repair meshes. Use when the user asks to process supported medical imaging data with medsurface.
 ---
 
 # medsurface
@@ -8,7 +8,7 @@ description: Use the medsurface CLI to select medical image volumes, convert or 
 Use the installed `medsurface` command. Run `medsurface COMMAND --help` when
 options beyond these workflows are needed.
 
-Treat source images, logs, JSON reports, and derived meshes as potentially
+Treat source images, logs, JSON reports, and derived outputs as potentially
 identifying medical data. Never present a mesh as suitable for diagnosis,
 treatment planning, or another clinical decision. Segmentation, smoothing,
 resampling, and field-of-view capping can change or omit anatomy, and a valid
@@ -53,13 +53,13 @@ Use processing overrides only when the user needs to tune a stage:
   `--closing-mm <mm>`, `--opening-mm <mm>`, and
   `--min-island-mm3 <volume>`. Morphology values are kernel extents, not radii.
 - Component retention: `--all-islands` keeps every surviving labelmap island;
-  `--all-components` keeps every extracted surface shell.
+  `--components all|largest` controls extracted surface shells.
 - Surface grid: `--resample-mm <mm>` uses an isotropic grid; `0` keeps the
   native grid. Coarser grids can erase thin structures.
-- Finishing: `--smooth-iters <count>`, `--smooth-force <value>`,
-  `--simplify-error-mm <mm>`, and `--post-smooth-iters <count>`. A simplify
-  error of `0` disables simplification; other values are estimated QEM limits,
-  not certified Hausdorff bounds.
+- Finishing: `--mask-smooth-mm <mm>`, `--mesh-smooth-iters <count>`,
+  `--simplify-error-mm <mm>`, and `--post-mesh-smooth-iters <count>`. A
+  simplify error of `0` disables simplification; other values are estimated QEM
+  limits, not certified Hausdorff bounds.
 - Boundary handling: `--no-cap` leaves anatomy open where it reaches the scan
   boundary instead of adding a flat cap.
 
@@ -82,6 +82,7 @@ medsurface list <fixed-input>
 medsurface list <moving-input>
 medsurface merge <fixed-input> <moving-input> \
   --fixed-volume <id> --moving-volume <id> -o <output.stl>
+medsurface merge <fixed-input> <moving-input> -o <fused.nii.gz>
 ```
 
 The fixed input defines the output coordinate frame. To merge two volumes from
@@ -94,8 +95,22 @@ the user explicitly accepts bypassing registration-quality gates and the risk
 of a plausible-looking but incorrect fusion. `--force` does not bypass input,
 selection, loading, duplicate-input, or size errors.
 
-Like conversion, a successful merge validates the mesh before atomically
-publishing it.
+STL, PLY, and OBJ outputs run the complete mesh pipeline and validation. NIfTI
+outputs are binary `uint8` masks in the fixed input's frame and stop before mask
+smoothing, padding, marching cubes, and surface processing. Do not pass
+mesh-only options such as `--mask-smooth-mm`, `--mesh-smooth-iters`,
+`--simplify-error-mm`, or `--components` with NIfTI output.
+
+For externally segmented data, convert one labelmap or register and fuse two:
+
+```sh
+medsurface labelmap convert <mask.nii.gz> -o <surface.stl>
+medsurface labelmap merge <fixed-mask.nii.gz> <moving-mask.nii.gz> \
+  -o <fused.nii.gz>
+```
+
+`labelmap merge` unions every nonzero input value into foreground. Edit the
+fused NIfTI in a volumetric tool, then use `labelmap convert` to create a mesh.
 
 ## Validate or repair a mesh
 
@@ -110,6 +125,7 @@ clinical fitness.
 
 For machine-readable output, `list --json`, `validate --json`, and
 `repair --json` write JSON to stdout. In contrast, `convert --json <path>` and
-`merge --json <path>` write provenance to a file. Never let a mesh or JSON
+`merge --json <path>` write provenance to a file. Never let an output or JSON
 report overwrite an image header, DICOM instance, detached image payload, or
-another input.
+another input. `convert`, `labelmap convert`, `validate`, and `repair` remain
+mesh-only; only the two merge commands write NIfTI output.
