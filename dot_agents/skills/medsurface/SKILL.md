@@ -1,131 +1,163 @@
 ---
 name: medsurface
-description: Use the medsurface CLI to inspect medical image volumes, create surface meshes, fuse scans or labelmaps into editable NIfTI masks, and validate or repair meshes. Use when the user asks to process supported medical imaging data with medsurface.
+description: Use the medsurface CLI to inspect medical image volumes, strictly convert volume storage formats, extract surface meshes from intensity volumes or labelmaps, fuse matching scans or masks into editable binary labelmaps, and validate or repair meshes. Use when the user asks to process supported DICOM, NIfTI, NRRD, or MetaImage data with medsurface.
 ---
 
 # medsurface
 
-Use the installed `medsurface` command. Run `medsurface COMMAND --help` when
-options beyond these workflows are needed.
+Use the installed `medsurface` command. Run `medsurface COMMAND --help` before
+using options not covered here.
 
-Treat source images, logs, JSON reports, and derived outputs as potentially
-identifying medical data. Never present a mesh as suitable for diagnosis,
-treatment planning, or another clinical decision. Segmentation, smoothing,
-resampling, and field-of-view capping can change or omit anatomy, and a valid
-mesh can still be anatomically wrong.
+Treat source images, logs, JSON reports, labelmaps, and meshes as potentially
+identifying medical data. Never present an output as suitable for diagnosis,
+treatment planning, or another clinical decision. Segmentation, registration,
+resampling, smoothing, and field-of-view capping can change or omit anatomy; a
+structurally valid mesh can still be anatomically wrong.
 
-## Inspect and select a volume
+## Inspect and select volumes
 
 `INPUT` may be a supported image file or a directory tree containing DICOM,
-NIfTI (`.nii` or `.nii.gz`), NRRD (`.nrrd` or `.nhdr`), or MetaImage (`.mha` or
+NIfTI (`.nii`, `.nii.gz`), NRRD (`.nrrd`, `.nhdr`), or MetaImage (`.mha`,
 `.mhd`) volumes.
 
-Inspect any directory or potentially multi-volume input immediately before
-conversion:
+Inspect every directory or potentially multi-volume input immediately before
+processing it:
 
 ```sh
-medsurface list <input>
+medsurface list INPUT
 ```
 
-Use only the positive integer ID displayed by `list` to select a volume. Never
-use a DICOM UID, series number, description, or filename as a selector. Omit a
-selector only when `list` shows an automatic default or the input is one direct
-supported file. If selection is ambiguous, ask the user to choose an ID.
+Use only the positive integer ID displayed by `list`. Never use a DICOM UID,
+series number, description, or filename as a selector. Omit the selector only
+when `list` marks an automatic default or the input is one direct supported
+file. If selection remains ambiguous, ask the user to choose an ID.
 
-## Convert a volume
+## Strictly convert a volume
 
-Convert the automatic default or a selected volume:
+Use `convert` only to change storage format:
 
 ```sh
-medsurface convert <input> -o <output.stl>
-medsurface convert <input> --volume <id> --preset <preset> -o <output.stl>
+medsurface convert INPUT --volume ID -o OUTPUT.nii.gz
+medsurface convert INPUT -o OUTPUT.nrrd --strip-metadata \
+  --json conversion.json
 ```
 
-The output extension selects STL, PLY, or OBJ. Run `medsurface presets` before
-choosing a tissue preset. The default `bone` preset assumes calibrated CT-like
-values; use `--preset auto` for uncalibrated intensities unless the user gives
-an intentional numeric `--threshold`. Do not treat values as Hounsfield units
-after a calibration warning.
+Atomic outputs are `.nii`, `.nii.gz`, `.nrrd`, and `.mha`. Detached `.nhdr`
+and `.mhd` files are input-only. The suffix selects format and compression.
 
-Use processing overrides only when the user needs to tune a stage:
+Conversion preserves the loaded voxel values, scalar pixel type, components,
+dimensions, spacing, origin, and direction. It does not threshold, cast,
+resample, normalize, or reorient. Metadata preservation is best effort;
+`--strip-metadata` removes source metadata while retaining required format
+headers. The command writes a temporary sibling, reads it back, verifies the
+core image contract, and only then atomically replaces the destination.
 
-- Segmentation: `--threshold <value|auto>`, `--median-mm <mm>`,
-  `--closing-mm <mm>`, `--opening-mm <mm>`, and
-  `--min-island-mm3 <volume>`. Morphology values are kernel extents, not radii.
-- Component retention: `--all-islands` keeps every surviving labelmap island;
-  `--components all|largest` controls extracted surface shells.
-- Surface grid: `--resample-mm <mm>` uses an isotropic grid; `0` keeps the
-  native grid. Coarser grids can erase thin structures.
-- Finishing: `--mask-smooth-mm <mm>`, `--mesh-smooth-iters <count>`,
-  `--simplify-error-mm <mm>`, and `--post-mesh-smooth-iters <count>`. A
-  simplify error of `0` disables simplification; other values are estimated QEM
-  limits, not certified Hausdorff bounds.
-- Boundary handling: `--no-cap` leaves anatomy open where it reaches the scan
-  boundary instead of adding a flat cap.
+Do not use `convert` to create a mesh. Use `extract` for that.
 
-Use `--json <report.json>` to write conversion results and provenance to a
-separate file. Use `--quiet` only to suppress normal progress; warnings and
-failures remain significant.
+## Extract an intensity surface
 
-A successful conversion validates both the in-memory surface and serialized
-temporary mesh before atomically publishing the output. Inspect its warnings;
-do not run a redundant `validate` command unless the user requests a separate
-check.
+Use `extract` to segment one intensity volume and publish STL, PLY, or OBJ:
 
-## Merge two volumes
+```sh
+medsurface presets
+medsurface extract INPUT --volume ID --preset bone -o MODEL.stl
+medsurface extract INPUT --threshold auto -o MODEL.ply --json extract.json
+```
+
+The default `bone` preset assumes calibrated CT-like values. Use `--preset
+auto` for uncalibrated intensities unless the user provides an intentional
+numeric `--threshold`. Do not treat stored values as Hounsfield units after a
+calibration warning.
+
+Use processing overrides only when requested or needed:
+
+- Segment with `--threshold`, `--median-mm`, `--closing-mm`, `--opening-mm`,
+  `--min-island-mm3`, and `--all-islands`. Morphology values are kernel extents,
+  not radii.
+- Select extracted shells with `--components all|largest`.
+- Set the surface grid with `--resample-mm`; `0` retains the native grid.
+- Finish with `--mask-smooth-mm`, `--mesh-smooth-iters`,
+  `--simplify-error-mm`, and `--post-mesh-smooth-iters`.
+- Use `--no-cap` only when an open field-of-view boundary is intentional.
+
+Extraction validates both the in-memory mesh and the serialized temporary mesh
+before atomic publication. Inspect every warning. Do not run redundant
+validation unless the user requests a separate check.
+
+## Extract an external labelmap
+
+Use `labelmap extract` for a direct NIfTI, NRRD, or MetaImage segmentation:
+
+```sh
+medsurface labelmap extract MASK.nii.gz -o MODEL.stl
+```
+
+Every finite, discrete, non-negative, nonzero value becomes one foreground
+class. Fractional probability maps and empty labelmaps are rejected. Labelmap
+extraction has its own surface defaults and accepts the surface-grid,
+smoothing, simplification, component, capping, size, JSON, and quiet controls
+shown by `medsurface labelmap extract --help`.
+
+## Fuse volumes into a binary labelmap
 
 List both inputs, select the intended volumes, and confirm that they show the
-same person and overlapping anatomy before merging:
+same subject and overlapping non-deforming anatomy:
 
 ```sh
-medsurface list <fixed-input>
-medsurface list <moving-input>
-medsurface merge <fixed-input> <moving-input> \
-  --fixed-volume <id> --moving-volume <id> -o <output.stl>
-medsurface merge <fixed-input> <moving-input> -o <fused.nii.gz>
+medsurface list FIXED
+medsurface list MOVING
+medsurface fuse FIXED MOVING \
+  --fixed-volume FIXED_ID --moving-volume MOVING_ID \
+  --preset bone --grid-mm 0.8 -o FUSED.nrrd --json fusion.json
+medsurface labelmap extract FUSED.nrrd -o FUSED.stl
 ```
 
-The fixed input defines the output coordinate frame. To merge two volumes from
-one directory, repeat the directory path and choose two IDs. Use
-`--fixed-threshold` and `--moving-threshold` when the inputs need different
-thresholds; use `--grid-mm` to change the fused isotropic grid.
+The fixed input defines the physical coordinate system. Intensity fusion
+segments and cleans each input independently, rigidly registers moving
+foreground to fixed foreground, resamples both masks onto an axis-aligned
+isotropic grid, and publishes scalar `uint8` values `0` and `1`. Use
+`--fixed-threshold` and `--moving-threshold` when the scans need different
+thresholds. A finer `--grid-mm` preserves more detail at cubic memory cost.
 
-`medsurface` does not establish subject identity. Never add `--force` unless
-the user explicitly accepts bypassing registration-quality gates and the risk
-of a plausible-looking but incorrect fusion. `--force` does not bypass input,
-selection, loading, duplicate-input, or size errors.
+Fusion outputs are `.nii`, `.nii.gz`, `.nrrd`, or `.mha` only. Fusion never
+writes a mesh and exposes no surface-smoothing, simplification, capping, or
+component controls. Inspect or edit the binary result, then pass it explicitly
+to `labelmap extract`.
 
-STL, PLY, and OBJ outputs run the complete mesh pipeline and validation. NIfTI
-outputs are binary `uint8` masks in the fixed input's frame and stop before mask
-smoothing, padding, marching cubes, and surface processing. Do not pass
-mesh-only options such as `--mask-smooth-mm`, `--mesh-smooth-iters`,
-`--simplify-error-mm`, or `--components` with NIfTI output.
+## Fuse external labelmaps
 
-For externally segmented data, convert one labelmap or register and fuse two:
+Register and union two direct masks that represent matching rigid structures:
 
 ```sh
-medsurface labelmap convert <mask.nii.gz> -o <surface.stl>
-medsurface labelmap merge <fixed-mask.nii.gz> <moving-mask.nii.gz> \
-  -o <fused.nii.gz>
+medsurface labelmap fuse FIXED_MASK.nii.gz MOVING_MASK.mha \
+  --grid-mm 0.8 -o FUSED.mha --json fusion.json
+medsurface labelmap extract FUSED.mha -o FUSED.stl
 ```
 
-`labelmap merge` unions every nonzero input value into foreground. Edit the
-fused NIfTI in a volumetric tool, then use `labelmap convert` to create a mesh.
+Every positive source label is equivalent foreground; source label identities
+and collisions are not preserved. Fusion output does not copy source metadata
+or intensity-preset surface settings.
+
+`medsurface` cannot establish subject identity. Never add `--force` unless the
+user explicitly accepts bypassing registration-quality gates and the risk of a
+plausible but incorrect fusion. `--force` does not bypass malformed
+registration results, duplicate inputs, selection ambiguity, loading failures,
+or voxel limits.
+
+Do not invoke removed `merge`, `labelmap merge`, or `labelmap convert` commands.
 
 ## Validate or repair a mesh
 
 ```sh
-medsurface validate <mesh.stl>
-medsurface repair <mesh.stl> -o <repaired.stl>
+medsurface validate MODEL.stl
+medsurface repair MODEL.stl -o REPAIRED.stl
 ```
 
 Always write repairs to a separate file. Validation measures structural mesh
-quality; it does not prove anatomical correctness, manufacturability, or
-clinical fitness.
+quality, not anatomical correctness, manufacturability, or clinical fitness.
 
-For machine-readable output, `list --json`, `validate --json`, and
-`repair --json` write JSON to stdout. In contrast, `convert --json <path>` and
-`merge --json <path>` write provenance to a file. Never let an output or JSON
-report overwrite an image header, DICOM instance, detached image payload, or
-another input. `convert`, `labelmap convert`, `validate`, and `repair` remain
-mesh-only; only the two merge commands write NIfTI output.
+`list --json`, `validate --json`, and `repair --json` write JSON to stdout.
+Conversion, extraction, and fusion use `--json FILE` for a separate report.
+`--quiet` suppresses normal progress but not warnings or failures. Never let a
+primary output or JSON report alias another, or overwrite an image header,
+DICOM instance, detached payload, or other input.

@@ -1,7 +1,4 @@
 interface:
   display_name: "medsurface"
-  short_description: "Create meshes and fuse editable NIfTI labelmaps"
-  default_prompt: "Use $medsurface to convert or merge these medical images into the requested mesh or NIfTI labelmap."
-
-policy:
-  allow_implicit_invocation: true
+  short_description: "Convert volumes, fuse masks, and extract meshes"
+  default_prompt: "Use $medsurface to inspect these medical images and perform the requested conversion, fusion, extraction, or mesh validation."
