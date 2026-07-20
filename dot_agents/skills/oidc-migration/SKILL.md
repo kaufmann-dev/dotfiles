@@ -15,6 +15,7 @@ the identity provider or deployment platform; report the settings an administrat
   deployment configuration, tests, and existing documentation.
 - Configure the authentication parameters with environment variables using repository conventions.
   Never hardcode or expose secret values.
+- For every interactive Authorization Code flow, use PKCE with S256, including for confidential clients.
 - Determine whether protected resources are global, shared, or user-owned.
 - For a single-user or admin-only application, use the OIDC provider's access policy as the sole
   admission control. Do not add application-level identity or claim allowlists.
@@ -40,8 +41,7 @@ exists, create a minimal one using the established project name. Keep the sectio
 include:
 
 - A project-specific one- or two-sentence explanation of the authentication flow.
-- `Public Client: On|Off`, `PKCE: On|Off`, and `Requires Re-Authentication: On|Off`. Derive each
-  value from the implemented client type, PKCE behavior, and fresh-authentication policy.
+- `Public Client: On|Off`, derived from whether the application can securely store client credentials.
 - The callback and logout paths that you determine are needed, for example `/auth/callback` and `/`.
 - Every authentication environment variable, including whether it is required. If the README
   already has a section for environment variables, update that
