@@ -20,10 +20,12 @@ the identity provider or deployment platform; report the settings an administrat
   be restricted or the application must add per-user authorization and isolation.
 - For an admin-only or single-user application, require an environment variable containing the
   allowed OIDC `sub` and admit only that identity.
-- Use OIDC only for the login flow, then create an application-local server-side session with an HttpOnly cookie; do not request, store, or use refresh tokens, and do not use OIDC tokens as the application session. Use an HttpOnly application
-  session cookie with a 24-hour sliding idle timeout and seven-day absolute lifetime. Reset idle
-  only on authenticated user-driven requests, never passive background traffic. Require login
-  after either timeout.
+- After OIDC login, create an application-local server-side session with an HttpOnly cookie. Do not
+  request or store refresh tokens or use OIDC tokens as the application session. Retain the ID
+  token server-side only as `id_token_hint` for logout and delete it with the local session.
+- Use a 24-hour sliding idle timeout and seven-day absolute session lifetime. Reset idle only on
+  authenticated user-driven requests, never passive background traffic. Require login after
+  either timeout.
 - Use OIDC RP-Initiated Logout, even when it ends provider-wide SSO. Do not implement back-channel
   logout.
 - Preserve app-owned data, authorization, and security-sensitive behavior. Remove obsolete local
