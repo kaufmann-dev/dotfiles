@@ -1,160 +1,79 @@
 ---
 name: authentik-oidc-migration
-description: Migrate a Kaufmann application from app-local authentication to Kaufmann Authentik OIDC while preserving app-owned data and authorization when needed. Use only when the user explicitly invokes this skill.
+description: Migrate an application from local authentication to Authentik OIDC while preserving app-owned data and authorization when needed. Use only when the user explicitly invokes this skill.
 ---
 
 # Authentik OIDC Migration
 
-Replace an application's local authentication with Kaufmann ID. Authentik authenticates
-users and controls admission to the application; the application keeps only its own session,
-domain data, and app-specific authorization.
+Replace local authentication with Authentik OIDC. Do not mutate Authentik or the deployment
+platform; implement the application changes and report the administrator settings to apply.
 
-Do not mutate Authentik or Coolify. Implement the application migration and report the exact
-administrator settings from [references/provider-checklist.md](references/provider-checklist.md).
+## Design
 
-## Non-Negotiable Design
+- Inspect the existing auth, session, user data, authorization, environment conventions, public
+  URL handling, tests, and documentation before editing.
+- Use Authorization Code Flow with PKCE through a mature OIDC or framework auth library. Use its
+  callback route and configuration conventions; do not implement OIDC manually.
+- Configure the target application, not the agent process, with `OIDC_DISCOVERY_URL` containing
+  the complete discovery URL and `OIDC_PROVIDER_NAME` containing the user-facing provider name.
+- Reuse suitable existing variable names for the client ID, client secret, session secret, and
+  application base URL; otherwise use names appropriate to the implementation. Require a base URL
+  only when the framework cannot determine the external origin.
+- Use a confidential client and app-local session when a trusted server exists. Keep client and
+  session secrets server-only. For a browser-only app, propose a backend-for-frontend and stop
+  unless the user explicitly accepts a public client with PKCE, no client secret, and any required
+  public-prefixed provider variables.
+- Let Authentik policies control admission. Keep app-specific roles, permissions, ownership, and
+  subscriptions local. Remove local passwords, registration, recovery, magic links, and duplicate
+  MFA at cutover; add no fallback unless explicitly requested.
 
-- Use `https://auth.kaufmann.dev` as the OpenID Provider.
-- Use Authorization Code Flow with PKCE and a mature OIDC or framework auth library. Do not
-  implement OIDC protocol handling manually.
-- Use a confidential client for applications with a trusted server. Keep its client secret
-  server-only.
-- For a browser-only SPA, stop before implementation and propose a backend-for-frontend unless
-  the user explicitly accepts a public-client design. A public client must use PKCE, no client
-  secret, and library-managed browser token/session handling; record this exception in the final
-  report.
-- For applications with a trusted server, create an app-local session after login. Do not share
-  session databases or cookies between apps, expose tokens to browser code, or store access or
-  refresh tokens unless an identified application requirement needs them.
-- Treat successful Authentik authentication and Authentik application policies as the admission
-  gate. Keep app-specific roles, permissions, ownership, subscriptions, and feature access local.
-- Remove app-local password authentication, recovery, and duplicate MFA at cutover. Add a
-  temporary local fallback only when the user explicitly requests it; keep it disabled by
-  default and separate from the normal login UI.
+## Users and Login
 
-## 1. Inspect Before Editing
+- Remove authentication-only local users when no meaningful data belongs to them.
+- Preserve domain users and link identities by the validated `(issuer, sub)` pair with a uniqueness
+  constraint. On first login, link by normalized email only when `email_verified` is true and
+  exactly one user matches; reject ambiguous or unverified matches, otherwise create a domain user.
+- Read and validate the issuer through discovery. Start with `openid email profile`; request
+  `offline_access` and retain tokens only for a demonstrated requirement.
+- Build login and account UI from `OIDC_PROVIDER_NAME`. Keep callback, route, scope, cookie, and
+  local redirect behavior in code. Implement local logout independently of optional provider
+  logout.
+- Never hardcode provider branding, discovery URLs, credentials, deployment origins, application
+  slugs, or tenant-specific identifiers, groups, or policies.
 
-Establish the existing contract from code, configuration, tests, and deployment files:
+## Documentation and Handoff
 
-- Login, registration, logout, password reset/change, magic-link, and MFA routes and UI
-- Auth library, session implementation, protected-route middleware, and authorization checks
-- User model plus every table, relation, role, setting, subscription, audit record, and domain
-  object associated with a user
-- The intended audience and any existing local admission rules that must become Authentik
-  application policies or group bindings
-- Environment-variable conventions, public-variable prefixes, callback/base URL handling, and
-  Coolify deployment documentation
-- Existing auth tests and documented setup
-
-Identify the framework's supported OIDC libraries and callback convention. Prefer its established
-auth/session integration over introducing parallel infrastructure. Never guess the callback path.
-
-## 2. Classify Local Users
-
-Choose the migration path from repository evidence before designing a database migration.
-
-### Authentication-Only Users
-
-Use fresh Authentik-only access when local user records merely enable login or global
-administrator settings and no meaningful state belongs to individual users.
-
-- Remove local users from the authentication path.
-- Do not add identity-linking tables or migrate empty authentication-only records.
-- Keep global application settings independent from the authenticated identity.
-- Store the minimum Authentik identity or session fields required by the chosen library.
-
-### Domain Users
-
-Preserve and link local users when they own or receive any app-specific data, relationships,
-roles, preferences, subscriptions, audit attribution, or permissions.
-
-- Identify an external identity by the exact validated OIDC `issuer` and `sub` pair.
-- Add a linked-identity table unless the application can support only one identity provider and
-  direct fields on the user model are materially simpler.
-- Enforce uniqueness for `(issuer, subject)`.
-- On login, use an existing issuer/subject link first.
-- For first-login linking, require `email_verified = true`, normalize email with the
-  application's established rules, and link only when exactly one local user matches.
-- Reject ambiguous or unverified email matches. Never merge accounts automatically.
-- When no link or eligible existing user matches, create a new local domain user from validated
-  claims because Authentik has already admitted the user.
-- Preserve all local data and authorization during linking.
-
-Do not use email as the durable external identity key. Authentik's default `email_verified` claim
-can be false, so do not assume the claim is true merely because an email exists.
-
-## 3. Implement OIDC Login
-
-Configure the selected library through OpenID Connect discovery. Use:
+- Update `.env.example` or equivalent without real secrets. Update `README.md` with every required
+  variable, its purpose, placeholder format, and secret status; create `README.md` when absent.
+- Report the actual variable names, marking each as secret or non-secret and new or reused. Never
+  print secret values.
+- Report these administrator values after implementation:
 
 ```text
-https://auth.kaufmann.dev/application/o/<app-slug>/.well-known/openid-configuration
+Provider name: <configured provider name>
+Application name and slug: <values to configure>
+Client type: Confidential | Public
+Client ID variable: <implemented name>
+Client secret variable: <implemented name or "none">
+Redirect URI: <exact external callback URL>
+Discovery URL: <configured OIDC_DISCOVERY_URL value>
+Scopes: <implemented scopes>
+Admission policy/group: <required Authentik policy or group>
+Logout URI and method: <implemented value or "local logout only">
 ```
 
-Read and validate the issuer from discovery; do not hard-code the per-provider issuer because
-Authentik can be configured with a global issuer. Request only the scopes the application needs,
-starting with `openid email profile`. Request `offline_access` only when a demonstrated
-requirement needs refresh tokens.
+- Tell the administrator to create one Authentik application and provider, configure the exact
+  callback as a Strict redirect URI, keep the issuer published by discovery, bind the intended
+  admission policy or group, and enable only the implemented scope mappings. Ask the user when the
+  intended audience is not discoverable.
+- Tell the administrator to set the reported deployment variables, keep secrets out of public
+  prefixes and browser code, match the external HTTPS callback exactly, and redeploy.
 
-Implement the library's equivalent of:
+## Verify and Report
 
-```text
-login
-  -> generate state, nonce, and PKCE values
-  -> redirect to Authentik
-
-callback
-  -> validate state, nonce, PKCE, signature, issuer, audience, and expiration
-  -> resolve or link the local domain user when the app has domain users
-  -> create or rotate the app-local session for a server-backed application
-  -> redirect only to a validated local return destination
-```
-
-Use the chosen library's configuration names rather than imposing generic aliases. Ensure the
-client secret cannot enter public-prefixed variables, client bundles, logs, errors, or committed
-environment files.
-
-For server-backed applications, set app-local session cookies to `HttpOnly`, `Secure`, an
-appropriate `SameSite` value, and host-only scope where possible. Regenerate the session
-identifier after login.
-
-## 4. Complete the Cutover
-
-- Make the normal login action redirect to Authentik and label it `Continue with Kaufmann ID` or
-  `Sign in with Kaufmann ID`.
-- Remove local email/password forms, registration, password reset/change, password hashing and
-  verification, and duplicate MFA or magic-link flows.
-- Replace app-local account-security controls with a link to Kaufmann ID when useful.
-- Implement local logout as a state-changing request that destroys the app session and clears its
-  cookie. Provider logout is optional and must not be required for local logout to work.
-- Remove obsolete dependencies, environment variables, routes, tests, and unreachable code.
-- Update existing `.env.example`, README, or deployment documentation when the changed setup or
-  behavior is already documented. Do not create optional documentation files.
-
-## 5. Verify
-
-Run the repository's relevant formatting, static checks, tests, build, and non-destructive
-end-to-end checks. Add focused tests that prove the applicable behavior:
-
-- Unauthenticated requests remain protected and login redirects to Authentik.
-- Callback rejects invalid state, nonce, issuer, audience, signature, and expired tokens through
-  the selected library's test surface.
-- Server-backed applications prevent session fixation and destroy the local session on logout.
-- Authentication-only apps do not retain a redundant local-user admission gate.
-- Domain-user apps resolve issuer/subject links first, link only one verified-email match,
-  create a new domain user when no eligible match exists, preserve app-owned data and roles, and
-  reject ambiguous or unverified matches.
-- Local password login, reset, registration, and change routes no longer work.
-- The client secret is absent from browser output and public configuration.
-
-## Final Report
-
-Report:
-
-1. The previous auth/session design and whether local users were authentication-only or domain
-   users.
-2. The selected OIDC library, callback route, scopes, session design, and user migration path.
-3. Removed local-auth surfaces and preserved app-owned authorization/data.
-4. Required application environment variables using their actual implemented names.
-5. The exact Authentik and Coolify administrator checklist, including redirect and logout URIs.
-6. Verification performed, results, and any manual or unverified steps.
+- Run the repository's smallest reliable static checks and focused auth tests.
+- Verify protected-route login, callback validation through the library, user linking when
+  applicable, session rotation and local logout, removed local-auth routes, and absence of secrets
+  or tokens from browser output, configuration, errors, and logs.
+- Report the previous and new auth/session designs, preserved data and authorization, removed
+  surfaces, exact administrator settings, verification results, and manual steps.
