@@ -30,12 +30,28 @@ the identity provider or deployment platform; report the settings an administrat
   logout.
 - Preserve app-owned data, authorization, and security-sensitive behavior. Remove obsolete local
   authentication without adding a compatibility path unless explicitly requested.
-- Update existing operator-facing configuration documentation. If none exists, put the complete
-  configuration handoff in the final response instead of creating documentation.
 - Run the smallest reliable checks and focused authentication tests appropriate to the solution.
+
+## Authentication Setup Handoff
+
+Create or update `## Authentication Setup` in the target project's `README.md`. If no README
+exists, create a minimal one using the established project name. Keep the section concise and
+include:
+
+- A project-specific one- or two-sentence explanation of the authentication flow.
+- `Public Client: On|Off`, `PKCE: On|Off`, and `Requires Re-Authentication: On|Off`. Derive each
+  value from the implemented client type, PKCE behavior, and fresh-authentication policy. Use these
+  exact labels for every provider and briefly map provider-specific terminology only when needed.
+- The exact `Client launch URL`, `Authorization callback`, and `Post-logout redirect` values an
+  administrator must register.
+- Every authentication environment variable, including whether it is required and secret, but no
+  secret values. If the README already has a section for environment variables, update that
+  section and reference it here instead of duplicating variables.
+
+Update an existing Authentication Setup section in place; never create duplicate sections or
+duplicate environment-variable documentation.
 
 ## Final Response
 
-Report the chosen auth and session design, preserved and removed behavior, actual environment
-variable names with secret status, exact provider registration and callback settings, scopes,
-admission and logout behavior, verification results, and manual steps. Never print secret values.
+Report the chosen auth and session design, preserved and removed behavior, verification results,
+manual steps, and where the Authentication Setup was recorded. Never print secret values.
