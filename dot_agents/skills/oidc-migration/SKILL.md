@@ -13,8 +13,8 @@ the identity provider or deployment platform; report the settings an administrat
 
 - Derive the design from the application's code, data ownership, authorization, runtime,
   deployment configuration, tests, and existing documentation.
-- Keep deployment-specific provider configuration, credentials, and secrets in environment
-  variables using repository conventions. Never hardcode or expose secret values.
+- Configure the authentication parameters with environment variables using repository conventions.
+  Never hardcode or expose secret values.
 - Determine whether protected resources are global, shared, or user-owned. If the migration could
   broaden access to shared or privileged resources, stop and ask whether provider admission must
   be restricted or the application must add per-user authorization and isolation.
@@ -40,12 +40,11 @@ include:
 
 - A project-specific one- or two-sentence explanation of the authentication flow.
 - `Public Client: On|Off`, `PKCE: On|Off`, and `Requires Re-Authentication: On|Off`. Derive each
-  value from the implemented client type, PKCE behavior, and fresh-authentication policy. Use these
-  exact labels for every provider and briefly map provider-specific terminology only when needed.
-- The exact `Client launch URL`, `Authorization callback`, and `Post-logout redirect` values an
-  administrator must register.
-- Every authentication environment variable, including whether it is required and secret, but no
-  secret values. If the README already has a section for environment variables, update that
+  value from the implemented client type, PKCE behavior, and fresh-authentication policy.
+- The `Callback URLs` and any `Logout Callback URLs` that you determine are needed, using an
+  application base URL environment variable as the root origin.
+- Every authentication environment variable, including whether it is required. If the README
+  already has a section for environment variables, update that
   section and reference it here instead of duplicating variables.
 
 Update an existing Authentication Setup section in place; never create duplicate sections or
