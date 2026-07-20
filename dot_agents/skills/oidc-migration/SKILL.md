@@ -15,11 +15,12 @@ the identity provider or deployment platform; report the settings an administrat
   deployment configuration, tests, and existing documentation.
 - Configure the authentication parameters with environment variables using repository conventions.
   Never hardcode or expose secret values.
-- Determine whether protected resources are global, shared, or user-owned. If the migration could
-  broaden access to shared or privileged resources, stop and ask whether provider admission must
-  be restricted or the application must add per-user authorization and isolation.
-- For an admin-only or single-user application, require an environment variable containing the
-  allowed OIDC `sub` and admit only that identity.
+- Determine whether protected resources are global, shared, or user-owned.
+- For a single-user or admin-only application, use the OIDC provider's access policy as the sole
+  admission control. Do not add application-level identity or claim allowlists, including `sub`.
+- Otherwise, if the migration could broaden access to shared or privileged resources, stop and ask
+  whether provider admission must be restricted or the application must add per-user authorization
+  and isolation.
 - After OIDC login, create an application-local server-side session with an HttpOnly cookie. Do not
   request or store refresh tokens or use OIDC tokens as the application session. Retain the ID
   token server-side only as `id_token_hint` for logout and delete it with the local session.
