@@ -1,0 +1,7 @@
+interface:
+  display_name: "OIDC Migration"
+  short_description: "Migrate applications to OpenID Connect"
+  default_prompt: "Use $oidc-migration to migrate this application to an OpenID Connect provider."
+
+policy:
+  allow_implicit_invocation: false

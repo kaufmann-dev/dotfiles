@@ -1,11 +1,11 @@
 ---
-name: authentik-oidc-migration
-description: Migrate an application from local authentication to Authentik OIDC while preserving app-owned data and authorization when needed. Use only when the user explicitly invokes this skill.
+name: oidc-migration
+description: Migrate an application from local authentication to an OpenID Connect provider while preserving app-owned data and authorization when needed. Use only when the user explicitly invokes this skill.
 ---
 
-# Authentik OIDC Migration
+# OIDC Migration
 
-Replace local authentication with Authentik OIDC. Do not mutate Authentik or the deployment
+Replace local authentication with OpenID Connect. Do not mutate the identity provider or deployment
 platform; implement the application changes and report the administrator settings to apply.
 
 ## Design
@@ -23,9 +23,9 @@ platform; implement the application changes and report the administrator setting
   session secrets server-only. For a browser-only app, propose a backend-for-frontend and stop
   unless the user explicitly accepts a public client with PKCE, no client secret, and any required
   public-prefixed provider variables.
-- Let Authentik policies control admission. Keep app-specific roles, permissions, ownership, and
-  subscriptions local. Remove local passwords, registration, recovery, magic links, and duplicate
-  MFA at cutover; add no fallback unless explicitly requested.
+- Let identity-provider policies control admission. Keep app-specific roles, permissions,
+  ownership, and subscriptions local. Remove local passwords, registration, recovery, magic links,
+  and duplicate MFA at cutover; add no fallback unless explicitly requested.
 
 ## Users and Login
 
@@ -38,34 +38,33 @@ platform; implement the application changes and report the administrator setting
 - Build login and account UI from `OIDC_PROVIDER_NAME`. Keep callback, route, scope, cookie, and
   local redirect behavior in code. Implement local logout independently of optional provider
   logout.
-- Never hardcode provider branding, discovery URLs, credentials, deployment origins, application
-  slugs, or tenant-specific identifiers, groups, or policies.
+- Never hardcode provider branding, discovery URLs, credentials, deployment origins, client or
+  application identifiers, or tenant-specific groups and policies.
 
 ## Documentation and Handoff
 
-- Update `.env.example` or equivalent without real secrets. Update `README.md` with every required
-  variable, its purpose, placeholder format, and secret status; create `README.md` when absent.
+- Update `README.md` with every required variable, its purpose, placeholder example, and secret
+  status; create `README.md` when absent.
 - Report the actual variable names, marking each as secret or non-secret and new or reused. Never
   print secret values.
 - Report these administrator values after implementation:
 
 ```text
 Provider name: <configured provider name>
-Application name and slug: <values to configure>
+Client/application name or identifier: <value to configure>
 Client type: Confidential | Public
 Client ID variable: <implemented name>
 Client secret variable: <implemented name or "none">
 Redirect URI: <exact external callback URL>
 Discovery URL: <configured OIDC_DISCOVERY_URL value>
 Scopes: <implemented scopes>
-Admission policy/group: <required Authentik policy or group>
+Admission policy/group: <required provider policy or group>
 Logout URI and method: <implemented value or "local logout only">
 ```
 
-- Tell the administrator to create one Authentik application and provider, configure the exact
-  callback as a Strict redirect URI, keep the issuer published by discovery, bind the intended
-  admission policy or group, and enable only the implemented scope mappings. Ask the user when the
-  intended audience is not discoverable.
+- Tell the administrator to register one OIDC client, configure the exact redirect URI, preserve
+  the issuer published by discovery, bind the intended admission policy or group, and enable only
+  the implemented claims and scopes. Ask the user when the intended audience is not discoverable.
 - Tell the administrator to set the reported deployment variables, keep secrets out of public
   prefixes and browser code, match the external HTTPS callback exactly, and redeploy.
 

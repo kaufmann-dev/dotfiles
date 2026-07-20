@@ -1,7 +1,0 @@
-interface:
-  display_name: "Authentik OIDC Migration"
-  short_description: "Migrate applications to Authentik OIDC"
-  default_prompt: "Use $authentik-oidc-migration to migrate this application to Authentik OIDC."
-
-policy:
-  allow_implicit_invocation: false

@@ -111,7 +111,7 @@ Skills marked No require explicit invocation with `$skill-name`.
 | `audit-complete`              | Perform a comprehensive, stateless codebase audit before a major release.                      | No          |
 | `audit-defect`                | Directly audit a codebase for concrete, actionable defects.                                    | No          |
 | `audit-rubric`                | Create a bounded, project-specific rubric and immediately audit against it.                    | No          |
-| `authentik-oidc-migration`    | Migrate Kaufmann apps from local authentication to Authentik OIDC.                             | No          |
+| `oidc-migration`              | Migrate applications from local authentication to an OpenID Connect provider.                  | No          |
 | `autofixer`                   | Coordinate a bounded audit-fix-verify loop using fresh-context subagents.                      | No          |
 | `autofixer-graphify`          | Like `autofixer` but with Graphify-backed repository graph context.                            | No          |
 | `autofixer-yolo`              | Coordinate a bounded audit-fix-verify loop that proceeds without approval for dangerous fixes. | No          |
