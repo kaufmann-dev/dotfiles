@@ -5,7 +5,10 @@
   "mcp": {
     "context7": {
       "type": "remote",
-      "url": "https://mcp.context7.com/mcp"
+      "url": "https://mcp.context7.com/mcp"{{ with index . "context7_api_key" }},
+      "headers": {
+        "CONTEXT7_API_KEY": "{{ . }}"
+      }{{- end }}
     },
     "gh_grep": {
       "type": "remote",
