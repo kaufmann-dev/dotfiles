@@ -17,7 +17,7 @@ the identity provider or deployment platform; report the settings an administrat
   Never hardcode or expose secret values.
 - Determine whether protected resources are global, shared, or user-owned.
 - For a single-user or admin-only application, use the OIDC provider's access policy as the sole
-  admission control. Do not add application-level identity or claim allowlists, including `sub`.
+  admission control. Do not add application-level identity or claim allowlists.
 - Otherwise, if the migration could broaden access to shared or privileged resources, stop and ask
   whether provider admission must be restricted or the application must add per-user authorization
   and isolation.
