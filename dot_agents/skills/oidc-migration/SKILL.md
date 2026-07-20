@@ -42,8 +42,7 @@ include:
 - A project-specific one- or two-sentence explanation of the authentication flow.
 - `Public Client: On|Off`, `PKCE: On|Off`, and `Requires Re-Authentication: On|Off`. Derive each
   value from the implemented client type, PKCE behavior, and fresh-authentication policy.
-- The `Callback URLs` and any `Logout Callback URLs` that you determine are needed, using an
-  application base URL environment variable as the root origin.
+- The callback and logout paths that you determine are needed, for example `/auth/callback` and `/`.
 - Every authentication environment variable, including whether it is required. If the README
   already has a section for environment variables, update that
   section and reference it here instead of duplicating variables.
