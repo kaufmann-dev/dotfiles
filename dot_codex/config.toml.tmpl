@@ -9,6 +9,9 @@ plan_mode_reasoning_effort = "high"
 
 [mcp_servers.context7]
 url = "https://mcp.context7.com/mcp"
+{{ with index . "context7_api_key" -}}
+http_headers = { CONTEXT7_API_KEY = "{{ . }}" }
+{{- end }}
 
 [mcp_servers.gh_grep]
 url = "https://mcp.grep.app"
