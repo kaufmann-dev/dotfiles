@@ -44,8 +44,8 @@ concise and include only:
 
 - A project-specific one- or two-sentence explanation of the authentication flow.
 - `Public Client: On|Off`, derived from whether the application can securely store client credentials.
-- `Callback URL(s): ...`
-- `Logout Callback URL(s): ...`
+- `Callback URL: ...`, meaning the OIDC redirect URI for handling login authentication responses
+- `Logout Callback URL: ...`, meanig the RP logout callback (do not mention the RP-initiated logout request URL)
 - Every authentication environment variable, including whether it is required. If the README
   already has a section for environment variables, update that
   section and reference it here instead of duplicating variables.
