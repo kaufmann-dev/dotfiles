@@ -50,6 +50,8 @@ concise and include only:
   already has a section for environment variables, update that
   section and reference it here instead of duplicating variables.
 
+For both callback URLs, include only the path after the domain.
+
 Update an existing Authentication Setup section in place; never create duplicate sections or
 duplicate environment-variable documentation.
 
