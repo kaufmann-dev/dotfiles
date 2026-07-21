@@ -39,12 +39,13 @@ the identity provider or deployment platform; report the settings an administrat
 ## Authentication Setup Handoff
 
 Create or update `## Authentication Setup` in the target project's `README.md`. If no README
-exists, create a minimal one using the established project name. Keep the section concise and
-include:
+exists, create a minimal one using the established project name. Keep the section extremely 
+concise and include only:
 
 - A project-specific one- or two-sentence explanation of the authentication flow.
 - `Public Client: On|Off`, derived from whether the application can securely store client credentials.
-- The callback and logout paths that you determine are needed, for example `/auth/callback` and `/`.
+- `Callback URL(s): ...`
+- `Logout Callback URL(s): ...`
 - Every authentication environment variable, including whether it is required. If the README
   already has a section for environment variables, update that
   section and reference it here instead of duplicating variables.
