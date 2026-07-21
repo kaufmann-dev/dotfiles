@@ -15,6 +15,8 @@ the identity provider or deployment platform; report the settings an administrat
   deployment configuration, tests, and existing documentation.
 - Configure the authentication parameters with environment variables using repository conventions.
   Never hardcode or expose secret values.
+- For confidential clients, use Pocket ID's `client_secret_post`. Do not force
+  `client_secret_basic`. For example, with `openid-client`, use `ClientSecretPost`.
 - For every interactive Authorization Code flow, use PKCE with S256, including for confidential clients.
 - Determine whether protected resources are global, shared, or user-owned.
 - For a single-user or admin-only application, use the OIDC provider's access policy as the sole
