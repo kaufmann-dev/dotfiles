@@ -1,6 +1,6 @@
 ---
 name: debugging
-description: Reproduce bugs, identify root causes, and implement verified fixes. Use when reviewing, fixing, reproducing, or hunting bugs.
+description: Diagnose and fix concrete software defects. Use for incorrect behavior, failures, and regressions—not optimization, refactoring, or general improvements.
 ---
 
 # Debugging
