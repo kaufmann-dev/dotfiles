@@ -1,7 +1,7 @@
 interface:
   display_name: "Create Data Table"
-  short_description: "Build and review production-quality data tables"
-  default_prompt: "Use $create-datatable to build a complete, accessible data table for this project."
+  short_description: "Guide proportionate data-table decisions"
+  default_prompt: "Use $create-datatable to make proportionate, project-native decisions for this table."
 
 policy:
   allow_implicit_invocation: true
