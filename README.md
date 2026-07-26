@@ -158,11 +158,11 @@ credentials. The MCP config files are chezmoi templates that read the following 
   permissions needed for the repositories or organizations you work with.
 - `massive_api_key` — a [Massive.com API key](https://massive.com/?utm_campaign=mcp&utm_medium=referral&utm_source=github).
 - `portfolio_arena_api_key` — a Portfolio Arena API key (generate one via the admin dashboard at <https://arena.kaufmann.dev>).
-- `executive_arena_mcp_url` — the deployed Executive Arena MCP endpoint, including `/mcp`.
 - `executive_arena_api_key` — an API key shown once when generated from Executive Arena's authenticated **API Keys** page.
 
 Without a required server credential, the corresponding MCP server is omitted.
-Executive Arena is omitted unless both its URL and API key are configured.
+Executive Arena uses the fixed `https://executives.kaufmann.dev/mcp` endpoint and is omitted unless
+its API key is configured.
 
 The Massive entry is generated only when `massive_api_key` is configured. Machines using it also
 need [Astral UV](https://docs.astral.sh/uv/) and the `mcp_massive` binary on `PATH`:

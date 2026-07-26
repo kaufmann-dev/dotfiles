@@ -23,7 +23,7 @@ If something material is unclear and cannot be discovered, ask before proceeding
 - {{- if (index . "github_pat") }} Use the `github` MCP server for GitHub interactions such as issues, PRs, and remote file contents; use local git for local repository operations. {{- end }}
 - {{- if (index . "massive_api_key") }} Use the `massive` MCP server for stock market data. {{- end }}
 - {{- if (index . "portfolio_arena_api_key") }} Use the `portfolio_arena` MCP server for Portfolio Arena data and admin operations. {{- end }}
-- {{- if and (index . "executive_arena_mcp_url") (index . "executive_arena_api_key") }} Use the `executive_arena` MCP server to inspect executive-research coverage and publish cited company leadership profiles. {{- end }}
+- {{- if (index . "executive_arena_api_key") }} Use the `executive_arena` MCP server to inspect executive-research coverage and publish cited company leadership profiles. {{- end }}
 
 ## Development Servers and Containers
 
