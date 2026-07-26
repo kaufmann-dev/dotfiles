@@ -33,6 +33,13 @@
         "Authorization": "Bearer {{ . }}"
       }
     }
-    {{- end }}
+    {{- end }}{{ with index . "executive_arena_mcp_url" }}{{ $executiveArenaUrl := . }}{{ with index $ "executive_arena_api_key" }},
+    "executive_arena": {
+      "httpUrl": "{{ $executiveArenaUrl }}",
+      "headers": {
+        "Authorization": "Bearer {{ . }}"
+      }
+    }
+    {{- end }}{{- end }}
   }
 }
