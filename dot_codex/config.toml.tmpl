@@ -32,13 +32,10 @@ env = { MASSIVE_API_KEY = "{{ . }}" }
 url = "https://arena.kaufmann.dev/mcp"
 http_headers = { Authorization = "Bearer {{ . }}" }
 {{- end }}
-{{ with index . "executive_arena_mcp_url" -}}
-{{ $executiveArenaUrl := . -}}
-{{ with index $ "executive_arena_api_key" -}}
+{{ with index . "executive_arena_api_key" -}}
 [mcp_servers.executive_arena]
-url = "{{ $executiveArenaUrl }}"
+url = "https://executives.kaufmann.dev/mcp"
 http_headers = { Authorization = "Bearer {{ . }}" }
-{{- end }}
 {{- end }}
 
 [notice]

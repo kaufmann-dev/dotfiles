@@ -43,15 +43,15 @@
         "Authorization": "Bearer {{ . }}"
       }
     }
-    {{- end }}{{ with index . "executive_arena_mcp_url" }}{{ $executiveArenaUrl := . }}{{ with index $ "executive_arena_api_key" }},
+    {{- end }}{{ with index . "executive_arena_api_key" }},
     "executive_arena": {
       "type": "remote",
-      "url": "{{ $executiveArenaUrl }}",
+      "url": "https://executives.kaufmann.dev/mcp",
       "headers": {
         "Authorization": "Bearer {{ . }}"
       }
     }
-    {{- end }}{{- end }}
+    {{- end }}
   },
   "tools": {
     "websearch": true,
