@@ -1,6 +1,6 @@
 ---
 name: proven-cash-yield
-description: Calculate and rank Proven Cash Yield (PCY), a three-year owner-cash valuation metric based only on reported SEC facts and current Massive market data. Use when the user asks for a factual or cash-based alternative to P/E, a company's PCY, owner-cash yield or multiple, US-wide or sector-relative value indices, parity prices, or rankings of US companies by demonstrated cash generation.
+description: Calculate and quality-rank Proven Cash Yield (PCY), a three-year owner-cash valuation metric based only on qualified SEC facts and synchronized Massive market data. Use when the user asks for a factual or cash-based alternative to P/E, a company's PCY, owner-cash yield or multiple, US-wide or sector-relative value indices, parity prices, or rankings of US companies by demonstrated cash generation.
 ---
 
 # Proven Cash Yield
@@ -26,16 +26,17 @@ and relay the launcher's exact remediation.
 
 For one company, report:
 
-- current price and market capitalization with timestamps
+- synchronized closing price, price date, and reconciled market capitalization
 - the three annual owner-cash inputs and their average
 - PCY and Proven Cash Multiple
 - US and FF12-sector medians, value indices, parity prices, and differences
-- latest debt/cash and diluted-share trend when available
+- filing age, positive owner-cash year count, concentration warning, latest
+  debt/cash, net-debt ratio, and diluted-share trend when available
 - coverage or exclusion reason
 
-For rankings, show the requested leading rows plus universe size, eligible
-count, unsupported financial-company count, missing-data count, benchmark
-sample sizes, and as-of timestamps.
+For rankings, include only qualified companies. Show the requested leading rows
+plus market price date, universe size, eligible count, each exclusion count,
+benchmark sample sizes, and as-of timestamp.
 
 Always state:
 
@@ -47,6 +48,10 @@ Always state:
 
 Do not calculate PCY for FF12 `Money` companies. Do not show a multiple, value
 index, or parity price for non-positive PCY.
+
+Treat exclusion as a result, not an invitation to estimate missing values.
+Explain stale filings, nonconsecutive fiscal periods, inconsistent market
+capitalization, and nonrepeatable owner cash from the calculator output.
 
 Use the Massive MCP server to resolve ambiguous company names and spot-check
 the displayed ticker price/details. Start with `search_endpoints`, then call
