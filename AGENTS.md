@@ -40,46 +40,30 @@ If the instance you keep is unresponsive, restart that one rather than leaving a
 
 ### Web-Terminal Podman Environment
 
-This environment runs Podman 6 or newer rootlessly inside an unprivileged Coolify application
-container. Treat the following as architecture constraints when running or diagnosing containers:
+- This is Podman 6+ running rootlessly inside an unprivileged Coolify container. `DOCKER_HOST`
+  points to `$XDG_RUNTIME_DIR/podman/podman.sock`.
+- Expect `sqlite netavark pasta rootlessport` from
+  `podman info --format '{{ printf "{{.Host.DatabaseBackend}} {{.Host.NetworkBackend}} {{.Host.RootlessNetworkCmd}} {{.Host.RootlessPortForwarder}}" }}'`.
+  Netavark/Aardvark provide bridge, NAT, and DNS inside Pasta; `slirp4netns` is unnecessary.
+- Storage uses `fuse-overlayfs` with flattened ownership and Buildah chroot isolation. One UID/GID
+  is mapped; `/etc/subuid` and `/etc/subgid` are intentionally empty. Images needing multiple
+  persisted owners may not work.
+- For a single nonzero image identity, use
+  `--userns keep-id:uid=<container-uid>,gid=<container-gid>`.
+- Cgroups are not delegated: nested resource limits, cgroup-parent settings, privileged
+  containers, and published host ports below 1024 are unsupported. Preserve this security model;
+  add subordinate IDs, broader privileges, a host container socket, or `slirp4netns` only when the
+  user explicitly changes it.
 
-- Podman uses SQLite state, `fuse-overlayfs` storage with ownership flattening, Buildah chroot
-  isolation, Netavark/Aardvark networking, Pasta for the outer rootless network namespace, and
-  rootlessport for published ports. The Docker-compatible API is exposed at
-  `$XDG_RUNTIME_DIR/podman/podman.sock` through `DOCKER_HOST`.
-- Default and explicitly requested bridge networks are implemented by Netavark/Aardvark inside the
-  Pasta namespace. `slirp4netns` is intentionally absent and is not required for bridge networking.
-- Podman has exactly one UID/GID mapping: nested ID 0 maps to the application user. `/etc/subuid`
-  and `/etc/subgid` are intentionally empty because the outer container blocks multi-ID mappings
-  without broader privileges. Image ownership is flattened into the application UID/GID.
-- For an image that runs as one nonzero service identity, use
-  `--userns keep-id:uid=<container-uid>,gid=<container-gid>`. Images that require several distinct
-  persisted owners may not work in this environment.
-- The outer container does not delegate a writable cgroup tree. Nested resource limits,
-  cgroup-parent settings, privileged containers, and published host ports below 1024 are unsupported.
-- Do not add subordinate-ID ranges, `SYS_ADMIN`, `--privileged`, a host container socket, or
-  `slirp4netns` as a workaround unless the user explicitly chooses to change the web-terminal
-  security model.
+Diagnose failures in this order:
 
-Use this diagnostic order:
-
-1. Reproduce the operation with native `podman` before testing through Testcontainers or another
-   Docker-compatible client. If native Podman succeeds, classify the remaining failure as a client
-   compatibility problem rather than a Podman or network failure.
-2. Confirm the runtime with `podman --version` and
-   `podman info --format '{{ printf "{{.Host.DatabaseBackend}} {{.Host.NetworkBackend}} {{.Host.RootlessNetworkCmd}} {{.Host.RootlessPortForwarder}}" }}'`.
-   Expect Podman 6 or newer and `sqlite netavark pasta rootlessport`.
-3. Inspect container state, exit code, and logs. Verify that every smoke-test executable actually
-   exists in the selected image before using its failure as evidence about Podman.
-4. For networking, test a custom bridge with a known-good server command, a dynamically assigned
-   unprivileged host port, DNS resolution, and outbound traffic. A missing image applet is not a
-   bridge failure.
-5. Treat skipped supplementary-group or ownership warnings as evidence of the single-ID mapping.
-   Use an explicit image-specific `keep-id` mapping when possible; do not misdiagnose them as
-   networking errors.
-6. Docker-compatible clients may assume Docker-specific `bridge` behavior or reject Podman's
-   extended `keep-id` syntax. Prefer direct Podman orchestration for automated tests in this
-   environment when the compatibility layer is the failing component.
+1. Reproduce with native `podman`, then inspect state, exit code, and logs. Confirm smoke-test
+   commands exist in the image. Native success means a Testcontainers/Docker-client compatibility
+   failure, not a Podman failure.
+2. Test networking with a custom bridge, known-good server command, dynamic unprivileged host port,
+   DNS, and outbound traffic. A missing image executable is not a bridge failure.
+3. Treat supplementary-group and ownership warnings as single-ID mapping symptoms; apply the
+   image-specific `keep-id` mapping instead of changing networking.
 {{- end }}
 
 ## Testing and Verification
