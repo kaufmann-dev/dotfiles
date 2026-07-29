@@ -16,9 +16,12 @@ Parity Price = current price * Value Index
 Price Difference = Value Index - 1
 ```
 
-Current market capitalization is current Massive price multiplied by Massive
-`weighted_shares_outstanding`. The share field treats other share classes as
-converted into the selected representative class.
+For a ranking, use the adjusted closing price from Massive's latest completed
+US market session for every company. Current market capitalization is that
+price multiplied by Massive `weighted_shares_outstanding`. Require the result
+to agree within 10% of Massive's reported market capitalization for the same
+date. The share field treats other share classes as converted into the selected
+representative class.
 
 Use positive PCY observations only when calculating benchmark medians. Keep
 non-positive PCY observations in raw rankings, below positive observations,
@@ -36,10 +39,33 @@ Use facts from `us-gaap` with USD units:
   `EmployeeServiceShareBasedCompensationNoncash`.
 
 For each concept, accept only 10-K or 10-K/A fiscal-year durations of 300 to
-430 days. Group facts by period end and keep the most recently filed value so
-amendments and later restatements supersede older records. Use the latest three
-period ends common to all required concepts. Reject missing or negative capex
-and stock-compensation values rather than treating them as zero.
+430 days filed by the analysis date. Group facts by period end and keep the
+most recently filed value so amendments and later restatements supersede older
+records. Prefer the tag with the freshest valid three-year series. Use the
+latest three period ends common to all required concepts.
+
+Require the latest fiscal period to be no more than 500 days old. Require each
+adjacent fiscal period end to be 300 to 430 days apart. Reject missing or
+negative capex and stock-compensation values rather than treating them as zero.
+
+## Ranking qualification
+
+Include a company in rankings only when:
+
+- all three owner-cash periods pass the SEC freshness and consecutiveness rules
+- latest owner cash is positive
+- at least two of the three owner-cash years are positive
+- a dated Massive closing price exists for the common completed market session
+- closing price times weighted shares reconciles within 10% of Massive's
+  reported market capitalization for the same date
+
+Flag, but do not modify or exclude, owner cash when one year represents more
+than 70% of the three years' total positive owner cash. Report filing age,
+price age, positive owner-cash years, the concentration flag, market-cap
+reconciliation difference, and net debt divided by average owner cash.
+
+These thresholds qualify data for comparison; they do not change reported
+facts or adjust the PCY value.
 
 Debt, cash, and diluted shares are optional context and never change PCY.
 

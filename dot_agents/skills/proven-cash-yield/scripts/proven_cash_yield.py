@@ -18,6 +18,7 @@ import urllib.request
 import zipfile
 from pathlib import Path
 from typing import Any, Iterable
+from zoneinfo import ZoneInfo
 
 
 MASSIVE_BASE = "https://api.massive.com"
@@ -31,6 +32,11 @@ MAJOR_EXCHANGES = {"XNAS", "XNYS", "XASE"}
 DETAIL_TTL_SECONDS = 7 * 24 * 60 * 60
 BULK_TTL_SECONDS = 24 * 60 * 60
 MIN_SECTOR_SAMPLE = 10
+MAX_FISCAL_DATA_AGE_DAYS = 500
+MARKET_DATE_LOOKBACK_DAYS = 8
+MARKET_CAP_RECONCILIATION_TOLERANCE = 0.10
+OWNER_CASH_CONCENTRATION_THRESHOLD = 0.70
+MARKET_CLOSE_READY_HOUR_ET = 18
 
 OCF_TAGS = (
     "NetCashProvidedByUsedInOperatingActivities",
@@ -104,67 +110,98 @@ def annual_series(
     companyfacts: dict[str, Any],
     tags: Iterable[str],
     unit: str,
+    as_of_date: dt.date,
 ) -> dict[str, float]:
     us_gaap = companyfacts.get("facts", {}).get("us-gaap", {})
-    for tag in tags:
+    candidates: list[tuple[str, int, dict[str, float]]] = []
+    for tag_index, tag in enumerate(tags):
         observations = us_gaap.get(tag, {}).get("units", {}).get(unit, [])
         selected: dict[str, dict[str, Any]] = {}
         for item in observations:
             if item.get("form") not in {"10-K", "10-K/A"} or item.get("fp") != "FY":
                 continue
-            start, end = item.get("start"), item.get("end")
-            if not start or not end or item.get("val") is None:
+            start, end, filed = item.get("start"), item.get("end"), item.get("filed")
+            if not start or not end or not filed or item.get("val") is None:
                 continue
             try:
                 duration = (dt.date.fromisoformat(end) - dt.date.fromisoformat(start)).days
+                filed_date = dt.date.fromisoformat(filed)
             except ValueError:
                 continue
-            if not 300 <= duration <= 430:
+            if not 300 <= duration <= 430 or filed_date > as_of_date:
                 continue
             previous = selected.get(end)
             if previous is None or str(item.get("filed", "")) > str(previous.get("filed", "")):
                 selected[end] = item
         if len(selected) >= 3:
-            return {end: float(item["val"]) for end, item in selected.items()}
-    return {}
+            series = {end: float(item["val"]) for end, item in selected.items()}
+            candidates.append((max(series), -tag_index, series))
+    return max(candidates, default=("", 0, {}), key=lambda item: (item[0], item[1]))[2]
 
 
-def latest_instant(companyfacts: dict[str, Any], tags: Iterable[str]) -> float | None:
+def latest_instant(
+    companyfacts: dict[str, Any],
+    tags: Iterable[str],
+    as_of_date: dt.date,
+) -> float | None:
     us_gaap = companyfacts.get("facts", {}).get("us-gaap", {})
     for tag in tags:
         observations = us_gaap.get(tag, {}).get("units", {}).get("USD", [])
-        valid = [
-            item
-            for item in observations
-            if item.get("form") in {"10-K", "10-K/A", "10-Q", "10-Q/A"}
-            and item.get("end")
-            and item.get("val") is not None
-        ]
+        valid = []
+        for item in observations:
+            try:
+                filed_date = dt.date.fromisoformat(str(item.get("filed", "")))
+            except ValueError:
+                continue
+            if (
+                item.get("form") in {"10-K", "10-K/A", "10-Q", "10-Q/A"}
+                and item.get("end")
+                and item.get("val") is not None
+                and filed_date <= as_of_date
+            ):
+                valid.append(item)
         if valid:
             item = max(valid, key=lambda row: (str(row.get("end")), str(row.get("filed", ""))))
             return float(item["val"])
     return None
 
 
-def latest_debt(companyfacts: dict[str, Any]) -> float | None:
-    total = latest_instant(companyfacts, TOTAL_DEBT_TAGS)
+def latest_debt(companyfacts: dict[str, Any], as_of_date: dt.date) -> float | None:
+    total = latest_instant(companyfacts, TOTAL_DEBT_TAGS, as_of_date)
     if total is not None:
         return total
-    current = latest_instant(companyfacts, CURRENT_DEBT_TAGS)
-    noncurrent = latest_instant(companyfacts, NONCURRENT_DEBT_TAGS)
+    current = latest_instant(companyfacts, CURRENT_DEBT_TAGS, as_of_date)
+    noncurrent = latest_instant(companyfacts, NONCURRENT_DEBT_TAGS, as_of_date)
     components = [value for value in (current, noncurrent) if value is not None]
     return sum(components) if components else None
 
 
-def owner_cash_history(companyfacts: dict[str, Any]) -> tuple[list[dict[str, float | str]], str | None]:
-    ocf = annual_series(companyfacts, OCF_TAGS, "USD")
-    capex = annual_series(companyfacts, CAPEX_TAGS, "USD")
-    sbc = annual_series(companyfacts, SBC_TAGS, "USD")
+def owner_cash_history(
+    companyfacts: dict[str, Any],
+    as_of_date: dt.date,
+) -> tuple[list[dict[str, float | str]], str | None]:
+    ocf = annual_series(companyfacts, OCF_TAGS, "USD", as_of_date)
+    capex = annual_series(companyfacts, CAPEX_TAGS, "USD", as_of_date)
+    sbc = annual_series(companyfacts, SBC_TAGS, "USD", as_of_date)
     common_ends = sorted(set(ocf) & set(capex) & set(sbc), reverse=True)
     if len(common_ends) < 3:
         return [], "fewer than three complete annual OCF/capex/stock-comp periods"
+    selected_ends = common_ends[:3]
+    period_dates = [dt.date.fromisoformat(end) for end in selected_ends]
+    fiscal_age_days = (as_of_date - period_dates[0]).days
+    if fiscal_age_days < 0 or fiscal_age_days > MAX_FISCAL_DATA_AGE_DAYS:
+        return [], (
+            f"stale annual financials: latest period is {fiscal_age_days} days old "
+            f"(maximum {MAX_FISCAL_DATA_AGE_DAYS})"
+        )
+    gaps = [
+        (newer - older).days
+        for newer, older in zip(period_dates, period_dates[1:])
+    ]
+    if any(not 300 <= gap <= 430 for gap in gaps):
+        return [], f"nonconsecutive annual periods: gaps are {gaps}"
     history: list[dict[str, float | str]] = []
-    for end in common_ends[:3]:
+    for end in selected_ends:
         if capex[end] < 0 or sbc[end] < 0:
             return [], f"ambiguous sign for capex or stock compensation in period {end}"
         owner_cash = ocf[end] - capex[end] - sbc[end]
@@ -180,28 +217,94 @@ def owner_cash_history(companyfacts: dict[str, Any]) -> tuple[list[dict[str, flo
     return history, None
 
 
+def owner_cash_quality(
+    history: list[dict[str, float | str]],
+) -> tuple[dict[str, float | int | bool], str | None]:
+    values = [float(row["owner_cash"]) for row in history]
+    positive_values = [value for value in values if value > 0]
+    positive_years = len(positive_values)
+    positive_total = sum(positive_values)
+    largest_positive_year_share = (
+        max(positive_values) / positive_total if positive_total > 0 else None
+    )
+    quality: dict[str, float | int | bool] = {
+        "owner_cash_positive_years": positive_years,
+        "owner_cash_concentration_warning": bool(
+            largest_positive_year_share is not None
+            and largest_positive_year_share > OWNER_CASH_CONCENTRATION_THRESHOLD
+        ),
+    }
+    if largest_positive_year_share is not None:
+        quality["owner_cash_largest_positive_year_share"] = largest_positive_year_share
+    if values[0] <= 0:
+        return quality, "nonpositive latest owner cash"
+    if positive_years < 2:
+        return quality, "fewer than two positive owner-cash years"
+    return quality, None
+
+
+def owner_cash_exclusion(error: str) -> str:
+    if error.startswith("stale annual financials"):
+        return "stale_financials"
+    if error.startswith("nonconsecutive annual periods"):
+        return "nonconsecutive_financials"
+    return "incomplete_owner_cash"
+
+
 def median_positive(values: Iterable[float]) -> float | None:
     positive = [value for value in values if value > 0]
     return statistics.median(positive) if positive else None
 
 
-def price_from_snapshot(row: dict[str, Any]) -> tuple[float | None, str | None]:
-    candidates = (
-        (row.get("lastTrade", {}).get("p"), row.get("lastTrade", {}).get("t")),
-        (row.get("min", {}).get("c"), row.get("min", {}).get("t")),
-        (row.get("day", {}).get("c"), row.get("updated")),
-        (row.get("prevDay", {}).get("c"), row.get("updated")),
-    )
-    for value, timestamp in candidates:
-        if isinstance(value, (int, float)) and value > 0:
-            return float(value), str(timestamp) if timestamp is not None else None
+def price_from_daily_bar(row: dict[str, Any]) -> tuple[float | None, str | None]:
+    value, timestamp = row.get("c"), row.get("t")
+    if isinstance(value, (int, float)) and value > 0:
+        return float(value), str(timestamp) if timestamp is not None else None
     return None, None
 
 
 def dollar_volume(row: dict[str, Any]) -> float:
-    price, _ = price_from_snapshot(row)
-    volume = row.get("day", {}).get("v") or row.get("prevDay", {}).get("v") or 0
+    price, _ = price_from_daily_bar(row)
+    volume = row.get("v") or 0
     return (price or 0) * float(volume or 0)
+
+
+def market_date_candidates(now: dt.datetime) -> list[dt.date]:
+    eastern = now.astimezone(ZoneInfo("America/New_York"))
+    first = eastern.date()
+    if eastern.hour < MARKET_CLOSE_READY_HOUR_ET:
+        first -= dt.timedelta(days=1)
+    return [
+        first - dt.timedelta(days=offset)
+        for offset in range(MARKET_DATE_LOOKBACK_DAYS)
+    ]
+
+
+def reconciled_market_cap(
+    price: float,
+    detail: dict[str, Any],
+) -> tuple[dict[str, float], str | None]:
+    shares = detail.get("weighted_shares_outstanding")
+    reported_market_cap = detail.get("market_cap")
+    if not isinstance(shares, (int, float)) or shares <= 0:
+        return {}, "missing weighted shares"
+    if not isinstance(reported_market_cap, (int, float)) or reported_market_cap <= 0:
+        return {}, "missing reported market capitalization"
+    calculated_market_cap = price * float(shares)
+    difference = abs(calculated_market_cap - float(reported_market_cap)) / float(
+        reported_market_cap
+    )
+    if difference > MARKET_CAP_RECONCILIATION_TOLERANCE:
+        return {}, (
+            f"market capitalization differs by {difference:.2%} "
+            f"(maximum {MARKET_CAP_RECONCILIATION_TOLERANCE:.0%})"
+        )
+    return {
+        "weighted_shares_outstanding": float(shares),
+        "reported_market_cap": float(reported_market_cap),
+        "market_cap": calculated_market_cap,
+        "market_cap_reconciliation_difference": difference,
+    }, None
 
 
 class JsonHttpClient:
@@ -259,15 +362,25 @@ class MassiveClient:
             params = None
         return rows
 
-    def snapshot(self, include_otc: bool) -> dict[str, dict[str, Any]]:
+    def daily_market(
+        self,
+        date: dt.date,
+        include_otc: bool,
+    ) -> dict[str, dict[str, Any]]:
         payload = self.get(
-            "/v2/snapshot/locale/us/markets/stocks/tickers",
-            {"include_otc": str(include_otc).lower()},
+            f"/v2/aggs/grouped/locale/us/market/stocks/{date.isoformat()}",
+            {
+                "adjusted": "true",
+                "include_otc": str(include_otc).lower(),
+            },
         )
-        return {row["ticker"]: row for row in payload.get("tickers", []) if row.get("ticker")}
+        return {row["T"]: row for row in payload.get("results", []) if row.get("T")}
 
-    def details(self, ticker: str) -> dict[str, Any]:
-        payload = self.get(f"/v3/reference/tickers/{urllib.parse.quote(ticker, safe='')}")
+    def details(self, ticker: str, date: dt.date) -> dict[str, Any]:
+        payload = self.get(
+            f"/v3/reference/tickers/{urllib.parse.quote(ticker, safe='')}",
+            {"date": date.isoformat()},
+        )
         result = payload.get("results")
         if not isinstance(result, dict):
             raise DataError(f"Massive returned no ticker details for {ticker}")
@@ -326,6 +439,7 @@ def fetch_details(
     client: MassiveClient,
     cache: Cache,
     tickers: list[str],
+    market_date: dt.date,
     refresh: bool,
 ) -> dict[str, dict[str, Any]]:
     stored = cache.load_details()
@@ -333,7 +447,8 @@ def fetch_details(
     output: dict[str, dict[str, Any]] = {}
     missing: list[str] = []
     for ticker in tickers:
-        item = stored.get(ticker)
+        cache_key = f"{ticker}@{market_date.isoformat()}"
+        item = stored.get(cache_key)
         if (
             not refresh
             and isinstance(item, dict)
@@ -345,7 +460,7 @@ def fetch_details(
 
     def one(ticker: str) -> tuple[str, dict[str, Any] | None]:
         try:
-            return ticker, client.details(ticker)
+            return ticker, client.details(ticker, market_date)
         except DataError:
             return ticker, None
 
@@ -353,7 +468,8 @@ def fetch_details(
         for ticker, data in executor.map(one, missing):
             if data:
                 output[ticker] = data
-                stored[ticker] = {"fetched_at": now, "data": data}
+                cache_key = f"{ticker}@{market_date.isoformat()}"
+                stored[cache_key] = {"fetched_at": now, "data": data}
     if missing:
         cache.save_details(stored)
     return output
@@ -366,6 +482,8 @@ def build_analysis(
     universe_name: str,
     refresh: bool,
 ) -> dict[str, Any]:
+    as_of = utc_now()
+    as_of_date = as_of.date()
     include_otc = universe_name == "us-common"
     universe = [
         row
@@ -376,19 +494,30 @@ def build_analysis(
             or row.get("primary_exchange") in MAJOR_EXCHANGES
         )
     ]
-    snapshots = client.snapshot(include_otc)
+    market_date = None
+    daily_bars: dict[str, dict[str, Any]] = {}
+    for candidate_date in market_date_candidates(as_of):
+        try:
+            daily_bars = client.daily_market(candidate_date, include_otc)
+        except DataError:
+            continue
+        if daily_bars:
+            market_date = candidate_date
+            break
+    if market_date is None:
+        raise DataError("Massive returned no completed US daily market session")
 
     by_cik: dict[str, list[dict[str, Any]]] = {}
     for row in universe:
-        snapshot = snapshots.get(row["ticker"])
-        price, _ = price_from_snapshot(snapshot or {})
+        daily_bar = daily_bars.get(row["ticker"])
+        price, _ = price_from_daily_bar(daily_bar or {})
         if price:
             row = dict(row)
-            row["_snapshot"] = snapshot
+            row["_daily_bar"] = daily_bar
             by_cik.setdefault(str(row["cik"]), []).append(row)
 
     representatives = {
-        cik: max(rows, key=lambda row: dollar_volume(row["_snapshot"]))
+        cik: max(rows, key=lambda row: dollar_volume(row["_daily_bar"]))
         for cik, rows in by_cik.items()
     }
 
@@ -405,28 +534,49 @@ def build_analysis(
         "missing_sec_data": 0,
         "incomplete_owner_cash": 0,
         "missing_market_data": 0,
+        "stale_financials": 0,
+        "nonconsecutive_financials": 0,
+        "nonpositive_latest_owner_cash": 0,
+        "insufficient_positive_owner_cash": 0,
+        "market_cap_mismatch": 0,
     }
+    excluded_tickers: dict[str, str] = {}
     with zipfile.ZipFile(facts_path) as facts_zip, zipfile.ZipFile(submissions_path) as subs_zip:
         for cik, listing in representatives.items():
             facts = zip_json(facts_zip, cik)
             submission = zip_json(subs_zip, cik)
             if not facts or not submission:
                 exclusions["missing_sec_data"] += 1
+                excluded_tickers[listing["ticker"]] = "missing SEC data"
                 continue
             sector = ff12_sector(submission.get("sic"))
             if sector == "Money":
                 exclusions["financial_company"] += 1
+                excluded_tickers[listing["ticker"]] = "unsupported financial company"
                 continue
-            history, error = owner_cash_history(facts)
+            history, error = owner_cash_history(facts, as_of_date)
             if error:
-                exclusions["incomplete_owner_cash"] += 1
+                reason = owner_cash_exclusion(error)
+                exclusions[reason] += 1
+                excluded_tickers[listing["ticker"]] = error
                 continue
-            price, price_timestamp = price_from_snapshot(listing["_snapshot"])
+            quality, error = owner_cash_quality(history)
+            if error:
+                reason = (
+                    "nonpositive_latest_owner_cash"
+                    if error == "nonpositive latest owner cash"
+                    else "insufficient_positive_owner_cash"
+                )
+                exclusions[reason] += 1
+                excluded_tickers[listing["ticker"]] = error
+                continue
+            price, price_timestamp = price_from_daily_bar(listing["_daily_bar"])
             if not price:
                 exclusions["missing_market_data"] += 1
+                excluded_tickers[listing["ticker"]] = "missing completed-session price"
                 continue
             avg_owner_cash = statistics.fmean(float(row["owner_cash"]) for row in history)
-            diluted = annual_series(facts, DILUTED_SHARE_TAGS, "shares")
+            diluted = annual_series(facts, DILUTED_SHARE_TAGS, "shares", as_of_date)
             diluted_values = [diluted[end] for end in sorted(diluted, reverse=True)[:3]]
             dilution_change = None
             if len(diluted_values) == 3 and diluted_values[-1] > 0:
@@ -441,33 +591,61 @@ def build_analysis(
                     "sector": sector,
                     "price": price,
                     "price_timestamp": price_timestamp,
+                    "price_date": market_date.isoformat(),
+                    "price_age_days": (as_of_date - market_date).days,
                     "history": history,
                     "average_owner_cash": avg_owner_cash,
-                    "cash": latest_instant(facts, CASH_TAGS),
-                    "debt": latest_debt(facts),
+                    "fiscal_data_age_days": (
+                        as_of_date
+                        - dt.date.fromisoformat(str(history[0]["period_end"]))
+                    ).days,
+                    "cash": latest_instant(facts, CASH_TAGS, as_of_date),
+                    "debt": latest_debt(facts, as_of_date),
                     "diluted_share_change_3y": dilution_change,
+                    **quality,
                 }
             )
 
-    details = fetch_details(client, cache, [row["ticker"] for row in candidates], refresh)
+    details = fetch_details(
+        client,
+        cache,
+        [row["ticker"] for row in candidates],
+        market_date,
+        refresh,
+    )
     results: list[dict[str, Any]] = []
     for row in candidates:
         detail = details.get(row["ticker"], {})
-        shares = detail.get("weighted_shares_outstanding")
-        if not isinstance(shares, (int, float)) or shares <= 0:
-            exclusions["missing_market_data"] += 1
+        market_cap_data, error = reconciled_market_cap(row["price"], detail)
+        if error:
+            reason = (
+                "market_cap_mismatch"
+                if error.startswith("market capitalization differs")
+                else "missing_market_data"
+            )
+            exclusions[reason] += 1
+            excluded_tickers[row["ticker"]] = error
             continue
-        market_cap = row["price"] * float(shares)
+        market_cap = market_cap_data["market_cap"]
+        if market_cap <= 0:
+            exclusions["missing_market_data"] += 1
+            excluded_tickers[row["ticker"]] = "nonpositive market capitalization"
+            continue
         pcy = row["average_owner_cash"] / market_cap
+        net_debt = (
+            row["debt"] - row["cash"]
+            if row["debt"] is not None and row["cash"] is not None
+            else None
+        )
         row.update(
             {
-                "weighted_shares_outstanding": float(shares),
-                "market_cap": market_cap,
+                **market_cap_data,
                 "pcy": pcy,
                 "proven_cash_multiple": (1 / pcy) if pcy > 0 else None,
-                "net_debt": (
-                    row["debt"] - row["cash"]
-                    if row["debt"] is not None and row["cash"] is not None
+                "net_debt": net_debt,
+                "net_debt_to_average_owner_cash": (
+                    net_debt / row["average_owner_cash"]
+                    if net_debt is not None and row["average_owner_cash"] > 0
                     else None
                 ),
             }
@@ -517,7 +695,8 @@ def build_analysis(
         row.setdefault("sector_rank", None)
 
     return {
-        "as_of": iso_now(),
+        "as_of": as_of.isoformat(),
+        "market_price_date": market_date.isoformat(),
         "universe": universe_name,
         "coverage": {
             "active_listings": len(universe),
@@ -532,6 +711,7 @@ def build_analysis(
             "sector_medians": sector_medians,
         },
         "results": results,
+        "_excluded_tickers": excluded_tickers,
     }
 
 
@@ -587,11 +767,19 @@ def main(argv: list[str] | None = None) -> int:
                 (row for row in analysis["results"] if row["ticker"] == ticker), None
             )
             if match is None:
-                raise DataError(
-                    f"{ticker} is unsupported, excluded, or lacks three complete annual periods"
-                )
+                match = {
+                    "ticker": ticker,
+                    "qualified": False,
+                    "exclusion_reason": analysis["_excluded_tickers"].get(
+                        ticker,
+                        "unsupported, unlisted, or not the representative share class",
+                    ),
+                }
+            else:
+                match["qualified"] = True
             output = {
                 "as_of": analysis["as_of"],
+                "market_price_date": analysis["market_price_date"],
                 "universe": analysis["universe"],
                 "coverage": analysis["coverage"],
                 "benchmarks": analysis["benchmarks"],
@@ -613,7 +801,12 @@ def main(argv: list[str] | None = None) -> int:
             )
             if args.limit > 0:
                 ranked = ranked[: args.limit]
-            output = {**analysis, "sort": args.sort, "results": ranked}
+            output = {
+                key: value
+                for key, value in analysis.items()
+                if key != "_excluded_tickers"
+            }
+            output.update({"sort": args.sort, "results": ranked})
         json.dump(output, sys.stdout, indent=2, sort_keys=True)
         sys.stdout.write("\n")
         return 0
