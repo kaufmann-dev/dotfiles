@@ -1,0 +1,13 @@
+interface:
+  display_name: "Proven Cash Yield"
+  short_description: "Rank factual owner-cash valuation yields"
+  default_prompt: "Use $proven-cash-yield to calculate and compare a company's Proven Cash Yield."
+
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "massive"
+      description: "Massive market and ticker reference data"
+
+policy:
+  allow_implicit_invocation: true

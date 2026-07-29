@@ -2,5 +2,6 @@
 context7_api_key = "context7_api_key_replace_me"
 github_pat = "github_pat_replace_me"
 massive_api_key = "massive_api_key_replace_me"
+sec_user_agent = "proven-cash-yield your_email@example.com"
 portfolio_arena_api_key = "portfolio_arena_api_key_replace_me"
 executive_arena_api_key = "executive_arena_api_key_replace_me"
