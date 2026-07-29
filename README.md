@@ -88,12 +88,15 @@ To remove the auto-update wrapper:
 
 ## Agent Instructions
 
-`AGENTS.md` is the shared operating guide. Native instruction filenames are generated from it as templates by chezmoi:
+`.chezmoitemplates/AGENTS.md` is the shared operating guide. Chezmoi renders it only into
+tool-specific instruction files:
 
 - `dot_codex/AGENTS.md.tmpl` maps to `~/.codex/AGENTS.md`.
 - `dot_config/opencode/AGENTS.md.tmpl` maps to `~/.config/opencode/AGENTS.md`.
 - `dot_gemini/GEMINI.md.tmpl` maps to `~/.gemini/GEMINI.md`.
 - `dot_claude/CLAUDE.md.tmpl` maps to `~/.claude/CLAUDE.md`.
+
+No home-level `~/AGENTS.md` is installed.
 
 The global instructions emphasize simple, surgical changes, repo-first discovery, focused verification, and documentation ownership. Project-local `AGENTS.md` files remain more specific and should override these global defaults when they apply.
 
