@@ -1,4 +1,5 @@
 [data]
+is_web_terminal = false
 context7_api_key = "context7_api_key_replace_me"
 github_pat = "github_pat_replace_me"
 massive_api_key = "massive_api_key_replace_me"
