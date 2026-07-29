@@ -1,0 +1,29 @@
+#!/bin/sh
+set -eu
+
+fail() {
+  printf '%s\n' "$1" >&2
+  exit 2
+}
+
+command -v chezmoi >/dev/null 2>&1 || fail \
+  "chezmoi is required. Install it and configure massive_api_key and sec_user_agent."
+
+massive_api_key="$(chezmoi execute-template '{{ with index . "massive_api_key" }}{{ . }}{{ end }}')" ||
+  fail "Could not read massive_api_key from chezmoi data."
+sec_user_agent="$(chezmoi execute-template '{{ with index . "sec_user_agent" }}{{ . }}{{ end }}')" ||
+  fail "Could not read sec_user_agent from chezmoi data."
+
+case "$massive_api_key" in
+  ""|*"_replace_me") fail \
+    "Set [data].massive_api_key in your active chezmoi.toml before using proven-cash-yield." ;;
+esac
+case "$sec_user_agent" in
+  ""|*"_replace_me") fail \
+    "Set [data].sec_user_agent to an identifying application/contact string in your active chezmoi.toml." ;;
+esac
+
+script_dir=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+MASSIVE_API_KEY="$massive_api_key" \
+SEC_USER_AGENT="$sec_user_agent" \
+exec python3 "$script_dir/proven_cash_yield.py" "$@"

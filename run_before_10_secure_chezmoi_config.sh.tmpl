@@ -1,0 +1,6 @@
+{{- if ne .chezmoi.os "windows" }}
+#!/bin/sh
+set -eu
+
+chmod 600 {{ .chezmoi.configFile | quote }}
+{{- end }}

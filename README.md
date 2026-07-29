@@ -127,6 +127,7 @@ Skills marked No require explicit invocation with `$skill-name`.
 | `improve-prompt`              | Improve prompt and instruction files using general prompt-quality guidance.                    | No          |
 | `md-table-formatter`          | Format Markdown tables after any table is created or modified.                                 | Yes         |
 | `medsurface`                  | Convert medical volumes, fuse scans, and extract surface meshes.                               | Yes         |
+| `proven-cash-yield`           | Calculate and rank factual owner-cash valuation yields using SEC and Massive data.             | Yes         |
 | `svg-theme-converter`         | Convert an SVG icon into a self-theming light/dark SVG via embedded CSS.                       | Yes         |
 | `ui-cleanup`                  | Clean up duplicated and inconsistent frontend UI when explicitly requested.                    | No          |
 | `ui-design-principles`        | Apply accessible, responsive, and complete UI design defaults.                                 | No          |
