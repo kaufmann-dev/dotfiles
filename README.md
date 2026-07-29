@@ -97,6 +97,11 @@ To remove the auto-update wrapper:
 
 The global instructions emphasize simple, surgical changes, repo-first discovery, focused verification, and documentation ownership. Project-local `AGENTS.md` files remain more specific and should override these global defaults when they apply.
 
+Set `is_web_terminal = true` under `[data]` in `~/.config/chezmoi/chezmoi.toml` on the hosted web
+terminal. This renders additional instructions for its nested rootless Podman architecture,
+diagnostic workflow, and intentional security limitations. The example configuration defaults the
+flag to `false` for other machines.
+
 ## Skills
 
 Skills are installed under `~/.agents/skills/`.
@@ -153,6 +158,8 @@ servers require local credentials. This public repository does not store tokens 
 credentials. The MCP config files are chezmoi templates that read the following keys from
 `~/.config/chezmoi/chezmoi.toml` when it exists:
 
+- `is_web_terminal` — set to `true` only in the hosted web terminal to render its Podman-specific
+  operating and diagnostic instructions; defaults to `false`.
 - `context7_api_key` — a [Context7 API key](https://context7.com/dashboard). Context7 always
   remains configured and runs unauthenticated when this key is absent.
 - `github_pat` — a fine-grained GitHub personal access token with only the
