@@ -14,7 +14,6 @@ Putting a Coolify-UI-only setting into `nixpacks.toml` does nothing — Coolify 
 
 ## Scope Guardrails
 
-- Use this skill only after explicit user invocation. If it was loaded without that, stop applying it and follow the ordinary task instructions.
 - Generate only what the project's evidence supports. Never invent commands, packages, environment variables, or secret values.
 - Stay minimal: `nixpacks.toml` should contain only what differs from the Nixpacks provider's automatic behavior, and the README section should be a short transcribe-into-Coolify checklist, not a tutorial.
 
