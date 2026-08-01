@@ -1,6 +1,6 @@
 ---
 name: ui-design-principles
-description: Provide context-sensitive design guardrails whenever Codex creates, implements, modifies, or reviews a website, application, page, component, or other user interface. Use automatically for UI work even when the user does not name the skill. Preserve established visual systems in existing projects; apply the personal visual defaults only to greenfield websites and applications or when the user explicitly requests them.
+description: Apply context-sensitive UI design guardrails. Use when creating, modifying, or reviewing interfaces. Preserve existing themes; apply personal visual defaults only to greenfield websites and applications or when explicitly requested.
 ---
 
 # UI Design Principles
