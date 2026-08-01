@@ -1,6 +1,6 @@
 ---
 name: ui-design-principles
-description: Provide context-sensitive design guardrails for building or reviewing user interfaces. Use only when the user explicitly invokes this skill.
+description: Provide context-sensitive design guardrails whenever Codex creates, implements, modifies, or reviews a website, application, page, component, or other user interface. Use automatically for UI work even when the user does not name the skill. Preserve established visual systems in existing projects; apply the personal visual defaults only to greenfield websites and applications or when the user explicitly requests them.
 ---
 
 # UI Design Principles
@@ -8,6 +8,24 @@ description: Provide context-sensitive design guardrails for building or reviewi
 Use these principles as guardrails, not as a mandate to redesign. Preserve the existing interaction model, visual language, and information density unless the task or a concrete usability defect requires a change. Do not invent states, flows, components, abstractions, or design-system work unrelated to the request.
 
 Prefer native platform behavior and the smallest change that fully solves the problem.
+
+## Scope and precedence
+
+- Treat a project as established when it already has a visual language, theme, design tokens, shared components, or implemented UI. A new page, feature, or component inside such a project is not greenfield.
+- In an established project, follow its present theme and patterns. Do not restyle, audit, or rewrite existing UI to match the personal visual defaults below unless the user explicitly asks to apply them. Even then, limit changes to the requested scope unless the user requests a broader redesign.
+- Apply the personal visual defaults when creating a genuinely new website or application without an established visual system. Also apply them when the user explicitly requests them for an existing project.
+- Follow explicit product, brand, and user requirements. Preserve accessibility, usability, and correct state communication when applying any visual preference.
+
+## Personal visual defaults
+
+Apply these defaults only within the scope defined above:
+
+1. **Use square geometry** — do not use border radius. Keep surfaces and controls rectangular so adjacent elements can align cleanly without artificial gaps.
+2. **Keep surfaces flat** — do not use box shadows. Use borders sparingly and only when a boundary, state, or interaction would otherwise be unclear. Establish separation through page structure, hierarchy, scale, spacing, contrast, and background color. Use a visible outline or another static, non-shadow cue for keyboard focus.
+3. **Use absolute base backgrounds** — use `#000000` for a dark main background and `#ffffff` for a light main background.
+4. **Use color functionally** — introduce color only when it helps users distinguish hierarchy, categories, states, actions, or groups. Keep the interface monochrome otherwise, and never rely on color alone to convey meaning.
+5. **Keep every element purposeful** — omit elements and copy that are purely decorative or add no useful information or action. Avoid eyebrow headings, nonessential disclaimers, meaningless taglines, and stacks of buzzwords. Retain disclosures and guidance required for safe, correct, accessible, or lawful use.
+6. **Keep interaction static** — do not implement animations, transitions, parallax, auto-moving content, or other motion effects. Make state changes immediate and communicate progress or status with static indicators.
 
 ## Accessibility
 
@@ -34,4 +52,4 @@ Prefer native platform behavior and the smallest change that fully solves the pr
 12. **Reuse established patterns before creating new ones** — use shared components and tokens for repeated or system-level decisions. Allow justified component-local values; do not expand or refactor the design system unless the task benefits from it.
 13. **Apply progressive disclosure selectively** — move genuinely infrequent or cognitively expensive options behind a secondary layer only when that improves the common workflow. Keep important and frequent functionality visible and preserve discoverability.
 
-When reviewing, report only relevant failures. For each one, identify the element, provide concrete evidence of the problem, and recommend the smallest effective fix. Distinguish objective accessibility defects from contextual design preferences.
+When reviewing, report only relevant failures. For each one, identify the element, provide concrete evidence of the problem, and recommend the smallest effective fix. Distinguish objective accessibility defects from contextual design preferences. In an established project, do not report departures from the personal visual defaults as failures unless the user asks for an evaluation against those defaults.

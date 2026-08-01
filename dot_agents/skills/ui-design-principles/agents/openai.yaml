@@ -1,7 +1,7 @@
 interface:
   display_name: "UI Design Principles"
-  short_description: "Apply context-sensitive UI design guardrails"
-  default_prompt: "Use $ui-design-principles to improve this interface without unnecessary redesign."
+  short_description: "Apply UI guardrails and greenfield defaults"
+  default_prompt: "Use $ui-design-principles to build or review this interface while preserving established themes."
 
 policy:
-  allow_implicit_invocation: false
+  allow_implicit_invocation: true

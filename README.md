@@ -138,7 +138,7 @@ Skills marked No require explicit invocation with `$skill-name`.
 | `proven-cash-yield`           | Calculate and quality-rank factual owner-cash yields using SEC and Massive data.               | Yes         |
 | `svg-theme-converter`         | Convert an SVG icon into a self-theming light/dark SVG via embedded CSS.                       | Yes         |
 | `ui-cleanup`                  | Clean up duplicated and inconsistent frontend UI when explicitly requested.                    | No          |
-| `ui-design-principles`        | Apply accessible, responsive, and complete UI design defaults.                                 | No          |
+| `ui-design-principles`        | Apply accessible UI guardrails and scoped greenfield visual defaults.                          | Yes         |
 | `write-agents-md`             | Create a repository- or subtree-scoped `AGENTS.md` from codebase evidence.                     | Yes         |
 | `write-design-md`             | Create a project `DESIGN.md` from scratch.                                                     | Yes         |
 | `write-readme-md`             | Create a project `README.md` from scratch.                                                     | Yes         |
