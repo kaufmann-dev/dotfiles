@@ -18,6 +18,10 @@ the identity provider or deployment platform; report the settings an administrat
 - For confidential clients, use Pocket ID's `client_secret_post`. Do not force
   `client_secret_basic`. For example, with `openid-client`, use `ClientSecretPost`.
 - For every interactive Authorization Code flow, use PKCE with S256, including for confidential clients.
+- Show an application-owned login screen before starting an interactive OIDC flow. Visiting the
+  application or a protected document must route to that screen, not redirect immediately to the
+  identity provider. Start OIDC only from the screen's explicit sign-in action, and preserve a
+  validated same-origin return destination so authentication resumes the intended workflow.
 - Determine whether protected resources are global, shared, or user-owned.
 - For a single-user or admin-only application, use the OIDC provider's access policy as the sole
   admission control. Do not add application-level identity or claim allowlists.
