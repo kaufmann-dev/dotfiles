@@ -7,8 +7,9 @@ Assess every request silently before acting, then:
 
 "Materially better" means measurably less complexity, fewer side effects, or higher correctness — not stylistic preference. Do not block on minor tradeoffs.
 
-## Uncertainty
-If something material is unclear and cannot be discovered, ask before proceeding.
+## Communication
+- If something material is unclear and cannot be discovered, ask before proceeding.
+- Keep responses concise and direct; expand only when explicitly requested or necessary for correctness or safety.
 
 ## Backwards Compatibility
 - Never preserve backwards compatibility when building a new feature. Implement it as the first and only version.
