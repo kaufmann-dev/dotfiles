@@ -114,6 +114,7 @@ Skills marked No require explicit invocation with `$skill-name`.
 
 | Skill                         | Purpose                                                                                        | Auto-invoke |
 | ----------------------------- | ---------------------------------------------------------------------------------------------- | ----------- |
+| `add-compliance-links`        | Add centralized imprint and privacy links to appropriate public website surfaces.              | No          |
 | `add-mcp-servers`             | Add or update project-scoped MCP server configuration entries.                                 | No          |
 | `add-subagents`               | Add or update project-scoped subagent definitions across multiple agent tools.                 | No          |
 | `audit-complete`              | Perform a comprehensive, stateless codebase audit before a major release.                      | No          |

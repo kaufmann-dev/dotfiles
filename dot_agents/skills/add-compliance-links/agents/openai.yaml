@@ -1,0 +1,7 @@
+interface:
+  display_name: "Add Compliance Links"
+  short_description: "Add centralized imprint and privacy links"
+  default_prompt: "Use $add-compliance-links to add the required imprint and privacy links to this website."
+
+policy:
+  allow_implicit_invocation: false
