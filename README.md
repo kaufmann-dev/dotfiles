@@ -38,7 +38,8 @@ winget install twpayne.chezmoi
 ```
 
 Some configured MCP servers run through `npx`, so Node.js/npm must be available for full MCP
-support. Install `agent-browser` separately when browser automation is needed. The dotfiles
+support. Purelymail also needs [Astral UV](https://docs.astral.sh/uv/) (`uvx`) on `PATH`.
+Install `agent-browser` separately when browser automation is needed. The dotfiles
 configure agents to use the command but do not install programs.
 
 ## Install
@@ -51,7 +52,7 @@ chezmoi init --apply https://github.com/kaufmann-dev/dotfiles.git
 
 For a local checkout, run `chezmoi init --source-path . --apply` instead.
 
-**Optional**: authenticate Context7 or enable the GitHub, Massive, Portfolio Arena, and Executive Arena MCP servers
+**Optional**: authenticate Context7 or enable the GitHub, Massive, Portfolio Arena, Executive Arena, and Purelymail MCP servers
 by copying the example data file, adding your credentials, and applying again:
 
 ```bash
@@ -156,8 +157,9 @@ All supported agent tools are configured with the same MCP servers:
 | `massive`         | Local stdio   | Financial market data when `mcp_massive` is installed.    |
 | `portfolio_arena` | Remote HTTP   | Portfolio Arena admin data and operations.                |
 | `executive_arena` | Remote HTTP   | Executive research tasks and profile publishing.          |
+| `purelymail`      | Local `uvx`   | Read, organize, and send email through Purelymail.        |
 
-Context7 can use an optional API key, while the `github`, `massive`, `portfolio_arena`, and `executive_arena` MCP
+Context7 can use an optional API key, while the `github`, `massive`, `portfolio_arena`, `executive_arena`, and `purelymail` MCP
 servers require local credentials. This public repository does not store tokens or other
 credentials. The MCP config files are chezmoi templates that read the following keys from
 `~/.config/chezmoi/chezmoi.toml` when it exists:
@@ -171,6 +173,8 @@ credentials. The MCP config files are chezmoi templates that read the following 
 - `massive_api_key` — a [Massive.com API key](https://massive.com/?utm_campaign=mcp&utm_medium=referral&utm_source=github).
 - `portfolio_arena_api_key` — a Portfolio Arena API key (generate one via the admin dashboard at <https://arena.kaufmann.dev>).
 - `executive_arena_api_key` — an API key shown once when generated from Executive Arena's authenticated **API Keys** page.
+- `purelymail_email` — your full Purelymail mailbox address, used for IMAP and SMTP login.
+- `purelymail_password` — your mailbox password; use a Purelymail app password when 2FA is enabled.
 
 Without a required server credential, the corresponding MCP server is omitted.
 Executive Arena uses the fixed `https://executives.kaufmann.dev/mcp` endpoint and is omitted unless
@@ -182,6 +186,28 @@ need [Astral UV](https://docs.astral.sh/uv/) and the `mcp_massive` binary on `PA
 ```sh
 uv tool install "mcp_massive @ git+https://github.com/massive-com/mcp_massive@v0.10.0"
 ```
+
+The Purelymail entry runs `uvx mcp-email-server==1.9.0 stdio` and uses the server's
+[environment configuration](https://mcp-email-server.wh1isper.top/configuration/#environment-variable-reference).
+It connects using `purelymail_email` to `imap.purelymail.com:993` and
+`smtp.purelymail.com:465` using SSL/TLS with certificate verification, following
+[Purelymail's settings](https://support.purelymail.com/support/solutions/articles/159000430778-server-settings-imap-smtp-and-pop3).
+Sending to any recipient is enabled; the shared agent instructions still require explicit
+authorization before sending messages.
+
+To enable it, add both values under the existing `[data]` section in
+`~/.config/chezmoi/chezmoi.toml`:
+
+```toml
+purelymail_email = "your-email@example.com"
+purelymail_password = "your-mailbox-or-app-password"
+```
+
+Run `chezmoi apply` and restart your agent tools. The server is omitted unless both values are
+non-empty. Keep your address and password in that local file, not this repository. Like the
+other secrets, they are rendered as plaintext into the private MCP configs. No separate email-server UI or credential
+store setup is needed; use a fresh environment-based configuration rather than selecting the
+server's managed mode, which ignores account environment variables.
 
 ## Browser Automation
 

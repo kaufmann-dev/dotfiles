@@ -46,6 +46,27 @@
         "Authorization": "Bearer {{ . }}"
       }
     }
+    {{- end }}{{ with and (index . "purelymail_email") (index . "purelymail_password") }},
+    "purelymail": {
+      "type": "stdio",
+      "command": "uvx",
+      "args": [
+        "mcp-email-server==1.9.0",
+        "stdio"
+      ],
+      "env": {
+        "MCP_EMAIL_SERVER_ACCOUNT_NAME": "purelymail",
+        "MCP_EMAIL_SERVER_EMAIL_ADDRESS": {{ index $ "purelymail_email" | toJson }},
+        "MCP_EMAIL_SERVER_PASSWORD": {{ . | toJson }},
+        "MCP_EMAIL_SERVER_IMAP_HOST": "imap.purelymail.com",
+        "MCP_EMAIL_SERVER_IMAP_PORT": "993",
+        "MCP_EMAIL_SERVER_IMAP_SSL": "true",
+        "MCP_EMAIL_SERVER_SMTP_HOST": "smtp.purelymail.com",
+        "MCP_EMAIL_SERVER_SMTP_PORT": "465",
+        "MCP_EMAIL_SERVER_SMTP_SSL": "true",
+        "MCP_EMAIL_SERVER_ALLOWED_RECIPIENTS": "*"
+      }
+    }
     {{- end }}
   }
 }
