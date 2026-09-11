@@ -173,6 +173,7 @@ credentials. The MCP config files are chezmoi templates that read the following 
 - `massive_api_key` — a [Massive.com API key](https://massive.com/?utm_campaign=mcp&utm_medium=referral&utm_source=github).
 - `portfolio_arena_api_key` — a Portfolio Arena API key (generate one via the admin dashboard at <https://arena.kaufmann.dev>).
 - `executive_arena_api_key` — an API key shown once when generated from Executive Arena's authenticated **API Keys** page.
+- `purelymail_full_name` — optional sender display name; if omitted or empty, the server uses the email local part.
 - `purelymail_email` — your full Purelymail mailbox address, used for IMAP and SMTP login.
 - `purelymail_password` — your mailbox password; use a Purelymail app password when 2FA is enabled.
 
@@ -192,19 +193,20 @@ The Purelymail entry runs `uvx mcp-email-server==1.9.0 stdio` and uses the serve
 It connects using `purelymail_email` to `imap.purelymail.com:993` and
 `smtp.purelymail.com:465` using SSL/TLS with certificate verification, following
 [Purelymail's settings](https://support.purelymail.com/support/solutions/articles/159000430778-server-settings-imap-smtp-and-pop3).
-Outgoing messages use the sender display name `David Kaufmann`.
+Set `purelymail_full_name` to choose the sender display name for outgoing messages.
 Sending to any recipient is enabled; the shared agent instructions still require explicit
 authorization before sending messages.
 
-To enable it, add both values under the existing `[data]` section in
+To enable it, add your email address and password, plus an optional display name, under `[data]` in
 `~/.config/chezmoi/chezmoi.toml`:
 
 ```toml
+purelymail_full_name = "Your Name" # Optional
 purelymail_email = "your-email@example.com"
 purelymail_password = "your-mailbox-or-app-password"
 ```
 
-Run `chezmoi apply` and restart your agent tools. The server is omitted unless both values are
+Run `chezmoi apply` and restart your agent tools. The server is omitted unless the email address and password are
 non-empty. Keep your address and password in that local file, not this repository. Like the
 other secrets, they are rendered as plaintext into the private MCP configs. No separate email-server UI or credential
 store setup is needed; use a fresh environment-based configuration rather than selecting the
