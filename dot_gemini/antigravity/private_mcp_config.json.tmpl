@@ -49,6 +49,7 @@
       ],
       "env": {
         "MCP_EMAIL_SERVER_ACCOUNT_NAME": "purelymail",
+        "MCP_EMAIL_SERVER_FULL_NAME": "David Kaufmann",
         "MCP_EMAIL_SERVER_EMAIL_ADDRESS": {{ index $ "purelymail_email" | toJson }},
         "MCP_EMAIL_SERVER_PASSWORD": {{ . | toJson }},
         "MCP_EMAIL_SERVER_IMAP_HOST": "imap.purelymail.com",
