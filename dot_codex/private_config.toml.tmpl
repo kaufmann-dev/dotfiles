@@ -45,7 +45,9 @@ args = ["mcp-email-server==1.9.0", "stdio"]
 
 [mcp_servers.purelymail.env]
 MCP_EMAIL_SERVER_ACCOUNT_NAME = "purelymail"
-MCP_EMAIL_SERVER_FULL_NAME = "David Kaufmann"
+{{ with index $ "purelymail_full_name" -}}
+MCP_EMAIL_SERVER_FULL_NAME = {{ . | toJson }}
+{{ end -}}
 MCP_EMAIL_SERVER_EMAIL_ADDRESS = {{ index $ "purelymail_email" | toJson }}
 MCP_EMAIL_SERVER_PASSWORD = {{ . | toJson }}
 MCP_EMAIL_SERVER_IMAP_HOST = "imap.purelymail.com"
