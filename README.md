@@ -192,6 +192,7 @@ The Purelymail entry runs `uvx mcp-email-server==1.9.0 stdio` and uses the serve
 It connects using `purelymail_email` to `imap.purelymail.com:993` and
 `smtp.purelymail.com:465` using SSL/TLS with certificate verification, following
 [Purelymail's settings](https://support.purelymail.com/support/solutions/articles/159000430778-server-settings-imap-smtp-and-pop3).
+Outgoing messages use the sender display name `David Kaufmann`.
 Sending to any recipient is enabled; the shared agent instructions still require explicit
 authorization before sending messages.
 
