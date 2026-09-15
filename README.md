@@ -144,6 +144,7 @@ Skills marked No require explicit invocation with `$skill-name`.
 | `build-brief-generator`       | Turns a product idea into a clear, complete, and practical AI Build Brief.                     | No          |
 | `coolify`                     | Configure and diagnose Coolify/Nixpacks deployments.                                           | Yes         |
 | `create-datatable`            | Guide context-sensitive decisions for creating, changing, or reviewing data tables.            | Yes         |
+| `debloat`                     | Remove over-engineered security, testing, and complexity when explicitly requested.            | No          |
 | `debugging`                   | Debug bugs by reproducing behavior, confirming root cause, and documenting fixes.              | Yes         |
 | `distill-agents-md`           | Distill bloated instruction files (AGENTS.md, etc.) into lean versions.                        | Yes         |
 | `humanizer`                   | Remove signs of AI-generated writing from text.                                                | No          |
