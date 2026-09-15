@@ -1,0 +1,83 @@
+{
+  "schema_version": 1,
+  "mcpServers": {
+    "context7": {
+      "type": "streamable-http",
+      "url": "https://mcp.context7.com/mcp"{{ with index . "context7_api_key" }},
+      "headers": {
+        "CONTEXT7_API_KEY": "{{ . }}"
+      }{{- end }},
+      "mode": "optional"
+    },
+    "gh_grep": {
+      "type": "streamable-http",
+      "url": "https://mcp.grep.app",
+      "mode": "optional"
+    }{{ with index . "github_pat" }},
+    "github": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-github"
+      ],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "{{ . }}"
+      },
+      "mode": "optional"
+    }
+    {{- end }}{{ with index . "massive_api_key" }},
+    "massive": {
+      "type": "stdio",
+      "command": "mcp_massive",
+      "env": {
+        "MASSIVE_API_KEY": "{{ . }}"
+      },
+      "mode": "optional"
+    }
+    {{- end }}{{ with index . "portfolio_arena_api_key" }},
+    "portfolio_arena": {
+      "type": "streamable-http",
+      "url": "https://arena.kaufmann.dev/mcp",
+      "headers": {
+        "Authorization": "Bearer {{ . }}"
+      },
+      "mode": "optional"
+    }
+    {{- end }}{{ with index . "executive_arena_api_key" }},
+    "executive_arena": {
+      "type": "streamable-http",
+      "url": "https://executives.kaufmann.dev/mcp",
+      "headers": {
+        "Authorization": "Bearer {{ . }}"
+      },
+      "mode": "optional"
+    }
+    {{- end }}{{ with and (index . "purelymail_email") (index . "purelymail_password") }},
+    "purelymail": {
+      "type": "stdio",
+      "command": "uvx",
+      "args": [
+        "mcp-email-server==1.9.0",
+        "stdio"
+      ],
+      "env": {
+        "MCP_EMAIL_SERVER_ACCOUNT_NAME": "purelymail",
+        {{ with index $ "purelymail_full_name" -}}
+        "MCP_EMAIL_SERVER_FULL_NAME": {{ . | toJson }},
+        {{ end -}}
+        "MCP_EMAIL_SERVER_EMAIL_ADDRESS": {{ index $ "purelymail_email" | toJson }},
+        "MCP_EMAIL_SERVER_PASSWORD": {{ . | toJson }},
+        "MCP_EMAIL_SERVER_IMAP_HOST": "imap.purelymail.com",
+        "MCP_EMAIL_SERVER_IMAP_PORT": "993",
+        "MCP_EMAIL_SERVER_IMAP_SSL": "true",
+        "MCP_EMAIL_SERVER_SMTP_HOST": "smtp.purelymail.com",
+        "MCP_EMAIL_SERVER_SMTP_PORT": "465",
+        "MCP_EMAIL_SERVER_SMTP_SSL": "true",
+        "MCP_EMAIL_SERVER_ALLOWED_RECIPIENTS": "*"
+      },
+      "mode": "optional"
+    }
+    {{- end }}
+  }
+}

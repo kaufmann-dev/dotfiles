@@ -2,11 +2,11 @@
 
 Personal dotfiles managed with [chezmoi](https://www.chezmoi.io/).
 
-Supported agent tools: Codex, OpenCode, Antigravity, and Claude Code.
+Supported agent tools: Codex, OpenCode, Antigravity, Claude Code, and Muse Code.
 
 This repository focuses on installing shared instructions, reusable skills, and MCP server configurations for supported agent tools. While it is kept lightweight to ensure global agent behaviors live here, it serves as a flexible foundation that can grow to manage other configurations and dotfiles as needed.
 
-- **Tool Settings** (`~/.codex/`, `~/.config/opencode/`, `~/.gemini/config/`, `~/.gemini/antigravity-cli/`, `~/.claude/`, `~/.claude.json`): Configures native settings, MCP servers, and shared instructions.
+- **Tool Settings** (`~/.codex/`, `~/.config/opencode/`, `~/.gemini/config/`, `~/.gemini/antigravity-cli/`, `~/.claude/`, `~/.claude.json`, `~/.config/muse/`): Configures native settings, MCP servers, and shared instructions.
 - **Shared Skills** (`~/.agents/skills/`): Installs reusable, specialized skills that agents can use.
 
 ## Contents
@@ -16,6 +16,7 @@ This repository focuses on installing shared instructions, reusable skills, and 
   - [Prerequisites](#prerequisites)
   - [Install](#install)
   - [Automating Updates](#automating-updates)
+  - [Shell Aliases](#shell-aliases)
   - [Structure](#structure)
   - [Agent Instructions](#agent-instructions)
   - [Skills](#skills)
@@ -86,6 +87,21 @@ Replace `agenttool` with the command you want to keep synced. The wrapper functi
 To remove the auto-update wrapper:
 - **macOS / Linux:** Open your shell profile (`nano ~/.bashrc`), remove the wrapper function line, and save.
 - **Windows:** Run `notepad $PROFILE`, delete the wrapper function block, and save.
+
+## Shell Aliases
+
+`dot_config/shell/agent-aliases.sh` (→ `~/.config/shell/agent-aliases.sh`) defines
+unrestricted launchers: `muse` runs with `--yolo`, while `agy` and `claude` run with
+`--dangerously-skip-permissions`. Codex needs no wrapper because
+`dot_codex/private_config.toml.tmpl` already sets `approval_policy = "never"`.
+Opt in with one line in `~/.bashrc` or `~/.zshrc`:
+
+```bash
+source ~/.config/shell/agent-aliases.sh
+```
+
+These wrappers disable real protections. Do not use them on untrusted checkouts
+(forks, PR branches).
 
 ## Agent Instructions
 
@@ -211,6 +227,15 @@ non-empty. Keep your address and password in that local file, not this repositor
 other secrets, they are rendered as plaintext into the private MCP configs. No separate email-server UI or credential
 store setup is needed; use a fresh environment-based configuration rather than selecting the
 server's managed mode, which ignores account environment variables.
+
+Muse Code reads the same servers from `~/.config/muse/settings.json` (managed here as
+`dot_config/muse/private_settings.json.tmpl`). Remote servers use `"type": "streamable-http"`
+with `url`/`headers`, local servers use `"type": "stdio"` with `command`/`args`/`env`, every
+entry carries `"mode": "optional"` so a failing server cannot block startup, and the file
+carries `"schema_version": 1`. Never add a `mcp_servers` (snake_case) key next to `mcpServers`:
+when both are present Muse drops the whole MCP configuration. Changes take effect on the next
+Muse Code launch. Shared skills under `~/.agents/skills/` are already visible to Muse Code as a
+skill source alongside its managed `$CONFIG_DIR/skills` store, so no extra skills wiring is needed.
 
 ## Browser Automation
 
