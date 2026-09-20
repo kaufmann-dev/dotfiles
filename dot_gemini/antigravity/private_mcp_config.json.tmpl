@@ -40,6 +40,13 @@
         "Authorization": "Bearer {{ . }}"
       }
     }
+    {{- end }}{{ with index . "cv_resume_api_key" }},
+    "cv_resume": {
+      "serverUrl": "https://resume.kaufmann.dev/api/mcp",
+      "headers": {
+        "Authorization": {{ printf "Bearer %s" . | toJson }}
+      }
+    }
     {{- end }}{{ with and (index . "purelymail_email") (index . "purelymail_password") }},
     "purelymail": {
       "command": "uvx",

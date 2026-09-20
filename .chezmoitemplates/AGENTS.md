@@ -25,6 +25,7 @@ Assess every request silently before acting, then:
 - {{- if (index . "massive_api_key") }} Use the `massive` MCP server for stock market data. {{- end }}
 - {{- if (index . "portfolio_arena_api_key") }} Use the `portfolio_arena` MCP server for Portfolio Arena data and admin operations. {{- end }}
 - {{- if (index . "executive_arena_api_key") }} Use the `executive_arena` MCP server to inspect executive-research coverage and publish cited company leadership profiles. {{- end }}
+- {{- if (index . "cv_resume_api_key") }} Use the `cv_resume` MCP server to read and edit shared CV/resume content and visibility. {{- end }}
 
 ## Development Servers and Containers
 
