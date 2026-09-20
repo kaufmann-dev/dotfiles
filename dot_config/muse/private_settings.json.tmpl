@@ -53,6 +53,15 @@
       },
       "mode": "optional"
     }
+    {{- end }}{{ with index . "cv_resume_api_key" }},
+    "cv_resume": {
+      "type": "streamable-http",
+      "url": "https://resume.kaufmann.dev/api/mcp",
+      "headers": {
+        "Authorization": {{ printf "Bearer %s" . | toJson }}
+      },
+      "mode": "optional"
+    }
     {{- end }}{{ with and (index . "purelymail_email") (index . "purelymail_password") }},
     "purelymail": {
       "type": "stdio",

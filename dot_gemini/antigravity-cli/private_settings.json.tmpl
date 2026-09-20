@@ -40,6 +40,13 @@
         "Authorization": "Bearer {{ . }}"
       }
     }
+    {{- end }}{{ with index . "cv_resume_api_key" }},
+    "cv_resume": {
+      "httpUrl": "https://resume.kaufmann.dev/api/mcp",
+      "headers": {
+        "Authorization": {{ printf "Bearer %s" . | toJson }}
+      }
+    }
     {{- end }}
   }
 }

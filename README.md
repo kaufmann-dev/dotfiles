@@ -174,9 +174,10 @@ All supported agent tools are configured with the same MCP servers:
 | `massive`         | Local stdio   | Financial market data when `mcp_massive` is installed.    |
 | `portfolio_arena` | Remote HTTP   | Portfolio Arena admin data and operations.                |
 | `executive_arena` | Remote HTTP   | Executive research tasks and profile publishing.          |
+| `cv_resume`       | Remote HTTP   | Shared CV/resume content and visibility editing.          |
 | `purelymail`      | Local `uvx`   | Read, organize, and send email through Purelymail.        |
 
-Context7 can use an optional API key, while the `github`, `massive`, `portfolio_arena`, `executive_arena`, and `purelymail` MCP
+Context7 can use an optional API key, while the `github`, `massive`, `portfolio_arena`, `executive_arena`, `cv_resume`, and `purelymail` MCP
 servers require local credentials. This public repository does not store tokens or other
 credentials. The MCP config files are chezmoi templates that read the following keys from
 `~/.config/chezmoi/chezmoi.toml` when it exists:
@@ -190,6 +191,7 @@ credentials. The MCP config files are chezmoi templates that read the following 
 - `massive_api_key` — a [Massive.com API key](https://massive.com/?utm_campaign=mcp&utm_medium=referral&utm_source=github).
 - `portfolio_arena_api_key` — a Portfolio Arena API key (generate one via the admin dashboard at <https://arena.kaufmann.dev>).
 - `executive_arena_api_key` — an API key shown once when generated from Executive Arena's authenticated **API Keys** page.
+- `cv_resume_api_key` — an API key created in the CV/Resume app's admin **Settings** tab.
 - `purelymail_full_name` — optional sender display name; if omitted or empty, the server uses the email local part.
 - `purelymail_email` — your full Purelymail mailbox address, used for IMAP and SMTP login.
 - `purelymail_password` — your mailbox password; use a Purelymail app password when 2FA is enabled.
@@ -197,6 +199,19 @@ credentials. The MCP config files are chezmoi templates that read the following 
 Without a required server credential, the corresponding MCP server is omitted.
 Executive Arena uses the fixed `https://executives.kaufmann.dev/mcp` endpoint and is omitted unless
 its API key is configured.
+
+CV/Resume uses `https://resume.kaufmann.dev/api/mcp` with Bearer authentication. To enable
+`cv_resume` across all harness configs, add the key under `[data]` in
+`~/.config/chezmoi/chezmoi.toml`:
+
+```toml
+cv_resume_api_key = "your-api-key"
+```
+
+Run `chezmoi apply` and restart your agent tools. The server and its shared agent instruction
+are omitted when the key is missing or empty. Keep the real key in this local config, not the
+repository; the example leaves it empty. The key grants access to the shared document in both
+CV and resume variants.
 
 The Massive entry is generated only when `massive_api_key` is configured. Machines using it also
 need [Astral UV](https://docs.astral.sh/uv/) and the `mcp_massive` binary on `PATH`:

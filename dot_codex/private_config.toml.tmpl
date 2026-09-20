@@ -37,6 +37,11 @@ http_headers = { Authorization = "Bearer {{ . }}" }
 url = "https://executives.kaufmann.dev/mcp"
 http_headers = { Authorization = "Bearer {{ . }}" }
 {{- end }}
+{{ with index . "cv_resume_api_key" -}}
+[mcp_servers.cv_resume]
+url = "https://resume.kaufmann.dev/api/mcp"
+http_headers = { Authorization = {{ printf "Bearer %s" . | toJson }} }
+{{- end }}
 
 {{ with and (index . "purelymail_email") (index . "purelymail_password") -}}
 [mcp_servers.purelymail]
