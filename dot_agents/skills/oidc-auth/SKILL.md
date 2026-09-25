@@ -1,13 +1,14 @@
 ---
-name: oidc-migration
-description: Design and implement a project-appropriate migration from local authentication to an OpenID Connect provider while preserving intended access and app-owned data. Use only when the user explicitly invokes this skill.
+name: oidc-auth
+description: Design and implement project-appropriate OpenID Connect authentication for a new or existing application, replacing any local authentication while preserving intended access and app-owned data. Use only when the user explicitly invokes this skill.
 ---
 
-# OIDC Migration
+# OIDC Auth
 
-Replace the application's local authentication with OIDC. Inspect the repository and use a mature
-OIDC or framework integration to design the solution that best fits the application. Do not mutate
-the identity provider or deployment platform; report the settings an administrator must apply.
+Add OIDC authentication to the application, replacing any existing local authentication. Inspect
+the repository and use a mature OIDC or framework integration to design the solution that best fits
+the application. Do not mutate the identity provider or deployment platform; report the settings an
+administrator must apply.
 
 ## Requirements
 
@@ -25,7 +26,7 @@ the identity provider or deployment platform; report the settings an administrat
 - Determine whether protected resources are global, shared, or user-owned.
 - For a single-user or admin-only application, use the OIDC provider's access policy as the sole
   admission control. Do not add application-level identity or claim allowlists.
-- Otherwise, if the migration could broaden access to shared or privileged resources, stop and ask
+- Otherwise, if the intended access model is not evident from the code or request, stop and ask
   whether provider admission must be restricted or the application must add per-user authorization
   and isolation.
 - After OIDC login, use the chosen library's server-side session with an HttpOnly cookie. Sessions
@@ -35,9 +36,17 @@ the identity provider or deployment platform; report the settings an administrat
   provider-wide SSO. If the library does not do this natively, redirect to the discovered
   `end_session_endpoint` with `id_token_hint` and `post_logout_redirect_uri`. Do not implement
   back-channel logout.
-- Preserve app-owned data, authorization, and security-sensitive behavior. Remove obsolete local
-  authentication without adding a compatibility path unless explicitly requested.
 - Run the smallest reliable checks and focused authentication tests appropriate to the solution.
+
+## Replacing Existing Authentication
+
+When the application already has local authentication:
+
+- Preserve app-owned data, authorization, and security-sensitive behavior.
+- If the change could broaden access to shared or privileged resources, stop and ask before
+  proceeding.
+- Remove obsolete local authentication without adding a compatibility path unless explicitly
+  requested.
 
 ## Better Auth
 
@@ -70,5 +79,5 @@ duplicate environment-variable documentation.
 
 ## Final Response
 
-Report the chosen auth and session design, preserved and removed behavior, verification results,
-manual steps, and where the Authentication Setup was recorded. Never print secret values.
+Report the chosen auth and session design, any preserved and removed behavior, verification
+results, manual steps, and where the Authentication Setup was recorded. Never print secret values.
