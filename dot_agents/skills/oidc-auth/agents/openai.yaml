@@ -1,0 +1,7 @@
+interface:
+  display_name: "OIDC Auth"
+  short_description: "Add OpenID Connect authentication to applications"
+  default_prompt: "Use $oidc-auth to add OpenID Connect authentication to this application."
+
+policy:
+  allow_implicit_invocation: false

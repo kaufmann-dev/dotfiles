@@ -144,7 +144,6 @@ Skills marked No require explicit invocation with `$skill-name`.
 | `audit-complete`              | Perform a comprehensive, stateless codebase audit before a major release.                      | No          |
 | `audit-defect`                | Directly audit a codebase for concrete, actionable defects.                                    | No          |
 | `audit-rubric`                | Create a bounded, project-specific rubric and immediately audit against it.                    | No          |
-| `oidc-migration`              | Migrate applications from local authentication to an OpenID Connect provider.                  | No          |
 | `autofixer`                   | Coordinate a bounded audit-fix-verify loop using fresh-context subagents.                      | No          |
 | `autofixer-graphify`          | Like `autofixer` but with Graphify-backed repository graph context.                            | No          |
 | `autofixer-yolo`              | Coordinate a bounded audit-fix-verify loop that proceeds without approval for dangerous fixes. | No          |
@@ -161,6 +160,7 @@ Skills marked No require explicit invocation with `$skill-name`.
 | `improve-prompt`              | Improve prompt and instruction files using general prompt-quality guidance.                    | No          |
 | `md-table-formatter`          | Format Markdown tables after any table is created or modified.                                 | Yes         |
 | `medsurface`                  | Convert medical volumes, fuse scans, and extract surface meshes.                               | Yes         |
+| `oidc-auth`                   | Add OpenID Connect authentication, replacing any local authentication.                         | No          |
 | `proven-cash-yield`           | Calculate and quality-rank factual owner-cash yields using SEC and Massive data.               | Yes         |
 | `svg-theme-converter`         | Convert an SVG icon into a self-theming light/dark SVG via embedded CSS.                       | Yes         |
 | `ui-cleanup`                  | Clean up duplicated and inconsistent frontend UI when explicitly requested.                    | No          |
