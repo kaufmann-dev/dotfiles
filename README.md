@@ -162,6 +162,7 @@ Skills marked No require explicit invocation with `$skill-name`.
 | `medsurface`                  | Convert medical volumes, fuse scans, and extract surface meshes.                               | Yes         |
 | `oidc-auth`                   | Add OpenID Connect authentication, replacing any local authentication.                         | No          |
 | `proven-cash-yield`           | Calculate and quality-rank factual owner-cash yields using SEC and Massive data.               | Yes         |
+| `scaffold-web`                | Create a new web app with UI defaults, OIDC auth, compliance links, Coolify, and docs.         | No          |
 | `svg-theme-converter`         | Convert an SVG icon into a self-theming light/dark SVG via embedded CSS.                       | Yes         |
 | `ui-cleanup`                  | Clean up duplicated and inconsistent frontend UI when explicitly requested.                    | No          |
 | `ui-design-principles`        | Apply accessible UI guardrails and scoped greenfield visual defaults.                          | Yes         |
