@@ -28,9 +28,9 @@ the identity provider or deployment platform; report the settings an administrat
 - Otherwise, if the migration could broaden access to shared or privileged resources, stop and ask
   whether provider admission must be restricted or the application must add per-user authorization
   and isolation.
-- After OIDC login, use the chosen library's server-side session with an HttpOnly cookie. Keep the
-  library's default session lifetime and token storage unless the application has a concrete need
-  to change them.
+- After OIDC login, use the chosen library's server-side session with an HttpOnly cookie. Sessions
+  expire seven days after login and are never extended; require login afterwards. Keep the
+  library's default token storage unless the application has a concrete need to change it.
 - Logout must end the local session. Add provider (RP-initiated) logout only when the library
   supports it natively. Do not hand-roll OIDC protocol handling or implement back-channel logout.
 - Preserve app-owned data, authorization, and security-sensitive behavior. Remove obsolete local
@@ -43,8 +43,8 @@ When the application uses or adopts Better Auth (1.7 or later), use the `generic
 the provider's `discoveryUrl`. PKCE is on by default and the default token authentication is
 `client_secret_post`; do not override either. Disable email/password sign-in. Start sign-in from
 the login screen with `authClient.signIn.social({ provider: providerId, callbackURL })`, passing
-the validated return destination as `callbackURL`; no generic OAuth client plugin is needed. The
-callback path is `/api/auth/callback/<providerId>`. `authClient.signOut({ callbackURL })` performs
+the validated return destination as `callbackURL`; no generic OAuth client plugin is needed. Set
+`session: { expiresIn: 60 * 60 * 24 * 7, disableSessionRefresh: true }`. The callback path is `/api/auth/callback/<providerId>`. `authClient.signOut({ callbackURL })` performs
 provider logout through the discovered `end_session_endpoint`.
 
 ## Authentication Setup Handoff
