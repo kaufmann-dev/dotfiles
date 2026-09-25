@@ -1,7 +1,7 @@
 # Unrestricted agent launchers.
 #
-# POSIX-compatible (bash and zsh). On Linux, chezmoi adds this source line to
-# ~/.bashrc and ~/.zshrc. On other systems, opt in with one line:
+# POSIX-compatible (bash and zsh). On Linux and macOS, chezmoi adds this
+# source line to ~/.bashrc and ~/.zshrc:
 #
 #   source ~/.config/shell/agent-aliases.sh
 #

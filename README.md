@@ -94,14 +94,18 @@ To remove the auto-update wrapper:
 unrestricted launchers: `muse` runs with `--yolo`, while `agy` and `claude` run with
 `--dangerously-skip-permissions`. Codex needs no wrapper because
 `dot_codex/private_config.toml.tmpl` already sets `approval_policy = "never"`.
-On Linux, chezmoi adds the source line to existing `~/.bashrc` and `~/.zshrc` files
-without replacing their other settings. Fish loads the managed
-`~/.config/fish/conf.d/agent-aliases.fish` automatically. On other systems, opt in
-by adding this line to `~/.bashrc` or `~/.zshrc`:
+On Linux and macOS, chezmoi adds the source line to existing `~/.bashrc` and
+`~/.zshrc` files without replacing their other settings. Fish loads the managed
+`~/.config/fish/conf.d/agent-aliases.fish` automatically. The source line is:
 
 ```bash
 source ~/.config/shell/agent-aliases.sh
 ```
+
+On Windows, chezmoi adds a source line to the PowerShell 7 current-user,
+all-hosts profile at `~/Documents/PowerShell/Profile.ps1` without replacing
+other profile settings. It loads the managed
+`~/.config/powershell/agent-aliases.ps1` functions.
 
 These wrappers disable real protections. Do not use them on untrusted checkouts
 (forks, PR branches).

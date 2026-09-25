@@ -1,6 +1,15 @@
 **/README.md
-{{ if ne .chezmoi.os "linux" }}
+{{ if eq .chezmoi.os "windows" }}
 .bashrc
 .zshrc
+.config/fish
+.config/fish/conf.d
 .config/fish/conf.d/agent-aliases.fish
+{{ end }}
+{{ if ne .chezmoi.os "windows" }}
+Documents
+Documents/PowerShell
+Documents/PowerShell/Profile.ps1
+.config/powershell
+.config/powershell/agent-aliases.ps1
 {{ end }}
