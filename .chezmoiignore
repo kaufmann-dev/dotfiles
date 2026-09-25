@@ -1,4 +1,7 @@
 **/README.md
+{{ if not (index . "purelymail_accounts") }}
+.config/mcp-email-server/config.toml
+{{ end }}
 {{ if eq .chezmoi.os "windows" }}
 .bashrc
 .zshrc

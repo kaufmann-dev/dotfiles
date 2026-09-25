@@ -1,0 +1,27 @@
+allowed_recipients = ["*"]
+
+{{- range index . "purelymail_accounts" }}
+[[emails]]
+account_name = {{ .name | toJson }}
+{{ with index . "full_name" -}}
+full_name = {{ . | toJson }}
+{{ end -}}
+email_address = {{ .email | toJson }}
+
+[emails.incoming]
+user_name = {{ .email | toJson }}
+password = {{ .password | toJson }}
+host = "imap.purelymail.com"
+port = 993
+use_ssl = true
+verify_ssl = true
+
+[emails.outgoing]
+user_name = {{ .email | toJson }}
+password = {{ .password | toJson }}
+host = "smtp.purelymail.com"
+port = 465
+use_ssl = true
+verify_ssl = true
+
+{{- end }}

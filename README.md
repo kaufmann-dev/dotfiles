@@ -199,9 +199,7 @@ credentials. The MCP config files are chezmoi templates that read the following 
 - `portfolio_arena_api_key` — a Portfolio Arena API key (generate one via the admin dashboard at <https://arena.kaufmann.dev>).
 - `executive_arena_api_key` — an API key shown once when generated from Executive Arena's authenticated **API Keys** page.
 - `cv_resume_api_key` — an API key created in the CV/Resume app's admin **Settings** tab.
-- `purelymail_full_name` — optional sender display name; if omitted or empty, the server uses the email local part.
-- `purelymail_email` — your full Purelymail mailbox address, used for IMAP and SMTP login.
-- `purelymail_password` — your mailbox password; use a Purelymail app password when 2FA is enabled.
+- `purelymail_accounts` — a list of Purelymail mailboxes. Each account needs a unique `name`, an `email` address, and a `password`; `full_name` is optional.
 
 Without a required server credential, the corresponding MCP server is omitted.
 Executive Arena uses the fixed `https://executives.kaufmann.dev/mcp` endpoint and is omitted unless
@@ -227,29 +225,35 @@ need [Astral UV](https://docs.astral.sh/uv/) and the `mcp_massive` binary on `PA
 uv tool install "mcp_massive @ git+https://github.com/massive-com/mcp_massive@v0.10.0"
 ```
 
-The Purelymail entry runs `uvx mcp-email-server==1.9.0 stdio` and uses the server's
-[environment configuration](https://mcp-email-server.wh1isper.top/configuration/#environment-variable-reference).
-It connects using `purelymail_email` to `imap.purelymail.com:993` and
-`smtp.purelymail.com:465` using SSL/TLS with certificate verification, following
+The Purelymail entry runs `uvx mcp-email-server==1.9.0 stdio` and reads a generated
+`~/.config/mcp-email-server/config.toml` containing one account per `purelymail_accounts` entry.
+Each account connects to `imap.purelymail.com:993` and `smtp.purelymail.com:465` using SSL/TLS
+with certificate verification, following
 [Purelymail's settings](https://support.purelymail.com/support/solutions/articles/159000430778-server-settings-imap-smtp-and-pop3).
-Set `purelymail_full_name` to choose the sender display name for outgoing messages.
+Set `full_name` on an account to choose its sender display name for outgoing messages.
 Sending to any recipient is enabled; the shared agent instructions still require explicit
 authorization before sending messages.
 
-To enable it, add your email address and password, plus an optional display name, under `[data]` in
+To enable it, add one or more accounts to
 `~/.config/chezmoi/chezmoi.toml`:
 
 ```toml
-purelymail_full_name = "Your Name" # Optional
-purelymail_email = "your-email@example.com"
-purelymail_password = "your-mailbox-or-app-password"
+[[data.purelymail_accounts]]
+name = "personal"
+full_name = "Your Name" # Optional
+email = "personal@example.com"
+password = "your-mailbox-or-app-password"
+
+[[data.purelymail_accounts]]
+name = "work"
+email = "work@example.com"
+password = "your-other-mailbox-or-app-password"
 ```
 
-Run `chezmoi apply` and restart your agent tools. The server is omitted unless the email address and password are
-non-empty. Keep your address and password in that local file, not this repository. Like the
-other secrets, they are rendered as plaintext into the private MCP configs. No separate email-server UI or credential
-store setup is needed; use a fresh environment-based configuration rather than selecting the
-server's managed mode, which ignores account environment variables.
+Use a Purelymail app password when 2FA is enabled. Run `chezmoi apply` and restart your agent tools.
+The server is omitted when the account list is empty or absent. Keep passwords in the local chezmoi
+config, not this repository. They render into the private email-server config file. The server's
+MCP tools select a mailbox by its `name`.
 
 Muse Code reads the same servers from `~/.config/muse/settings.json` (managed here as
 `dot_config/muse/private_settings.json.tmpl`). Remote servers use `"type": "streamable-http"`
