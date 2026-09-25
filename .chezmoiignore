@@ -1,1 +1,6 @@
 **/README.md
+{{ if ne .chezmoi.os "linux" }}
+.bashrc
+.zshrc
+.config/fish/conf.d/agent-aliases.fish
+{{ end }}
