@@ -94,7 +94,10 @@ To remove the auto-update wrapper:
 unrestricted launchers: `muse` runs with `--yolo`, while `agy` and `claude` run with
 `--dangerously-skip-permissions`. Codex needs no wrapper because
 `dot_codex/private_config.toml.tmpl` already sets `approval_policy = "never"`.
-Opt in with one line in `~/.bashrc` or `~/.zshrc`:
+On Linux, chezmoi adds the source line to existing `~/.bashrc` and `~/.zshrc` files
+without replacing their other settings. Fish loads the managed
+`~/.config/fish/conf.d/agent-aliases.fish` automatically. On other systems, opt in
+by adding this line to `~/.bashrc` or `~/.zshrc`:
 
 ```bash
 source ~/.config/shell/agent-aliases.sh
