@@ -39,11 +39,13 @@ the identity provider or deployment platform; report the settings an administrat
 
 ## Better Auth
 
-When the application uses or adopts Better Auth, use the `genericOAuth` plugin with the provider's
-`discoveryUrl`, `pkce: true`, and the default `authentication: "post"` (`client_secret_post`).
-Disable email/password sign-in. Start sign-in from the login screen with
-`authClient.signIn.oauth2({ providerId, callbackURL })`, passing the validated return destination
-as `callbackURL`. The callback path is `/api/auth/oauth2/callback/<providerId>`.
+When the application uses or adopts Better Auth (1.7 or later), use the `genericOAuth` plugin with
+the provider's `discoveryUrl`. PKCE is on by default and the default token authentication is
+`client_secret_post`; do not override either. Disable email/password sign-in. Start sign-in from
+the login screen with `authClient.signIn.social({ provider: providerId, callbackURL })`, passing
+the validated return destination as `callbackURL`; no generic OAuth client plugin is needed. The
+callback path is `/api/auth/callback/<providerId>`. `authClient.signOut({ callbackURL })` performs
+provider logout through the discovered `end_session_endpoint`.
 
 ## Authentication Setup Handoff
 
