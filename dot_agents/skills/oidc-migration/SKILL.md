@@ -28,17 +28,22 @@ the identity provider or deployment platform; report the settings an administrat
 - Otherwise, if the migration could broaden access to shared or privileged resources, stop and ask
   whether provider admission must be restricted or the application must add per-user authorization
   and isolation.
-- After OIDC login, create an application-local server-side session with an HttpOnly cookie. Do not
-  request or store refresh tokens or use OIDC tokens as the application session. Retain the ID
-  token server-side only as `id_token_hint` for logout and delete it with the local session.
-- Use a 24-hour sliding idle timeout and seven-day absolute session lifetime. Reset idle only on
-  authenticated user-driven requests, never passive background traffic. Require login after
-  either timeout.
-- Use OIDC RP-Initiated Logout, even when it ends provider-wide SSO. Do not implement back-channel
-  logout.
+- After OIDC login, use the chosen library's server-side session with an HttpOnly cookie. Keep the
+  library's default session lifetime and token storage unless the application has a concrete need
+  to change them.
+- Logout must end the local session. Add provider (RP-initiated) logout only when the library
+  supports it natively. Do not hand-roll OIDC protocol handling or implement back-channel logout.
 - Preserve app-owned data, authorization, and security-sensitive behavior. Remove obsolete local
   authentication without adding a compatibility path unless explicitly requested.
 - Run the smallest reliable checks and focused authentication tests appropriate to the solution.
+
+## Better Auth
+
+When the application uses or adopts Better Auth, use the `genericOAuth` plugin with the provider's
+`discoveryUrl`, `pkce: true`, and the default `authentication: "post"` (`client_secret_post`).
+Disable email/password sign-in. Start sign-in from the login screen with
+`authClient.signIn.oauth2({ providerId, callbackURL })`, passing the validated return destination
+as `callbackURL`. The callback path is `/api/auth/oauth2/callback/<providerId>`.
 
 ## Authentication Setup Handoff
 
@@ -49,7 +54,7 @@ concise and include only:
 - A project-specific one- or two-sentence explanation of the authentication flow.
 - `Public Client: On|Off`, derived from whether the application can securely store client credentials.
 - `Callback URL: ...`, meaning the OIDC redirect URI for handling login authentication responses
-- `Logout Callback URL: ...`, meanig the RP logout callback (do not mention the RP-initiated logout request URL)
+- `Logout Callback URL: ...`, meaning the RP logout callback (do not mention the RP-initiated logout request URL)
 - Every authentication environment variable, including whether it is required. If the README
   already has a section for environment variables, update that
   section and reference it here instead of duplicating variables.
