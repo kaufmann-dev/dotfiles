@@ -1,6 +1,6 @@
 ---
 name: medsurface
-description: Use the medsurface CLI to inspect medical image volumes, strictly convert volume storage formats, extract surface meshes from intensity volumes or labelmaps, fuse matching scans or masks into editable binary labelmaps, and validate or repair meshes. Use when the user asks to process supported DICOM, NIfTI, NRRD, or MetaImage data with medsurface.
+description: Use the medsurface CLI to inspect medical image volumes, strictly convert volume storage formats, extract surface meshes from intensity volumes or labelmaps, remove stair-step ripples from extracted surfaces, fuse matching scans or masks into editable binary labelmaps, and validate or repair meshes. Use when the user asks to process supported DICOM, NIfTI, NRRD, or MetaImage data with medsurface.
 ---
 
 # medsurface
@@ -78,6 +78,8 @@ Use processing overrides only when requested or needed:
 - Set the surface grid with `--resample-mm`; `0` retains the native grid.
 - Finish with `--mask-smooth-mm`, `--mesh-smooth-iters`,
   `--simplify-error-mm`, and `--post-mesh-smooth-iters`.
+- Remove broad slice-terrace ripples with `--destep auto|all|band`; see
+  "Remove stair-step ripples".
 - Use `--no-cap` only when an open field-of-view boundary is intentional.
 
 Extraction validates both the in-memory mesh and the serialized temporary mesh
@@ -95,8 +97,50 @@ medsurface labelmap extract MASK.nii.gz -o MODEL.stl
 Every finite, discrete, non-negative, nonzero value becomes one foreground
 class. Fractional probability maps and empty labelmaps are rejected. Labelmap
 extraction has its own surface defaults and accepts the surface-grid,
-smoothing, simplification, component, capping, size, JSON, and quiet controls
+smoothing, simplification, `--destep`, component, capping, size, JSON, and quiet controls
 shown by `medsurface labelmap extract --help`.
+
+## Remove stair-step ripples
+
+CT and MR slice terraces can survive extraction as broad, shallow ripples on
+smooth anatomy such as a skull vault. Both `extract` and `labelmap extract`
+accept an optional final fairing stage. It is off unless `--destep` is given:
+
+```sh
+medsurface labelmap extract MASK.nii.gz -o MODEL.stl --destep auto
+medsurface extract INPUT --volume ID -o MODEL.stl --destep band \
+  --destep-axis z --destep-full-mm -555 --destep-frozen-mm -600
+```
+
+Choose the region:
+
+- `auto` is the default choice. It freezes tightly curved detail such as
+  teeth, orbital and nasal rims, and bone edges, keeps about 10 mm around large
+  detail such as the face frozen, and fairs broad surfaces such as the vault.
+  Tiny isolated bumps are faired with their surroundings.
+- `band` ramps from never moving at `--destep-frozen-mm` to fully faired at
+  `--destep-full-mm` along `--destep-axis` (default `z`), in model millimetres.
+  Their order selects the faired side. Read `bbox_min` and `bbox_max` from
+  `medsurface validate MODEL.stl --json` to place the ramp between the ripples
+  and detail that must stay unchanged. Use it when `auto` protects too much or
+  too little.
+- `all` fairs every vertex and also rounds teeth and edges. Use it only when
+  the user explicitly accepts that.
+
+`--destep-iters` (default 600) sets the fairing reach and `--destep-max-mm`
+(default 1) caps each vertex's displacement. The band options require
+`--destep band`, and every tuning option requires `--destep`. Reach is
+measured in triangles, so finer meshes need more iterations; too many
+iterations slowly inflate the surface and trigger a warning when over 10% of
+vertices reach the cap. Lower the iterations when that warning appears.
+
+Fairing deliberately changes the faired anatomy: it flattens shallow features
+such as sutures along with the ripples. Report the logged faired and frozen
+percentages, displacement, and volume change. The JSON report records them
+under `provenance.surface_finishing.destep`. Folding or self-intersecting
+fairing is reverted locally; if no clean result exists, the unfaired surface is
+kept with a warning. Judge ripples with smooth shading and low-angle light;
+soft lighting and decimated previews hide them.
 
 ## Fuse volumes into a binary labelmap
 
