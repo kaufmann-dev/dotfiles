@@ -29,10 +29,12 @@ the identity provider or deployment platform; report the settings an administrat
   whether provider admission must be restricted or the application must add per-user authorization
   and isolation.
 - After OIDC login, use the chosen library's server-side session with an HttpOnly cookie. Sessions
-  expire seven days after login and are never extended; require login afterwards. Keep the
-  library's default token storage unless the application has a concrete need to change it.
-- Logout must end the local session. Add provider (RP-initiated) logout only when the library
-  supports it natively. Do not hand-roll OIDC protocol handling or implement back-channel logout.
+  expire seven days after login and are never extended; require login afterwards. Do not request
+  `offline_access` or use provider tokens as the application session.
+- Logout must end the local session and use OIDC RP-Initiated Logout, even when it ends
+  provider-wide SSO. If the library does not do this natively, redirect to the discovered
+  `end_session_endpoint` with `id_token_hint` and `post_logout_redirect_uri`. Do not implement
+  back-channel logout.
 - Preserve app-owned data, authorization, and security-sensitive behavior. Remove obsolete local
   authentication without adding a compatibility path unless explicitly requested.
 - Run the smallest reliable checks and focused authentication tests appropriate to the solution.
