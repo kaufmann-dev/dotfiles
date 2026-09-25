@@ -1,0 +1,7 @@
+interface:
+  display_name: "Scaffold Web"
+  short_description: "Create a new web app with standard project setup"
+  default_prompt: "Use $scaffold-web to create a new web application with the standard project setup."
+
+policy:
+  allow_implicit_invocation: false
