@@ -21,7 +21,7 @@ Prefer native platform behavior and the smallest change that fully solves the pr
 Apply these defaults only within the scope defined above:
 
 1. **Use square geometry** — do not use border radius. Keep surfaces and controls rectangular so adjacent elements can align cleanly without artificial gaps.
-2. **Keep surfaces flat** — do not use box shadows. Use borders sparingly and only when a boundary, state, or interaction would otherwise be unclear. Establish separation through page structure, hierarchy, scale, spacing, contrast, and background color. Use a visible outline or another static, non-shadow cue for keyboard focus.
+2. **Keep surfaces flat** — do not use box shadows. Use a visible outline or another static, non-shadow cue for keyboard focus.
 3. **Use absolute base backgrounds** — use `#000000` for a dark main background and `#ffffff` for a light main background.
 4. **Use color functionally** — introduce color only when it helps users distinguish hierarchy, categories, states, actions, or groups. Keep the interface monochrome otherwise, and never rely on color alone to convey meaning.
 5. **Keep every element purposeful** — omit elements and copy that are purely decorative or add no useful information or action. Avoid eyebrow headings, nonessential disclaimers, meaningless taglines, and stacks of buzzwords. Retain disclosures and guidance required for safe, correct, accessible, or lawful use.
