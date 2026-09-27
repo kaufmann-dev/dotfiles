@@ -27,6 +27,7 @@ Apply these defaults only within the scope defined above:
 5. **Keep every element purposeful** — omit elements and copy that are purely decorative or add no useful information or action. Avoid eyebrow headings, nonessential disclaimers, meaningless taglines, and stacks of buzzwords. Retain disclosures and guidance required for safe, correct, accessible, or lawful use.
 6. **Use motion only for functional feedback** — keep hover, focus, pressed, page, and view state changes immediate. Do not add transitions, parallax, auto-moving content, decorative animation, or other motion that does not communicate useful information. Allow restrained motion when it clearly communicates an active process, such as a loading spinner or progress indicator. Give animated status indicators an accessible name, respect reduced-motion preferences, and prefer a static indicator when motion adds no useful information.
 7. **Constrain single-line text** — when text must fit within a bounded component, truncate it with an ellipsis instead of allowing it to overflow, resize the component, or break the surrounding layout. Ensure flex and grid children can shrink as needed. Preserve wrapping where displaying the complete text is the purpose.
+8. **Align the navbar with the main content** — give the navbar the same max width as the main content column and center it, so their left and right edges line up. Do not stretch the navbar across the full page width.
 
 ## Accessibility
 
