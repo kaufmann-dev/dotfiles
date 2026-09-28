@@ -133,6 +133,10 @@ flag to `false` for other machines.
 
 Skills are installed under `~/.agents/skills/`.
 
+To archive a skill, move it from `dot_agents/skills/` to `archive/skills/`. Archived skills stay in
+this repository but are not installed, and `chezmoi apply` removes them from `~/.agents/skills/`.
+Move the directory back to restore it.
+
 The Auto-invoke column shows whether an agent may select a skill implicitly when it is relevant.
 Skills marked No require explicit invocation with `$skill-name`.
 

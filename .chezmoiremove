@@ -1,2 +1,5 @@
 .agents/skills/authentik-oidc-migration
 .agents/skills/oidc-migration
+{{ range glob (joinPath .chezmoi.sourceDir "archive" "skills" "*") -}}
+.agents/skills/{{ osBase . }}
+{{ end -}}
