@@ -45,8 +45,7 @@ audience is materially ambiguous and cannot be inferred.
   headings where they improve navigation.
 - Always place a compact navbar directly after the title: a single line of links to the main
   sections and key external docs, separated by ` · `. Use anchor links for README sections and
-  reference-style links for other docs; wrap long lines. Take the entries from the README's own
-  headings and existing docs. Shape only; the placeholders are not suggested headings:
+  reference-style links for other docs; wrap long lines. For example:
 
   ```markdown
   [<Section A>](#<section-a>) · [<Section B>](#<section-b>) · [<Section C>](#<section-c>) ·
