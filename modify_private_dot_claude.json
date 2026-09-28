@@ -1,0 +1,7 @@
+{{- /* chezmoi:modify-template */ -}}
+{{- $config := dict -}}
+{{- if trim .chezmoi.stdin -}}
+{{-   $config = fromJson .chezmoi.stdin -}}
+{{- end -}}
+{{- $_ := set $config "mcpServers" (includeTemplate "claude-mcp-servers.json" . | fromJson) -}}
+{{- toPrettyJson $config }}
