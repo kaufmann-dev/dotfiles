@@ -79,6 +79,7 @@ def get_alignment(cell: str) -> str:
 
 
 def format_table(lines: list[str]) -> list[str]:
+    indent = re.match(r"\s*", lines[0]).group(0)
     sep_indices = {i for i, line in enumerate(lines) if is_separator_row(line)}
 
     rows = [split_row(line) for line in lines]
@@ -115,7 +116,7 @@ def format_table(lines: list[str]) -> list[str]:
                 cells.append(format_sep_cell(w, align))
             else:
                 cells.append(pad_cell(raw, w, align))
-        result.append("| " + " | ".join(cells) + " |")
+        result.append(indent + "| " + " | ".join(cells) + " |")
 
     return result
 
@@ -172,7 +173,11 @@ def format_markdown_tables(text: str) -> str:
                 i += 1
 
             separator_count = sum(is_separator_row(l) for l in table_lines)
-            if len(table_lines) >= 2 and separator_count == 1:
+            if (
+                len(table_lines) >= 2
+                and separator_count == 1
+                and is_separator_row(table_lines[1])
+            ):
                 rows_split = [split_row(l) for l in table_lines]
                 col_count = len(rows_split[0])
                 if all(len(r) == col_count for r in rows_split):

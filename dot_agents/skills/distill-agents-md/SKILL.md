@@ -3,13 +3,13 @@ name: distill-agents-md
 description: Distill a bloated AGENTS.md or alternative instruction file into a lean, high-signal version. Use when the user asks to distill agent instructions.
 ---
 
-# distill-agents
+# Distill Agents MD
 
 Distill an agent config file (AGENTS.md, CLAUDE.md, or GEMINI.md) into a lean, high-compliance version.
 
 ## Step 1 — Locate the file
 
-If the user specifies a file in `$ARGUMENTS`, use that.
+If the user names a file, use that.
 
 Otherwise, check the project root in this order:
 ```
@@ -51,7 +51,7 @@ Label each rule, section, or block as one of: **KEEP · REWRITE · CUT**
 ### REWRITE
 
 Rewrite if any are true:
-- Phrased as "don't X" without an alternative → convert to "always use Y instead of X". Positive framing scores higher in LLM attention weights — "never import from X" is weaker than "always import from Y".
+- Phrased as "don't X" when a correct alternative exists → name the alternative: "always import from Y" beats "never import from X". Keep an explicit prohibition when the forbidden action itself is the constraint and no single alternative exists.
 - Buried in prose → extract as an imperative command
 - Long explanation wrapping a code example → strip prose to one orienting sentence; keep the code
 
@@ -150,5 +150,5 @@ Import shadcn-svelte components from `$lib/components/ui/<name>`, never from the
 
 1. Can the agent reproduce every command verbatim if asked? If not — add specificity.
 2. Does every rule apply regardless of current task? If not — cut it.
-3. Are all constraints phrased as "always X"? Flip any remaining negations.
+3. Does every prohibition either name the correct alternative or guard an action that has none? Rewrite any that do neither.
 4. Is the file under 150 lines? If not — find the largest low-signal section and cut or condense it.

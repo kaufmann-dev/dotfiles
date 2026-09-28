@@ -55,13 +55,14 @@ the provider's `discoveryUrl`. PKCE is on by default and the default token authe
 `client_secret_post`; do not override either. Disable email/password sign-in. Start sign-in from
 the login screen with `authClient.signIn.social({ provider: providerId, callbackURL })`, passing
 the validated return destination as `callbackURL`; no generic OAuth client plugin is needed. Set
-`session: { expiresIn: 60 * 60 * 24 * 7, disableSessionRefresh: true }`. The callback path is `/api/auth/callback/<providerId>`. `authClient.signOut({ callbackURL })` performs
+`session: { expiresIn: 60 * 60 * 24 * 7, disableSessionRefresh: true }`. The callback path is
+`/api/auth/callback/<providerId>`. `authClient.signOut({ callbackURL })` performs
 provider logout through the discovered `end_session_endpoint`.
 
 ## Authentication Setup Handoff
 
 Create or update `## Authentication Setup` in the target project's `README.md`. If no README
-exists, create a minimal one using the established project name. Keep the section extremely 
+exists, create a minimal one using the established project name. Keep the section extremely
 concise and include only:
 
 - A project-specific one- or two-sentence explanation of the authentication flow.

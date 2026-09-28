@@ -65,6 +65,8 @@ keeping instructions that remain accurate.
 
 - Run the project's type check, lint, and build, and fix any failures.
 - Confirm the README has no duplicate sections and every documented command works.
+- Update the README navbar so it links every top-level section, including those added by
+  `oidc-auth` and `coolify`.
 - Report the stack and why it was chosen, whether authentication was added, the compliance
   domain, the verification results, and every manual step an administrator must apply, such as
   OIDC client and Coolify settings. Never print secret values.

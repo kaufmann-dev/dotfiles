@@ -532,31 +532,33 @@ Deliver the draft, the brief "still-AI" bullets, the final rewrite, and (optiona
 > In conclusion, the future looks bright. Exciting times lie ahead as we continue this journey toward excellence. Let me know if you’d like me to expand on any section!
 
 **Draft rewrite:**
-> AI coding assistants speed up some tasks. In a 2024 study by Google, developers using Codex completed simple functions 55% faster than a control group, but showed no improvement on debugging or architectural decisions.
+> AI coding assistants are changing how some engineers write, test, and ship software.
 >
-> The tools are good at boilerplate: config files, test scaffolding, repetitive refactors. They are bad at knowing when they are wrong. I have mass-accepted suggestions that compiled, passed lint, and still did the wrong thing because I stopped paying attention.
+> Their main selling point is speed on routine code. Supporters say they do more than autocomplete and help teams work together, though those claims are harder to pin down.
 >
-> Mira, an engineer at a fintech startup I interviewed, said she uses Copilot "like autocomplete for boring code" but reviews every line before committing. Jake, a senior dev at a larger company, disabled it after it kept suggesting patterns from a deprecated internal library.
+> Adoption has spread from hobbyists to company-wide rollouts, and The New York Times, Wired, and The Verge have all covered the tools. They can generate documentation, tests, and refactors, but a person still has to judge whether the output is right.
 >
-> The productivity claims are hard to verify. GitHub says Copilot users "accept 30% of suggestions," but acceptance is not correctness, and correctness is not value. The 2024 Uplevel study found no statistically significant difference in pull-request throughput between teams with and without AI assistants.
+> Code generation is faster, output quality has improved with better training, and usage keeps growing.
 >
-> None of this means the tools are useless. It means they are tools. They do not replace judgment, and they do not eliminate the need for tests. If you do not have tests, you cannot tell whether the suggestion is right.
+> The tools also have known problems: hallucinations, bias, and unclear accountability. Teams that adopt them need practices that account for those risks.
 
 **What makes the below so obviously AI generated?**
-- The rhythm is still a bit too tidy (clean contrasts, evenly paced paragraphs).
-- The named people and study citations can read like plausible-but-made-up placeholders unless they're real and sourced.
-- The closer leans a touch slogan-y ("If you do not have tests...") rather than sounding like a person talking.
+- Two tidy triplets remain ("write, test, and ship"; the speed/quality/usage sentence).
+- The fourth paragraph is three vague claims in a row with nothing concrete behind them.
+- The last sentence of the third paragraph lands like a moral rather than a plain statement.
 
 **Now make it not obviously AI generated.**
-> AI coding assistants can make you faster at the boring parts. Not everything. Definitely not architecture.
+> AI coding assistants are changing how some engineers work.
 >
-> They're great at boilerplate: config files, test scaffolding, repetitive refactors. They're also great at sounding right while being wrong. I've accepted suggestions that compiled, passed lint, and still missed the point because I stopped paying attention.
+> The main selling point is speed on routine code. Supporters also say the tools help teams collaborate, which is harder to measure.
 >
-> People I talk to tend to land in two camps. Some use it like autocomplete for chores and review every line. Others disable it after it keeps suggesting patterns they don't want. Both feel reasonable.
+> Adoption has moved from hobbyists to company-wide rollouts, and The New York Times, Wired, and The Verge have all covered the tools. The assistants can draft documentation, tests, and refactors. Someone still has to check the results.
 >
-> The productivity metrics are slippery. GitHub can say Copilot users "accept 30% of suggestions," but acceptance isn't correctness, and correctness isn't value. If you don't have tests, you're basically guessing.
+> Generating code is faster than typing it, and output quality has improved as training got better. Usage is still growing.
+>
+> The known problems are hallucinations, bias, and unclear accountability. Teams adopting these tools need review practices that catch them.
 
-**Changes made:** Stripped the chatbot framing, significance inflation, promotional and -ing padding, rule-of-three and synonym cycling, false ranges, copula avoidance, em dashes/emojis/boldface/curly quotes, the formulaic "challenges" section, cutoff and hedging disclaimers, filler and persuasive framing, and the generic upbeat conclusion - then rebuilt the voice with varied rhythm and concrete detail.
+**Changes made:** Removed the chatbot opener and sign-off, significance inflation, promotional and -ing padding, synonym cycling, false ranges, em dashes, emojis, boldface, the hedging disclaimer, and the generic upbeat conclusion. Turned the bullet list into prose and kept every substantive claim from the original, one paragraph per original section, without adding facts, sources, people, or first-person experience.
 
 
 ## Reference
