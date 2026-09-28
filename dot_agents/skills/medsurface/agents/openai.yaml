@@ -2,3 +2,6 @@ interface:
   display_name: "medsurface"
   short_description: "Convert volumes, fuse masks, and extract meshes"
   default_prompt: "Use $medsurface to inspect these medical images and perform the requested conversion, fusion, extraction, or mesh validation."
+
+policy:
+  allow_implicit_invocation: true

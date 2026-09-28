@@ -17,8 +17,6 @@ icon inlined in HTML and themed by the page, prefer `currentColor` (see
 
 ## Scope Guardrails
 
-- Use this skill only after explicit user invocation. If it was loaded without
-  that, stop applying it and follow the ordinary task instructions.
 - Preserve the icon's geometry exactly. The output must render identically to the
   original in light mode — same shapes, same `viewBox`, same size.
 - Never invent or drop shapes. Convert only color paint; leave everything else.

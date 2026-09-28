@@ -1,0 +1,7 @@
+interface:
+  display_name: "Debloat"
+  short_description: "Strip speculative complexity from recent changes"
+  default_prompt: "Use $debloat to reduce these changes to what the explicit requirements need."
+
+policy:
+  allow_implicit_invocation: false

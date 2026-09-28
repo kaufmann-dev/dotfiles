@@ -23,8 +23,9 @@ cat file.md | python {skill_path}/format-table.py
 The formatter prints Markdown to stdout; for tracked files, inspect the output
 and apply edits through the normal file-editing workflow.
 
-Valid tables only: 2+ rows, one separator row (`|---|---|`), equal column counts.
-Invalid/uneven tables are left unchanged.
+Valid tables only: 2+ rows, exactly one separator row (`|---|---|`) directly after
+the header, equal column counts. Invalid/uneven tables are left unchanged.
+Indentation of the first row is kept, so tables nested in list items stay nested.
 
 Finish only after confirming the table still has the intended rows, columns,
 content, and alignment.

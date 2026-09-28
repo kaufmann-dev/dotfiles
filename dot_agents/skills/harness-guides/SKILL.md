@@ -108,12 +108,14 @@ Schema notes:
 
 - Codex uses TOML with `name`, `description`, and a multiline `developer_instructions` string.
 - OpenCode uses Markdown in `.opencode/agents/` with YAML frontmatter. Common fields include
-  `description`, `mode: subagent`, `model`, `temperature`, and `maxSteps`.
+  `description`, `mode: subagent`, `model`, `temperature`, and `maxSteps`. Omit `model` to use the
+  invoking agent's model.
 - Antigravity uses Markdown in `.gemini/agents/` with YAML frontmatter. Common fields include
   `name`, `description`, `kind: local`, `model`, `temperature`, and `max_turns`. Prefer not to pin
   tool allowlists unless the exact tool names are known for the target version.
 - Claude Code uses Markdown in `.claude/agents/` with YAML frontmatter. Common fields include
-  `name`, `description`, `tools`, and `model`.
+  `name`, `description`, `tools`, and `model`. Omit `tools` to inherit every tool; pin a list only
+  when the exact tool names are known for the installed version.
 
 Subagent named `svelte-file-editor`:
 
@@ -136,7 +138,6 @@ OpenCode `.opencode/agents/svelte-file-editor.md`:
 ---
 description: Specialized Svelte 5 code editor. Use proactively when creating, editing, or reviewing Svelte files.
 mode: subagent
-model: inherit
 temperature: 1
 maxSteps: 30
 ---
@@ -169,7 +170,6 @@ Claude Code `.claude/agents/svelte-file-editor.md`:
 ---
 name: svelte-file-editor
 description: Specialized Svelte 5 code editor. Use proactively when creating, editing, or reviewing Svelte files.
-tools: Read, Glob, Grep, Edit, MultiEdit, Write, Bash
 model: inherit
 ---
 
