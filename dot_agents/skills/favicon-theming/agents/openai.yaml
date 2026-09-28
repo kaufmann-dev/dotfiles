@@ -1,0 +1,7 @@
+interface:
+  display_name: "Favicon Theming"
+  short_description: "Make standalone SVG icons adapt to color scheme"
+  default_prompt: "Use $favicon-theming to make this standalone SVG adapt to light and dark mode."
+
+policy:
+  allow_implicit_invocation: true

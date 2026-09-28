@@ -1,9 +1,9 @@
 ---
-name: add-compliance-links
+name: compliance-links
 description: Implement centralized Imprint and Privacy links for a website by linking its public UI to legal.kaufmann.dev with the site's domain. Use only when the user explicitly invokes this skill.
 ---
 
-# Add Compliance Links
+# Compliance Links
 
 Add direct links to the centralized compliance site instead of creating local imprint or privacy
 pages. Fit the links into the target site's existing design and page structure.

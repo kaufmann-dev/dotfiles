@@ -1,12 +1,12 @@
 ---
-name: svg-theme-converter
-description: Convert fill-based or stroke-based SVG icons into self-theming SVGs that adapt to light and dark mode through embedded CSS. Use when the user asks to make a standalone SVG icon theme-aware or dark-mode aware.
+name: favicon-theming
+description: Make favicons and other standalone SVG icons self-theming, converting fill- or stroke-based SVGs into files that adapt to light and dark mode through embedded CSS. Use when the user asks to make a standalone SVG icon theme-aware or dark-mode aware.
 ---
 
-# SVG Theme Converter
+# Favicon Theming
 
 Convert a standard SVG icon into a **self-theming** SVG: one file that renders in
-a light color in light mode and a light color in dark mode, with no external
+a dark color in light mode and a light color in dark mode, with no external
 stylesheet or JavaScript. Theming is driven entirely by an embedded `<style>`
 block with a `prefers-color-scheme: dark` media query.
 

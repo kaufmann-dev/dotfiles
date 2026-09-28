@@ -1,0 +1,7 @@
+interface:
+  display_name: "Harness Guides"
+  short_description: "Add project-scoped MCP servers and subagents"
+  default_prompt: "Use $harness-guides to add the requested MCP servers or subagents to this project."
+
+policy:
+  allow_implicit_invocation: false
