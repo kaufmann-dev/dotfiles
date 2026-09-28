@@ -1,5 +1,9 @@
 .agents/skills/authentik-oidc-migration
 .agents/skills/oidc-migration
+.agents/skills/add-mcp-servers
+.agents/skills/add-subagents
+.agents/skills/svg-theme-converter
+.agents/skills/add-compliance-links
 {{ range glob (joinPath .chezmoi.sourceDir "archive" "skills" "*") -}}
 .agents/skills/{{ osBase . }}
 {{ end -}}

@@ -140,39 +140,32 @@ Move the directory back to restore it.
 The Auto-invoke column shows whether an agent may select a skill implicitly when it is relevant.
 Skills marked No require explicit invocation with `$skill-name`.
 
-| Skill                         | Purpose                                                                                        | Auto-invoke |
-| ----------------------------- | ---------------------------------------------------------------------------------------------- | ----------- |
-| `add-compliance-links`        | Add centralized imprint and privacy links to appropriate public website surfaces.              | No          |
-| `add-mcp-servers`             | Add or update project-scoped MCP server configuration entries.                                 | No          |
-| `add-subagents`               | Add or update project-scoped subagent definitions across multiple agent tools.                 | No          |
-| `audit-complete`              | Perform a comprehensive, stateless codebase audit before a major release.                      | No          |
-| `audit-defect`                | Directly audit a codebase for concrete, actionable defects.                                    | No          |
-| `audit-rubric`                | Create a bounded, project-specific rubric and immediately audit against it.                    | No          |
-| `autofixer`                   | Coordinate a bounded audit-fix-verify loop using fresh-context subagents.                      | No          |
-| `autofixer-graphify`          | Like `autofixer` but with Graphify-backed repository graph context.                            | No          |
-| `autofixer-yolo`              | Coordinate a bounded audit-fix-verify loop that proceeds without approval for dangerous fixes. | No          |
-| `build-brief-generator`       | Turns a product idea into a clear, complete, and practical AI Build Brief.                     | No          |
-| `coolify`                     | Configure and diagnose Coolify/Nixpacks deployments.                                           | Yes         |
-| `create-datatable`            | Guide context-sensitive decisions for creating, changing, or reviewing data tables.            | Yes         |
-| `debloat`                     | Remove over-engineered security, testing, and complexity when explicitly requested.            | No          |
-| `debugging`                   | Debug bugs by reproducing behavior, confirming root cause, and documenting fixes.              | Yes         |
-| `distill-agents-md`           | Distill bloated instruction files (AGENTS.md, etc.) into lean versions.                        | Yes         |
-| `humanizer`                   | Remove signs of AI-generated writing from text.                                                | No          |
-| `humanizer-german`            | Rewrite German text to sound natural and idiomatic without flattening it.                      | No          |
-| `improve-goal`                | Improve goals, persistent objectives, and long-running task contracts.                         | No          |
-| `improve-implementation-plan` | Improve implementation plans by recovering intent and re-deriving solutions.                   | No          |
-| `improve-prompt`              | Improve prompt and instruction files using general prompt-quality guidance.                    | No          |
-| `md-table-formatter`          | Format Markdown tables after any table is created or modified.                                 | Yes         |
-| `medsurface`                  | Convert medical volumes, fuse scans, and extract surface meshes.                               | Yes         |
-| `oidc-auth`                   | Add OpenID Connect authentication, replacing any local authentication.                         | No          |
-| `proven-cash-yield`           | Calculate and quality-rank factual owner-cash yields using SEC and Massive data.               | Yes         |
-| `scaffold-web`                | Create a new web app with UI defaults, OIDC auth, compliance links, Coolify, and docs.         | No          |
-| `svg-theme-converter`         | Convert an SVG icon into a self-theming light/dark SVG via embedded CSS.                       | Yes         |
-| `ui-cleanup`                  | Clean up duplicated and inconsistent frontend UI when explicitly requested.                    | No          |
-| `ui-design-principles`        | Apply accessible UI guardrails and scoped greenfield visual defaults.                          | Yes         |
-| `write-agents-md`             | Create a repository- or subtree-scoped `AGENTS.md` from codebase evidence.                     | Yes         |
-| `write-design-md`             | Create a project `DESIGN.md` from scratch.                                                     | Yes         |
-| `write-readme-md`             | Create a project `README.md` from scratch.                                                     | Yes         |
+| Skill                  | Purpose                                                                                        | Auto-invoke |
+| ---------------------- | ---------------------------------------------------------------------------------------------- | ----------- |
+| `audit-complete`       | Perform a comprehensive, stateless codebase audit before a major release.                      | No          |
+| `audit-defect`         | Directly audit a codebase for concrete, actionable defects.                                    | No          |
+| `audit-rubric`         | Create a bounded, project-specific rubric and immediately audit against it.                    | No          |
+| `autofixer`            | Coordinate a bounded audit-fix-verify loop using fresh-context subagents.                      | No          |
+| `autofixer-yolo`       | Coordinate a bounded audit-fix-verify loop that proceeds without approval for dangerous fixes. | No          |
+| `compliance-links`     | Add centralized imprint and privacy links to appropriate public website surfaces.              | No          |
+| `coolify`              | Configure and diagnose Coolify/Nixpacks deployments.                                           | Yes         |
+| `create-datatable`     | Guide context-sensitive decisions for creating, changing, or reviewing data tables.            | Yes         |
+| `debloat`              | Remove over-engineered security, testing, and complexity when explicitly requested.            | No          |
+| `debugging`            | Debug bugs by reproducing behavior, confirming root cause, and documenting fixes.              | Yes         |
+| `distill-agents-md`    | Distill bloated instruction files (AGENTS.md, etc.) into lean versions.                        | Yes         |
+| `favicon-theming`      | Make favicons and standalone SVG icons adapt to light and dark mode.                           | Yes         |
+| `harness-guides`       | Add project-scoped MCP servers and subagents across agent harnesses.                           | No          |
+| `humanizer`            | Remove signs of AI-generated writing from text.                                                | No          |
+| `humanizer-german`     | Rewrite German text to sound natural and idiomatic without flattening it.                      | No          |
+| `md-table-formatter`   | Format Markdown tables after any table is created or modified.                                 | Yes         |
+| `medsurface`           | Convert medical volumes, fuse scans, and extract surface meshes.                               | Yes         |
+| `oidc-auth`            | Add OpenID Connect authentication, replacing any local authentication.                         | No          |
+| `scaffold-web`         | Create a new web app with UI defaults, OIDC auth, compliance links, Coolify, and docs.         | No          |
+| `ui-cleanup`           | Clean up duplicated and inconsistent frontend UI when explicitly requested.                    | No          |
+| `ui-design-principles` | Apply accessible UI guardrails and scoped greenfield visual defaults.                          | Yes         |
+| `write-agents-md`      | Create a repository- or subtree-scoped `AGENTS.md` from codebase evidence.                     | Yes         |
+| `write-design-md`      | Create a project `DESIGN.md` from scratch.                                                     | Yes         |
+| `write-readme-md`      | Create a project `README.md` from scratch.                                                     | Yes         |
 
 ## MCP Servers
 

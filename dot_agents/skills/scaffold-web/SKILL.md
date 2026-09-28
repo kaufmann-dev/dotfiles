@@ -1,6 +1,6 @@
 ---
 name: scaffold-web
-description: Create a new web application and set it up with the standard project conventions by coordinating the ui-design-principles, oidc-auth, add-compliance-links, coolify, write-readme-md, and write-agents-md skills. Use only when the user explicitly invokes this skill.
+description: Create a new web application and set it up with the standard project conventions by coordinating the ui-design-principles, oidc-auth, compliance-links, coolify, write-readme-md, and write-agents-md skills. Use only when the user explicitly invokes this skill.
 ---
 
 # Scaffold Web
@@ -16,7 +16,7 @@ Before changing files, collect the following from the request, asking once for a
 - What the application does and who uses it.
 - Whether it needs login: protected pages, user-owned data, or admin features. Only a fully
   public site skips authentication.
-- The canonical production domain, which `add-compliance-links` requires. Do not infer it.
+- The canonical production domain, which `compliance-links` requires. Do not infer it.
 
 ## 2. Choose the Foundation
 
@@ -48,7 +48,7 @@ Only when the application needs login, run `oidc-auth`. It creates the login scr
 
 ## 6. Add Compliance Links
 
-Run `add-compliance-links` with the domain from step 1. Run it after authentication so link
+Run `compliance-links` with the domain from step 1. Run it after authentication so link
 placement accounts for the login screen.
 
 ## 7. Configure Deployment
