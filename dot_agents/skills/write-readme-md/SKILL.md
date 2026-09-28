@@ -43,7 +43,16 @@ audience is materially ambiguous and cannot be inferred.
   working example over a long feature list or exhaustive setup guide.
 - Order later sections by the reader's likely next questions. Use descriptive, project-specific
   headings where they improve navigation.
-- Add a contents list only when the README is long enough that scanning headings is insufficient.
+- Always place a compact navbar directly after the title: a single line of links to the main
+  sections and key external docs, separated by ` · `. Use anchor links for README sections and
+  reference-style links for other docs; wrap long lines. For example:
+
+  ```markdown
+  [Install](#install) · [Quick start](#quick-start) · [Commands](#commands) ·
+  [User guide][user-guide] · [Technical reference][technical-reference]
+  ```
+
+- Do not add a separate contents list; the navbar replaces it.
 - Keep secondary-audience material later in the document or link to existing dedicated docs.
 - Omit sections that do not help an identified reader complete a real task.
 
