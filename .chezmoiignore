@@ -1,4 +1,5 @@
 archive
+docs
 **/README.md
 {{ if not (index . "purelymail_accounts") }}
 .config/mcp-email-server/config.toml
