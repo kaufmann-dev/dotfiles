@@ -39,8 +39,7 @@ winget install twpayne.chezmoi
 ```
 
 Some configured MCP servers run through `npx`, so Node.js/npm must be available for full MCP
-support. Purelymail also needs [Astral UV](https://docs.astral.sh/uv/) (`uvx`) on `PATH`.
-Install `agent-browser` separately when browser automation is needed. The dotfiles
+support. Install `agent-browser` separately when browser automation is needed. The dotfiles
 configure agents to use the command but do not install programs.
 
 ## Install
@@ -53,7 +52,7 @@ chezmoi init --apply https://github.com/kaufmann-dev/dotfiles.git
 
 For a local checkout, run `chezmoi init --source-path . --apply` instead.
 
-**Optional**: authenticate Context7 or enable the GitHub, Massive, Portfolio Arena, Executive Arena, and Purelymail MCP servers
+**Optional**: authenticate Context7 or enable the GitHub, Massive, Portfolio Arena, and Executive Arena MCP servers
 by copying the example data file, adding your credentials, and applying again:
 
 ```bash
@@ -180,9 +179,8 @@ All supported agent tools are configured with the same MCP servers:
 | `portfolio_arena` | Remote HTTP   | Portfolio Arena admin data and operations.                |
 | `executive_arena` | Remote HTTP   | Executive research tasks and profile publishing.          |
 | `cv_resume`       | Remote HTTP   | Shared CV/resume content and visibility editing.          |
-| `purelymail`      | Local `uvx`   | Read, organize, and send email through Purelymail.        |
 
-Context7 can use an optional API key, while the `github`, `massive`, `portfolio_arena`, `executive_arena`, `cv_resume`, and `purelymail` MCP
+Context7 can use an optional API key, while the `github`, `massive`, `portfolio_arena`, `executive_arena`, and `cv_resume` MCP
 servers require local credentials. This public repository does not store tokens or other
 credentials. The MCP config files are chezmoi templates that read the following keys from
 `~/.config/chezmoi/chezmoi.toml` when it exists:
@@ -197,7 +195,6 @@ credentials. The MCP config files are chezmoi templates that read the following 
 - `portfolio_arena_api_key` — a Portfolio Arena API key (generate one via the admin dashboard at <https://arena.kaufmann.dev>).
 - `executive_arena_api_key` — an API key shown once when generated from Executive Arena's authenticated **API Keys** page.
 - `cv_resume_api_key` — an API key created in the CV/Resume app's admin **Settings** tab.
-- `purelymail_accounts` — a list of Purelymail mailboxes. Each account needs a unique `name`, an `email` address, and a `password`; `full_name` is optional.
 
 Without a required server credential, the corresponding MCP server is omitted.
 Executive Arena uses the fixed `https://executives.kaufmann.dev/mcp` endpoint and is omitted unless
@@ -222,36 +219,6 @@ need [Astral UV](https://docs.astral.sh/uv/) and the `mcp_massive` binary on `PA
 ```sh
 uv tool install "mcp_massive @ git+https://github.com/massive-com/mcp_massive@v0.10.0"
 ```
-
-The Purelymail entry runs `uvx mcp-email-server==1.9.0 stdio` and reads a generated
-`~/.config/mcp-email-server/config.toml` containing one account per `purelymail_accounts` entry.
-Each account connects to `imap.purelymail.com:993` and `smtp.purelymail.com:465` using SSL/TLS
-with certificate verification, following
-[Purelymail's settings](https://support.purelymail.com/support/solutions/articles/159000430778-server-settings-imap-smtp-and-pop3).
-Set `full_name` on an account to choose its sender display name for outgoing messages.
-Sending to any recipient is enabled; the shared agent instructions still require explicit
-authorization before sending messages.
-
-To enable it, add one or more accounts to
-`~/.config/chezmoi/chezmoi.toml`:
-
-```toml
-[[data.purelymail_accounts]]
-name = "personal"
-full_name = "Your Name" # Optional
-email = "personal@example.com"
-password = "your-mailbox-or-app-password"
-
-[[data.purelymail_accounts]]
-name = "work"
-email = "work@example.com"
-password = "your-other-mailbox-or-app-password"
-```
-
-Use a Purelymail app password when 2FA is enabled. Run `chezmoi apply` and restart your agent tools.
-The server is omitted when the account list is empty or absent. Keep passwords in the local chezmoi
-config, not this repository. They render into the private email-server config file. The server's
-MCP tools select a mailbox by its `name`.
 
 Muse Code reads the same servers from `~/.config/muse/settings.json` (managed here as
 `dot_config/muse/private_settings.json.tmpl`). Remote servers use `"type": "streamable-http"`
