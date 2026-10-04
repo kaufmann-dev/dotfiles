@@ -59,15 +59,6 @@
         "Authorization": {{ printf "Bearer %s" . | toJson }}
       }
     }
-    {{- end }}{{ with index . "purelymail_accounts" }},
-    "purelymail": {
-      "type": "local",
-      "command": [
-        "uvx",
-        "mcp-email-server==1.9.0",
-        "stdio"
-      ]
-    }
     {{- end }}
   },
   "tools": {

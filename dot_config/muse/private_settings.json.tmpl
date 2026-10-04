@@ -62,16 +62,6 @@
       },
       "mode": "optional"
     }
-    {{- end }}{{ with index . "purelymail_accounts" }},
-    "purelymail": {
-      "type": "stdio",
-      "command": "uvx",
-      "args": [
-        "mcp-email-server==1.9.0",
-        "stdio"
-      ],
-      "mode": "optional"
-    }
     {{- end }}
   }
 }

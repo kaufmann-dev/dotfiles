@@ -43,11 +43,5 @@ url = "https://resume.kaufmann.dev/api/mcp"
 http_headers = { Authorization = {{ printf "Bearer %s" . | toJson }} }
 {{- end }}
 
-{{ with index . "purelymail_accounts" -}}
-[mcp_servers.purelymail]
-command = "uvx"
-args = ["mcp-email-server==1.9.0", "stdio"]
-{{- end }}
-
 [notice]
 hide_full_access_warning = true
