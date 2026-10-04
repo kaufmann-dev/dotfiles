@@ -20,9 +20,9 @@ Prefer native platform behavior and the smallest change that fully solves the pr
 
 Apply these defaults only within the scope defined above:
 
-1. **Use square geometry** — do not use border radius. Keep surfaces and controls rectangular so adjacent elements can align cleanly without artificial gaps.
+1. **Use light rounding** — give surfaces and controls a small, consistent corner radius of `0.375rem` (rounded-lg in a shadcn-style scale; scaled variants for larger or smaller elements). Do not use pill shapes for rectangular surfaces, and keep elements that tile edge to edge, such as list rows, square.
 2. **Keep surfaces flat** — do not use box shadows. Use a visible outline or another static, non-shadow cue for keyboard focus.
-3. **Use absolute base backgrounds** — use `#000000` for a dark main background and `#ffffff` for a light main background.
+3. **Use soft monochrome bases** — in light mode, use `#ffffff` for the main background with slightly cool near-black text (`oklch(0.21 0.006 265)`). In dark mode, use a soft near-black background (`oklch(0.165 0.006 265)`) with off-white text (`oklch(0.94 0.004 265)`) and slightly lighter raised surfaces such as popovers (`oklch(0.215 0.007 265)`), instead of pure `#000000` and `#ffffff`.
 4. **Use color functionally** — introduce color only when it helps users distinguish hierarchy, categories, states, actions, or groups. Keep the interface monochrome otherwise, and never rely on color alone to convey meaning.
 5. **Keep every element purposeful** — omit elements and copy that are purely decorative or add no useful information or action. Avoid eyebrow headings, nonessential disclaimers, meaningless taglines, and stacks of buzzwords. Retain disclosures and guidance required for safe, correct, accessible, or lawful use.
 6. **Use motion only for functional feedback** — keep hover, focus, pressed, page, and view state changes immediate. Do not add transitions, parallax, auto-moving content, decorative animation, or other motion that does not communicate useful information. Allow restrained motion when it clearly communicates an active process, such as a loading spinner or progress indicator. Give animated status indicators an accessible name, respect reduced-motion preferences, and prefer a static indicator when motion adds no useful information.
