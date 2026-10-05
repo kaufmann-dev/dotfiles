@@ -3,5 +3,5 @@
 {{- if trim .chezmoi.stdin -}}
 {{-   $config = fromJson .chezmoi.stdin -}}
 {{- end -}}
-{{- $_ := set $config "attribution" (dict "commit" false) -}}
+{{- $_ := set $config "attribution" (dict "commit" false "pr" false) -}}
 {{- toPrettyJson $config }}
