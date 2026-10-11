@@ -35,6 +35,11 @@ Before changing files, collect the following from the request, asking once for a
 - Remove generator demo pages, sample assets, and boilerplate styles. Generator starter styling
   is not an established visual system; apply the personal visual defaults unless the template
   defines its own visual system.
+- Add proper error pages using the stack's native mechanism: at minimum a not-found (404) page and
+  a generic server-error (500) page, plus a forbidden (403) page when access is restricted. Each
+  uses the application's layout and visual style, explains the problem in plain language, links
+  back to a working page, never exposes stack traces or internal details, and is served with the
+  matching HTTP status code.
 
 ## 4. Write the README
 
@@ -64,6 +69,7 @@ keeping instructions that remain accurate.
 ## 9. Verify and Report
 
 - Run the project's type check, lint, and build, and fix any failures.
+- Confirm an unknown route renders the not-found page with a 404 status.
 - Confirm the README has no duplicate sections and every documented command works.
 - Update the README navbar so it links every top-level section, including those added by
   `oidc-auth` and `coolify`.
