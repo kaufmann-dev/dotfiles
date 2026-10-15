@@ -1,6 +1,6 @@
 ---
 name: medsurface
-description: Use the medsurface CLI to inspect medical image volumes, strictly convert volume storage formats, extract surface meshes from intensity volumes or labelmaps, remove stair-step ripples from extracted surfaces, fuse matching scans or masks into editable binary or label-preserving labelmaps, and validate or repair meshes. Use when the user asks to process supported DICOM, NIfTI, NRRD, or MetaImage data with medsurface.
+description: Use the medsurface CLI to inspect medical image volumes, strictly convert volume storage formats, extract surface meshes from intensity volumes or labelmaps, remove stair-step ripples from extracted surfaces, fuse matching scans or masks into editable binary or label-preserving labelmaps, round-trip labelmaps through editable Minecraft Java worlds, and validate or repair meshes. Use when the user asks to process supported DICOM, NIfTI, NRRD, or MetaImage data with medsurface.
 ---
 
 # medsurface
@@ -214,6 +214,34 @@ or voxel limits.
 
 Do not invoke removed `merge`, `labelmap merge`, or `labelmap convert` commands.
 
+## Edit a labelmap in Minecraft
+
+Build a Minecraft Java 26.2 world from one direct labelmap file, let the user
+edit it, then export the edited labels:
+
+```sh
+medsurface minecraft to-world MASK.nii.gz -o WORLD_DIR
+medsurface minecraft inspect WORLD_DIR
+medsurface minecraft validate WORLD_DIR
+medsurface minecraft to-labelmap WORLD_DIR -o EDITED.nii.gz
+```
+
+One voxel is one block and label `0` is air by default. `--block-mm MM|auto`
+resamples to cubic blocks by label coverage (`--fill-threshold`, `--crop`), and
+`--orient anatomical` stands the anatomy upright without mirroring; the world
+then records and exports that derived grid, so the export does not match the
+source grid. Preview it with `medsurface minecraft resample`. At most 127
+nonzero labels and 4,064 voxels along the vertical axis are supported.
+
+`to-world` never overwrites an existing path. `--source-name` keeps the real
+input name, which may identify a patient, out of the world. `--palette` takes
+`{"5": "bone_block"}` or `{"5": {"block": ..., "name": ...}}` with blocks from
+`medsurface minecraft blocks`. The user must close the world in Minecraft before
+`validate` or `to-labelmap`. Unknown blocks inside the volume stop both commands
+with counts and sample positions; never work around this by editing the
+manifest. `to-labelmap` writes `.nii`, `.nii.gz`, `.nrrd`, or `.mha` with the
+grid's geometry and pixel type and embeds label names in NIfTI outputs.
+
 ## Validate or repair a mesh
 
 ```sh
@@ -225,7 +253,8 @@ Always write repairs to a separate file. Validation measures structural mesh
 quality, not anatomical correctness, manufacturability, or clinical fitness.
 
 Every command that reports results (`list`, `convert`, `extract`, `fuse`,
-`validate`, `repair`, and the labelmap commands) takes `--json FILE` and
+`validate`, `repair`, the labelmap commands, and the Minecraft commands) takes
+`--json FILE` and
 writes its report to that file. Pass `--progress json` to any command except
 `presets` for JSON-lines progress on stderr (`status`, `stage_start`/
 `stage_end`, `label_start`/`label_end`/`label_failed`, `combined_start`/

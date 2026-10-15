@@ -1,7 +1,7 @@
 interface:
   display_name: "medsurface"
-  short_description: "Convert volumes, fuse masks, and extract meshes"
-  default_prompt: "Use $medsurface to inspect these medical images and perform the requested conversion, fusion, extraction, or mesh validation."
+  short_description: "Convert volumes, fuse masks, extract meshes, edit in Minecraft"
+  default_prompt: "Use $medsurface to inspect these medical images and perform the requested conversion, fusion, extraction, Minecraft round trip, or mesh validation."
 
 policy:
   allow_implicit_invocation: true
