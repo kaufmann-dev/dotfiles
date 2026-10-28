@@ -81,7 +81,7 @@ Do not run end-to-end tests by default. Run them only when:
 
 ## Commits
 
-After completing requested file changes, automatically create one commit on the current branch unless the user explicitly says not to:
+When working in a Git repository, after completing requested file changes, automatically create one commit on the current branch unless the user explicitly says not to:
 
 ```sh
 git add -A
