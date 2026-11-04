@@ -23,10 +23,13 @@ Before changing files, collect the following from the request, asking once for a
 - If the working directory already contains a template or starter project, build on it. Keep its
   stack, structure, and tooling, and follow its instruction files. Do not regenerate it or switch
   stacks.
-- Otherwise, use the stack the user names. If none is named, choose a mature, maintained stack
-  that fits the application's rendering, data, authentication, and Coolify/Nixpacks deployment
-  needs, and state the choice. Scaffold with the stack's official generator, non-interactively,
-  using current stable versions.
+- Otherwise, if the user names SvelteKit or names no stack, create the project from the SvelteKit
+  template, with `<dir>` as the new project directory:
+  `curl -fsSL https://raw.githubusercontent.com/kaufmann-dev/sveltekit-template/main/create.sh | bash -s -- <dir>`.
+  Then follow the generated `AGENTS.md`, and treat the template's theme as the defined visual
+  system.
+- If the user names a different stack, use it. Scaffold with the stack's official generator,
+  non-interactively, using current stable versions.
 - Initialize a Git repository if the directory is not already one.
 
 ## 3. Build the Application
