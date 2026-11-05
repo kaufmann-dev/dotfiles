@@ -147,7 +147,7 @@ Skills marked No require explicit invocation with `$skill-name`.
 | `autofixer`            | Coordinate a bounded audit-fix-verify loop using fresh-context subagents.                      | No          |
 | `autofixer-yolo`       | Coordinate a bounded audit-fix-verify loop that proceeds without approval for dangerous fixes. | No          |
 | `compliance-links`     | Add centralized imprint and privacy links to appropriate public website surfaces.              | No          |
-| `coolify`              | Configure and diagnose Coolify/Nixpacks deployments.                                           | Yes         |
+| `coolify`              | Configure and diagnose Coolify/Railpack deployments.                                           | Yes         |
 | `create-datatable`     | Guide context-sensitive decisions for creating, changing, or reviewing data tables.            | Yes         |
 | `debloat`              | Remove over-engineered security, testing, and complexity when explicitly requested.            | No          |
 | `debugging`            | Debug bugs by reproducing behavior, confirming root cause, and documenting fixes.              | Yes         |

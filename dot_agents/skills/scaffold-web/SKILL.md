@@ -61,7 +61,7 @@ placement accounts for the login screen.
 
 ## 7. Configure Deployment
 
-Run `coolify` to add any required `nixpacks.toml` and the `Coolify Deployment` README section.
+Run `coolify` to add any required `railpack.json` and the `Coolify Deployment` README section.
 
 ## 8. Write AGENTS.md
 
