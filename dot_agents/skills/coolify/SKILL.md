@@ -17,6 +17,7 @@ Putting a Coolify-UI-only setting into `railpack.json` does nothing. Routing eac
 - Generate only what the project's evidence supports. Never invent commands, packages, environment variables, or secret values.
 - Stay minimal: `railpack.json` should contain only what differs from Railpack's automatic detection, and the README section should be a short transcribe-into-Coolify checklist, not a tutorial.
 - Do not create `nixpacks.toml`. If one exists from an earlier Nixpacks setup, migrate its intentional overrides into `railpack.json` and delete it.
+- Never put database migrations or seeds in Railpack build steps: the BuildKit builder is not on the `coolify` network and cannot reach its databases.
 
 ## Field Routing
 
@@ -106,6 +107,7 @@ Complete this gate before editing any project file:
   - Mise package or version resolution failure → fix the native pin or the `packages` entry;
   - missing system library or binary → add the Apt package to the correct build or deploy list;
   - package-manager startup failure → verify the `packageManager` value and the version in the plan;
+  - build step that connects to a database fails, often silently → builder network isolation; move it to deploy time;
   - application command failure → project issue;
   - failure after all build steps during image export → deployment-host issue, but do not call it OOM without host evidence.
 - In the final response, report: the detected stack and runtime declarations, the local runtime and any unresolved required switch, what went into `railpack.json` versus the README Coolify section, verification results, and the exact Coolify UI fields the user still needs to set by hand.
