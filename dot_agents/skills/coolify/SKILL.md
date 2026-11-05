@@ -76,6 +76,7 @@ Complete this gate before editing any project file:
 - **Package managers come from the project.** Railpack selects the Node package manager from `packageManager`, then lockfiles, and installs that version itself. Pin the version through `packageManager`; do not add install-time workarounds such as `npm install -g` or `npx pnpm@<version>` unless the build plan proves the wrong version runs.
 - **Prefer `railpack.json` over `RAILPACK_*` command and package variables.** Keep repository-owned build configuration in the file; do not duplicate it in Coolify environment variables or the Coolify Install/Build/Start Command fields.
 - **Do not invent a `PORT`.** Ensure the start command binds to `$PORT` or a fixed port that matches the README's Ports Exposes value.
+- **Health checks need `curl`.** Railpack runtime images ship neither `curl` nor `wget`, which Coolify's health check runs; add `curl` to `deploy.aptPackages` when a health check is configured.
 - **Never** put Base Directory, Site type, Publish Directory, Ports Exposes, Pre/Post Deployment Commands, or runtime secrets in this file — they belong in the README section.
 - **Update in place.** If `railpack.json` already exists, read it, preserve intentional custom keys, and change or add only what is needed. Confirm with the user before overwriting any non-trivial existing value.
 
