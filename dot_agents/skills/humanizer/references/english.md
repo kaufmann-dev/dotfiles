@@ -4,26 +4,41 @@ The patterns below are what readers of English recognize as machine prose.
 Remove them wherever they appear in editable text. The word lists are there to
 help you find the patterns. Deleting a listed word and keeping the sentence
 around it fixes nothing. A listed word may stay when it is the literal, exact
-term: a "robust" estimator in statistics, a painted "landscape," a "key" on a
-keyboard.
+term: a "robust" estimator in statistics, a painted "landscape," a film score
+that "underscores" a scene.
+
+Most of this catalog follows Wikipedia's "Signs of AI writing" field guide. The
+section on essay and marketing habits covers genres that guide leaves out and
+rests on common editorial observation.
 
 ## Vocabulary
 
-**Inflated diction:** delve, tapestry, testament, pivotal, crucial, vital,
-vibrant, intricate, interplay, landscape, realm, underscore, showcase, foster,
-garner, leverage, harness, enhance, elevate, empower, unlock, streamline,
-seamless, robust, comprehensive, nuanced, multifaceted, meticulous, navigate,
-embark, journey, enduring, groundbreaking, renowned, nestled, boasts,
-ever-evolving, cutting-edge, game-changing, align with, valuable insights.
+Density is the tell. One of these words can be a coincidence, and several in
+one passage rarely are. The overused set shifts with each model generation, so
+check all of them.
 
-**Sentence openers and filler:** Additionally, Moreover, Furthermore, Notably,
-Importantly, Ultimately, In today's fast-paced world, In the realm of, When it
-comes to, It's worth noting that, It is important to note that, In order to,
-Due to the fact that, At this point in time, has the ability to.
+**Long-standing:** additionally (opening a sentence), align with, boasts,
+bolstered, crucial, deep dive, delve, emphasizing, enduring, enhance,
+fostering, garner, highlight (verb), interplay, intricate, intricacies, key
+(adjective), landscape (abstract), meticulous, pivotal, robust, showcase,
+tapestry (abstract), testament, underscore (verb), valuable, vibrant.
+
+**Recent models:** leverage, multifaceted, foster, prioritize, dependable,
+practical, steady, clearer, echoed, universally, "quietly" as an adverb of
+significance ("quietly reshaping"), and "matters" as a verdict ("the
+distinction matters because").
+
+**Also widely reported, less well documented:** realm, seamless, comprehensive,
+nuanced, navigate, embark, journey, elevate, empower, unlock, harness,
+streamline, ever-evolving, cutting-edge, game-changing.
+
+**Openers:** Additionally, Notably, Consequently, It's worth noting that, It is
+important to note that. A transition word alone is weak evidence and one
+"however" marking a real objection is ordinary writing. The tell is a
+transition at the head of sentence after sentence.
 
 Use the word a person would say: "also," "use," "show," "is," "important" when
-something is. Most openers can be deleted outright. A single "however" marking
-a real objection is ordinary writing.
+something is.
 
 Before:
 > Additionally, a distinctive feature of Somali cuisine is the incorporation of
@@ -37,9 +52,11 @@ After:
 
 ## Content
 
-**Significance inflation.** "Marking a pivotal moment," "plays a vital role,"
-"reflects a broader movement," "leaves an indelible mark," "setting the stage
-for." State what happened and what it changed, using only what the source says.
+**Significance inflation.** "Stands as," "is a testament to," "plays a pivotal
+role," "underscores its importance," "reflects broader," "setting the stage
+for," "marks a shift," "key turning point," "evolving landscape," "indelible
+mark," "deeply rooted." Models attach these even to mundane subjects. State
+what happened and what it changed, using only what the source says.
 
 Before:
 > The Statistical Institute of Catalonia was officially established in 1989,
@@ -48,30 +65,46 @@ Before:
 After:
 > The Statistical Institute of Catalonia was established in 1989.
 
-**Promotional tone.** "Nestled in the heart of," "boasts a rich cultural
-heritage," "stunning natural beauty," "commitment to excellence." Keep the
+**Notability and coverage.** "Featured in," "profiled in," "cited in,"
+"independent coverage," "national media outlets," "trade publications,"
+"written by a leading expert," "maintains an active social media presence."
+The text talks about its sources instead of what they say. Report the content
+of a source the text supplies and drop the survey of who covered the subject.
+
+**Stilted source identification.** "Records identify X as," "company filings
+list her as," "is listed in," "his professional profile lists." Common in
+recent models. State the fact, with the source attached normally if it matters.
+
+**Promotional tone.** "Boasts a," "nestled in the heart of," "rich cultural
+heritage," "natural beauty," "diverse array," "commitment to," "groundbreaking,"
+"renowned." Less frequent in current models, still unmistakable. Keep the
 property being described and drop the praise.
 
 **Vague authority.** "Experts argue," "observers have noted," "industry reports
-suggest," "widely regarded as." Name the source if the text supplies one.
-Otherwise state the claim as the author's own with its original uncertainty.
-Never invent a source.
+suggest," "some critics argue." Name the source if the text supplies one.
+Otherwise state the claim with its original uncertainty. Never invent a source.
 
 **Template sections.** "Despite its success, X faces several challenges…
-Despite these challenges, X continues to thrive." "In conclusion," "the future
-looks bright," "exciting times lie ahead." Keep any concrete fact inside and
-delete the frame.
+Despite these challenges, X continues to thrive." "Future Outlook." Closing
+paragraphs that open with "In summary," "In conclusion," or "Overall" and
+restate the text. The formula is the tell. A text may discuss real challenges.
+Keep any concrete fact inside and delete the frame.
 
-**Gap-filling.** "While specific details are limited," "based on available
-information," "maintains a low profile," "likely grew up in." Say what is not
-known in one plain sentence, or cut it.
+**Disclaimers and corrective framing.** "While specific details are limited,"
+"not widely documented," "based on available information," "in the available
+sources," followed by a guess such as "maintains a low profile" or "likely
+grew up in." Recent models add instructions on how to read a claim: "should be
+treated as X rather than Y," "does not by itself establish," "should not be
+confused with." Say what is not known in one plain sentence or cut it, and
+state claims without coaching the reader.
 
 ## Construction
 
 **Negative parallelism.** "It's not just about X; it's about Y." "Not only X
-but also Y." "This isn't a tool. It's a partner." "No setup. No config. Just
-results." Say the positive claim. Keep a contrast only when someone actually
-holds the view being denied.
+but also Y." "It's not a tool, it's a partner." "No setup, no config, just
+results." Also the reversed form, which recent models favor: "Y rather than
+X." All of them correct a view nobody stated. Say the positive claim. Keep a
+contrast only when someone actually holds the view being denied.
 
 Before:
 > It's not merely a song, it's a statement.
@@ -79,13 +112,11 @@ Before:
 After:
 > The song is meant as a statement.
 
-**Tailing fragments.** "The options come from the selected item, no guessing."
-Write a full clause: "…so the user does not have to guess."
-
 **Trailing participles.** ", highlighting its importance," ", underscoring the
-need for," ", ensuring a seamless experience," ", reflecting broader trends."
-These interpret the sentence they are attached to. Delete them, or state the
-consequence as a sentence of its own if the source supports it.
+need for," ", ensuring a smooth experience," ", reflecting broader trends,"
+", contributing to," ", fostering." These add shallow commentary to the
+sentence they end. Delete them, or state the consequence as its own sentence
+if the source supports it.
 
 Before:
 > The team published the test results, making them available to all staff and
@@ -94,8 +125,10 @@ Before:
 After:
 > The team published the test results for all staff to read.
 
-**Copula avoidance.** "Serves as," "stands as," "functions as," "represents,"
-"boasts," "features," "offers." Write "is" and "has."
+**Copula avoidance.** "Serves as," "stands as," "functions as," "operates as,"
+"represents," "marks," "boasts," "features," "maintains," "offers," "refers
+to." Write "is" and "has." Plain "there is" and "it has" are among the clearest
+marks of human prose.
 
 Before:
 > Gallery 825 serves as LAAA's exhibition space. The gallery features four
@@ -106,68 +139,94 @@ After:
 > square feet.
 
 **Reflexive triplets.** "Innovation, inspiration, and industry insights."
-"Write, test, and ship." Keep three items when there are three things. Break
-the pattern when the third item is there for rhythm.
+Three adjectives or three short phrases used to make a thin point look
+complete. Keep three items when there are three things.
 
 **False ranges.** "From the Big Bang to dark matter, from solo developers to
 enterprise teams." List the items.
 
-**Staged reveals.** "The result? Chaos." "Here's the thing:" "The takeaway:"
-"Why does this matter? Because…" "And that changes everything." State the point
-as an ordinary sentence.
+**Synonym cycling.** "The protagonist… the main character… the central figure…
+the hero." More typical of older models. Pick the term and repeat it.
 
-**Depth claims.** "At its core," "the real question is," "what really matters,"
-"fundamentally," "the heart of the matter." Delete the phrase and check whether
-the sentence still says anything.
+## Rhythm
+
+Older models wrote long, dash-heavy sentences. Models trained away from dashes
+overcorrect: sentences cluster between roughly 8 and 20 words, and the only
+punctuation is commas and periods. Both read as generated. Let length follow
+content, and use a colon, parentheses, or a semicolon where the sentence calls
+for one.
+
+## Essay and marketing habits
+
+**Staged reveals.** "The result? Chaos." "Here's the thing:" "The takeaway:"
+"Why does this matter? Because…" State the point as an ordinary sentence.
+
+**Depth claims.** "At its core," "the real question is," "what really
+matters," "the heart of the matter." Delete the phrase and check whether the
+sentence still says anything.
 
 **Signposting.** "Let's dive in," "let's break this down," "here's what you
-need to know," "in this article we will explore." Start with the content.
+need to know." Start with the content.
 
 **Aphoristic closers.** A paragraph that ends by restating itself as a maxim:
-"Speed matters." "And that makes all the difference." "Sometimes less is more."
-Cut the line.
+"Speed matters." "And that makes all the difference." Cut the line.
 
-**Synonym cycling.** "The protagonist… the main character… the central figure…
-the hero." Pick the term and repeat it.
+**Tailing fragments.** "The options come from the selected item, no guessing."
+"No configuration file needed." Write a full clause or sentence. Keep the
+passive when the actor is unknown ("The samples were frozen at −20°C"), and
+never invent an actor.
 
-**Stacked hedges.** "It could potentially be argued that the policy might have
-some effect." Keep one marker of the real uncertainty: "The policy may affect
-outcomes."
-
-**Subjectless fragments.** "No configuration file needed. Results preserved
-automatically." Write full sentences. Keep the passive when the actor is
-unknown or irrelevant ("The samples were frozen at −20°C"), and never invent an
-actor.
-
-**Diff narration.** Documentation that describes a change instead of the thing:
-"This function was added to replace the previous approach." Outside changelogs
-and release notes, describe what exists.
+**Diff narration.** Documentation that describes a change instead of the
+thing: "This function was added to replace the previous approach." Outside
+changelogs and release notes, describe what exists.
 
 ## Format
 
 - **Dashes.** Rewrite every em or en dash used as punctuation, including the
   spaced and double-hyphen forms. Choose the replacement by the relationship
-  between the clauses. A new sentence is usually best.
+  between the clauses.
+- **Bold.** Remove bold used for emphasis in running prose.
 - **Bold-label bullets.** "- **Performance:** Performance has been enhanced…"
   Turn these into prose, or into a plain list when the items are parallel and
   readers will scan them.
 - **Headings.** Use sentence case unless the document has its own convention.
-  Remove a heading that sits over one or two sentences, and a one-line
-  paragraph that only restates its heading.
+  Watch for stock "X and Y" headings ("Awards and recognition," "Challenges
+  and legacy"), headings over one or two sentences, and `---` dividers between
+  short sections.
+- **Emoji.** Remove them from headings and list items.
 - **Quotation marks.** Use straight quotes and apostrophes in plain text and
   Markdown. Keep typographic quotes when the document uses them consistently.
-- **Hyphenated compounds.** Models hyphenate uniformly, as in "the report is
-  high-quality." Hyphenate before the noun ("a high-quality report") and
-  usually not after it ("the report is high quality"), except for compounds
-  that keep the hyphen everywhere, such as "self-contained."
-- **Spelling.** Keep the source's British or American spelling.
+- **Spelling and hyphenation.** Keep the source's British or American spelling
+  and its correct hyphenation.
 
 ## Residue
 
-Delete conversation with the prompter: "Great question!", "Certainly!", "You're
-absolutely right," "Here is an overview of," "I hope this helps," "Let me know
-if you'd like me to expand," "As of my last update." Greetings and sign-offs
+Delete conversation with the prompter: "Of course!", "Certainly!", "You're
+absolutely right!", "Here is a," "I hope this helps," "Would you like," "Let
+me know," "Is there anything else," "a more detailed breakdown," "As of my
+last knowledge update," "As an AI language model." Greetings and sign-offs
 that belong to a real letter or message stay.
+
+Remove leaked tooling artifacts too: Markdown syntax in a non-Markdown
+document, strings such as `contentReference[oaicite:1]`, a stray "↩", and
+`utm_source=chatgpt.com` or similar tracking parameters on links. An unfilled
+placeholder ("[Insert source]", "2025-XX-XX") means content is missing, so
+report it to the user. Do not fill it in.
+
+## Leave human habits alone
+
+These are more common in human writing than in generated text. Polishing them
+away makes prose read more like a model:
+
+- qualifiers and intensifiers such as "very," "perhaps," and "tends to";
+- superlatives and flat definitive statements ("one of the best," "was the
+  first");
+- an occasional wordy construction such as "in order to," "as a result of," or
+  "the fact that";
+- a stiff word choice here and there ("utilized," "relocated");
+- plain "is" and "has" sentences, and repeated terms.
+
+Fix them only when they are wrong or the user asks for tighter prose.
 
 ## Certainty survives the rewrite
 
@@ -198,8 +257,8 @@ First draft:
 > to entire companies. The problems are real, but so is the momentum.
 
 Audit: "write, test, and ship" is a triplet the source never contained. The
-first sentence still announces significance. The last line is an aphoristic
-closer.
+first sentence still announces significance. Four sentences of similar length
+sit in a row. The last line is an aphoristic closer.
 
 Final:
 > AI coding assistants do more than autocomplete, and adoption has spread from

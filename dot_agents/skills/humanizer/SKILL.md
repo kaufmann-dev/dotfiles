@@ -25,18 +25,23 @@ five levels, and all five need attention:
 
 - **Content.** Claims of importance, legacy, or broader trends with nothing
   concrete behind them. Promotional adjectives. Opinions attributed to unnamed
-  experts, observers, or studies. Stock sections on challenges and future
-  outlook. Upbeat conclusions that restate the text. Disclaimers about limited
-  information followed by plausible guesses.
+  experts, observers, or studies. Talk about where a subject was covered or
+  listed in place of what the sources say. Stock sections on challenges and
+  future outlook. Conclusions that restate the text. Disclaimers about limited
+  information followed by plausible guesses, and coaching on how a claim
+  should be read.
 - **Construction.** Contrast framing that denies something nobody claimed ("not
-  just X, but Y"). Groups of three by reflex. Ranges whose endpoints share no
+  just X, but Y" and "Y rather than X"). Groups of three by reflex. Ranges whose endpoints share no
   scale. Clauses tacked on to interpret the sentence they end. Rhetorical
   questions answered at once. Reveals staged with a colon. Elaborate verbs where
   "is" or "has" would do. Announcements of what the text is about to say.
   Phrases that claim to reach a deeper truth and then restate the obvious.
-- **Rhythm.** Sentences of similar length and shape. Paragraphs of equal size
-  that each end on a quotable line. The same idea named with a rotating set of
-  synonyms. A transition word opening every other sentence.
+- **Rhythm.** Sentences of similar length and shape, including the newer habit
+  of short declarative sentences punctuated only by commas and periods.
+  Paragraphs of equal size that each end on a quotable line. The same point
+  made twice in different words. Self-contained paragraphs with no thread
+  between them. The same idea named with a rotating set of synonyms. A
+  transition word opening every other sentence.
 - **Format.** Em dashes. Bold scattered for emphasis. Bullets that open with a
   bold label and a colon. Headings over single sentences. Title case. Decorative
   emoji. Lists where a paragraph would carry the reasoning.
@@ -102,6 +107,10 @@ Rewrites fail in predictable ways. Check for each:
   register. In technical, legal, and reference writing, plain and dry is how
   people write.
 - Compression into telegraphic notes with dropped subjects and articles.
+- Over-polishing. Qualifiers such as "very" and "perhaps," flat superlatives,
+  an occasional wordy phrase, and plain "is" and "has" sentences are more
+  common in human writing than in generated text. Leave them unless they are
+  wrong.
 
 ### Fixed rules
 
