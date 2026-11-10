@@ -142,9 +142,6 @@ Skills marked No require explicit invocation with `$skill-name`.
 | Skill                  | Purpose                                                                                        | Auto-invoke |
 | ---------------------- | ---------------------------------------------------------------------------------------------- | ----------- |
 | `agents-md`            | Create, fix, and distill repository or subtree agent instructions from codebase evidence.      | Yes         |
-| `audit-complete`       | Perform a comprehensive, stateless codebase audit before a major release.                      | No          |
-| `audit-defect`         | Directly audit a codebase for concrete, actionable defects.                                    | No          |
-| `audit-rubric`         | Create a bounded, project-specific rubric and immediately audit against it.                    | No          |
 | `autofixer`            | Coordinate a bounded audit-fix-verify loop that proceeds without approval for dangerous fixes. | No          |
 | `compliance-links`     | Add centralized imprint and privacy links to appropriate public website surfaces.              | No          |
 | `coolify`              | Configure and diagnose Coolify/Railpack deployments.                                           | Yes         |
