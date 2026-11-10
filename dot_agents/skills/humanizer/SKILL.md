@@ -1,131 +1,147 @@
 ---
 name: humanizer
-description: Rewrite English and German text to sound natural and purposeful, removing formulaic AI phrasing while preserving substance and the author's voice. Use only when the user explicitly invokes this skill.
+description: Rewrite English and German text so it does not read as AI-written, removing the patterns readers recognize as machine prose while preserving substance and the author's voice. Use only when the user explicitly invokes this skill.
 ---
 
 # Humanizer
 
-Rewrite English and German prose so it sounds like someone has something to say
-and has chosen how to say it. Improve the writing as a whole: its focus, order,
-rhythm, and phrasing. Removing a few conspicuous words is rarely enough.
+Rewrite English and German text so that a reader who knows what LLM prose looks
+like finishes it without suspecting a machine wrote it. That is the goal. Clarity,
+concision, and good structure matter here because they serve it, and substance
+and voice are limits on how you reach it. A rewrite that is cleaner but still
+reads as generated has failed.
 
-Work as an editor. These patterns are reasons to examine a passage, not evidence
-of who wrote it. Do not label text as AI-generated, assign detection scores, or
-promise to evade detectors.
+The target is human readers. Do not judge who wrote the source, assign detection
+scores, or promise a result from automated detectors.
 
-## Establish the editorial brief
+## Know what gives text away
 
-Use the user's instructions, the supplied text, and any writing sample to infer
-the purpose, audience, genre, register, and intended voice. Ask only when a
-material ambiguity cannot be resolved from that context. If no text or source
-is available, ask for it rather than producing a demonstration.
+LLM prose is recognizable because it takes the most probable route at every
+level. It picks the expected word, keeps sentences at an even middle length,
+pads claims with significance, balances every paragraph, and closes on a tidy
+summary. Readers notice the accumulation long before they can name a single
+cause, so swapping out a few flagged words changes nothing. The tells sit at
+five levels, and all five need attention:
 
-Preserve the input language unless translation is requested. Edit mixed-language
-text in place, keeping each passage in its original language. Read the relevant
-language guidance before rewriting:
+- **Content.** Claims of importance, legacy, or broader trends with nothing
+  concrete behind them. Promotional adjectives. Opinions attributed to unnamed
+  experts, observers, or studies. Stock sections on challenges and future
+  outlook. Upbeat conclusions that restate the text. Disclaimers about limited
+  information followed by plausible guesses.
+- **Construction.** Contrast framing that denies something nobody claimed ("not
+  just X, but Y"). Groups of three by reflex. Ranges whose endpoints share no
+  scale. Clauses tacked on to interpret the sentence they end. Rhetorical
+  questions answered at once. Reveals staged with a colon. Elaborate verbs where
+  "is" or "has" would do. Announcements of what the text is about to say.
+  Phrases that claim to reach a deeper truth and then restate the obvious.
+- **Rhythm.** Sentences of similar length and shape. Paragraphs of equal size
+  that each end on a quotable line. The same idea named with a rotating set of
+  synonyms. A transition word opening every other sentence.
+- **Format.** Em dashes. Bold scattered for emphasis. Bullets that open with a
+  bold label and a colon. Headings over single sentences. Title case. Decorative
+  emoji. Lists where a paragraph would carry the reasoning.
+- **Residue.** Anything addressed to the person who prompted the text: openers
+  such as "Certainly!", praise for the question, offers to expand, and closing
+  hopes that this helps.
 
-- [English](references/english.md) for English passages.
-- [German](references/german.md) for German passages.
-- Both for mixed English/German text.
+The language references list the specific words, phrases, and examples. Read the
+one that applies before rewriting, and both for mixed text:
 
-Follow explicit user choices first, then a supplied writing sample, then the
-voice and conventions already present in the source. Match a sample's diction,
-rhythm, directness, and level of formality; do not import its facts or copy its
-distinctive phrases into unrelated material. Correct accidental errors without
-erasing deliberate stylistic choices.
+- [English](references/english.md)
+- [German](references/german.md)
 
-Without a sample, strengthen the source's existing voice. A technical explanation
-can stay dry, a formal letter courteous, and an opinion piece opinionated. Do
-not manufacture a more casual or more neutral persona. Preserve grounded humor,
-asides, and mixed feelings; do not insert jokes, slang, first-person experiences,
-opinions, or deliberate mistakes to simulate humanity.
+## Set up the rewrite
 
-## Preserve substance, reshape the writing
+Infer purpose, audience, genre, and register from the request, the text, and any
+writing sample. Ask only when a material ambiguity cannot be resolved from that
+context. If no text is supplied, ask for it.
 
-Before drafting, identify the distinct claims, relevant details, evidence,
-qualifications, and relationships that must survive. Keep this inventory internal.
+Keep the input language unless translation is requested, and edit mixed-language
+text in place. Follow explicit user choices first, then a supplied writing
+sample, then the voice already present in the source. From a sample, take the
+diction, rhythm, directness, and formality. Leave its facts and signature
+phrases where they are.
+
+List for yourself the claims, details, evidence, and qualifications the source
+contains. That inventory is what must survive.
+
+## Rewrite
+
+Remove every tell, then fix what removing them exposes. A sentence built around
+a tell rarely survives with the tell deleted: once "plays a pivotal role in the
+evolving landscape" is gone, usually nothing is left, and the honest fix is to
+state the concrete fact the source supplies or to cut the sentence. Rewrite as
+deeply as that requires. Reorder paragraphs, merge overlapping ones, turn
+decorative lists into prose, and drop template sections that say nothing.
+
+Then give the text what generated prose lacks:
+
+- Use the plain word. Repeat the right term instead of rotating synonyms.
+- Let sentence length follow the content, so that short facts get short
+  sentences and a real chain of reasoning gets a long one. Uneven is normal.
+- Say a thing once, where it belongs, and stop when the content ends. Paragraphs
+  may end on an ordinary sentence.
+- Keep the specifics the source has: names, numbers, odd details, grounded
+  asides, mixed feelings. Models round these off, and readers trust them.
+- Connect sentences through their content. Use a transition word only where the
+  relationship would otherwise be unclear.
+
+### Do not trade one tell for another
+
+Rewrites fail in predictable ways. Check for each:
+
+- A stock phrase replaced with a different stock phrase.
+- Em dashes replaced mechanically with semicolons or colons, so the same
+  sentence shape survives under new punctuation.
+- "It's not X, it's Y" split into "It's not X. It's Y."
+- Rhythm varied by formula: two long sentences, then a three-word fragment for
+  punch. Staccato fragments are as recognizable as the even cadence.
+- Faked humanity. Do not insert slang, jokes, opinions, first-person anecdotes,
+  rhetorical asides, modal particles, or deliberate mistakes that the source
+  gives no basis for. A manufactured casual voice is itself a familiar machine
+  register. In technical, legal, and reference writing, plain and dry is how
+  people write.
+- Compression into telegraphic notes with dropped subjects and articles.
+
+### Fixed rules
+
+These apply to all editable prose unless the user says otherwise:
+
+- No em dashes or en dashes as sentence punctuation, and no spaced hyphens or
+  double hyphens standing in for them. Rebuild the sentence with a period,
+  comma, colon, or parentheses, and avoid comma splices. Ranges ("2019–2024"),
+  minus signs, and word hyphens stay.
+- No decorative emoji and no bold used only for emphasis. Keep formatting that
+  carries function: status symbols, literal syntax, document hierarchy, and
+  headings, lists, or tables that readers navigate or compare with.
+- Leave exact quotations, citations, code, URLs, and identifiers untouched.
+
+## Stay inside the source
 
 - Preserve names, numbers, dates, units, citations, attribution, negation, and
-  degree of certainty. Possibility stays possibility, plans stay plans, and
-  correlation does not become causation.
-- Keep the author's position and substantive evaluations, promises, and
-  limitations. Stronger prose must not make a stronger factual claim.
-- Do not invent an actor for a passive sentence, a source for a vague attribution,
-  a concrete example for an abstraction, or a benefit for a promotional claim.
-  When combining clauses, keep each actor attached to the action the source
-  assigns them; a nearby actor is not automatically responsible for an unstated
-  one. Use only information supplied for this text. Editing does not imply
-  fact-checking.
-- If a claim lacks support or is ambiguous, preserve its attribution and
-  uncertainty. Do not silently delete it, strengthen it, or replace it with a
-  plausible fact. If the ambiguity prevents a faithful rewrite, ask a focused
-  question; if it can remain unresolved in the text, add a brief note only when
-  the reader needs to know.
-- Protect exact quotations, citations, code, URLs, identifiers, and formatting
-  with functional meaning. Edit surrounding prose rather than altering protected
-  content to satisfy a style preference.
+  degree of certainty. Possibility stays possibility and plans stay plans. A
+  more direct sentence must not make a stronger claim.
+- Use only what the source supplies. Do not invent an actor for a passive
+  sentence, a source for a vague attribution, an example for an abstraction, or
+  a fact to replace an empty claim. When the source offers nothing concrete,
+  state the claim plainly with its attribution and uncertainty, or cut a
+  sentence that carried no content.
+- Keep every distinct substantive point. Cutting padding is expected.
+  Summarizing is a different task.
+- Keep the author's position, regional spelling, and deliberate stylistic
+  choices. Passages that already read as written by a person stay as they are.
+- If an ambiguity blocks a faithful rewrite, ask one focused question.
 
-Rewrite as substantially as needed. Move the useful point forward, reorder
-paragraphs, combine overlapping explanations, split overloaded sentences, and
-replace a template structure with the order the argument actually needs.
-Preserve logical and chronological relationships when moving material.
+## Audit before delivering
 
-Cut repetition, empty rhetoric, and sentences that merely announce the next
-sentence. Keep every distinct substantive point. There is no paragraph-count or
-sentence-length target, and this is not a summarization task. Leave effective
-passages alone; a rewrite does not need to change every line.
+Reread the draft as a skeptical reader and ask: what here would still make
+someone think a model wrote it? Name the remaining tells, including any from the
+list of rewrite failures, and revise. Repeat until the honest answer is nothing.
+Then scan for `—` and `–` outside protected content, and compare the draft with
+your inventory to confirm that nothing substantive was lost, added, or
+strengthened.
 
-## Make each passage earn its place
-
-Look for problems in the passage's effect, including clusters of formulaic
-phrasing. An isolated weakness can still deserve an edit; a familiar word alone
-does not.
-
-- Inflated significance and abstract praise: replace them with an existing
-  concrete action or consequence. If none is supplied, simplify the wording
-  without inventing specificity or losing a substantive claim.
-- Repeated framing and synthetic emphasis: remove ceremonial introductions,
-  forced contrasts, artificial triplets, and generic conclusions when they add
-  no meaning. Keep real contrasts, three-part lists, and useful summaries.
-- Vague verbs and stacked abstractions: clarify who does what when the source
-  supplies that information. Prefer precise verbs over corporate filler.
-- Monotonous rhythm and synonym cycling: let emphasis and relationships shape
-  sentence length. Repeat the right technical term rather than rotating through
-  approximate synonyms. Do not replace a stock phrase with a new stock phrase.
-- Unnecessary scaffolding: remove chatbot wrappers from standalone content.
-  Preserve greetings and sign-offs that belong to an actual message or letter.
-  Retain headings, lists, and tables when they help readers navigate, act, or
-  compare; combine them when they merely decorate a short passage.
-- Excessive hedging: remove redundant qualifiers while preserving the actual
-  uncertainty. Keep necessary passive voice, specialist vocabulary, and formal
-  constructions when they are accurate and appropriate for the audience.
-
-## Apply the style constraints
-
-These are output preferences, not tests of AI authorship. Apply them to editable
-prose in both languages, subject to explicit user instructions:
-
-- Do not use em dashes or en dashes as sentence punctuation, or substitute spaced
-  hyphens or double hyphens for them. Use a period, comma, colon, parentheses, or
-  a rewritten sentence that preserves the relationship. Avoid comma splices.
-- Preserve range notation, minus signs, and correct word hyphenation. A blanket
-  character replacement would damage valid uses and protected content.
-- Remove decorative emoji and bold used only to add emphasis. Preserve symbols
-  and formatting that convey functional meaning, such as status indicators,
-  literal syntax, and document hierarchy. Keep inline code for a literal, but
-  remove surrounding bold if it adds only emphasis.
-- Keep language-appropriate quotation marks and capitalization. Do not flatten
-  typography into English ASCII conventions or break compound spelling.
-
-## Review and deliver
-
-Read the draft for flow, then compare it against the source. Check that every
-distinct point and relevant detail survived, evidence still supports the same
-claims, and restructuring introduced no new implication. Check voice and idiom
-against the brief and language guidance. Finally check the style constraints
-outside protected content, distinguishing rhetorical dashes from valid notation.
-
-Return only the finished text by default, in its intended format. Do not prepend
-an acknowledgment or append an offer to keep editing. Show analysis, drafts,
-comparisons, or a change explanation only when requested. Keep any necessary
-note about unresolved substance brief and separate from the rewritten text.
+Do this silently. Return only the finished text, in its intended format, without
+an acknowledgment before it or an offer after it. Show the audit, drafts, or a
+change summary only on request. If a point of substance could not be resolved,
+say so in one short note separate from the text.
