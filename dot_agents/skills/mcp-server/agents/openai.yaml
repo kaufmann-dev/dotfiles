@@ -1,0 +1,7 @@
+interface:
+  display_name: "MCP Server"
+  short_description: "Build OAuth MCP servers and connected-app settings"
+  default_prompt: "Use $mcp-server to add a remote MCP server with OAuth, connection instructions, and connected-app management to this application."
+
+policy:
+  allow_implicit_invocation: true
