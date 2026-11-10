@@ -1,22 +1,26 @@
 ---
-name: write-readme-md
-description: Create a missing README.md from repository evidence, tailored to the project's primary audience and project type. Use when the user asks to create a missing README.md.
+name: readme-md
+description: Create, fix, or update README.md from repository evidence, tailored to the project's primary audience and project type. Use when writing a README or repairing its content, commands, links, or structure.
 ---
 
-# Write README
+# README.md
 
-Create a useful entry point for the people most likely to encounter the repository. Optimize
-for their first successful task, not for compliance with a conventional README template.
+Create or repair a useful entry point for the people most likely to encounter the repository.
+Optimize for their first successful task, not for compliance with a conventional README template.
 
 ## 1. Gather Evidence
 
-- Stop if the target `README.md` already exists; use an editing workflow instead.
+- Use the requested path, otherwise `README.md` at the repository root. Read it when it exists.
+- Match the scope of the request: fix the relevant content for a targeted repair; restructure
+  the document only when requested or needed to make the intended reading path work.
 - Inspect package manifests, lockfiles, task runners, build files, `.env.example`, CI, and
   representative source files.
 - Inspect nearby documentation, examples, screenshots, and contribution or license files.
 - Prefer executable configuration and code over prose when sources disagree.
 - Derive names, claims, prerequisites, commands, and examples from evidence. Never invent
   capabilities, commands, compatibility promises, or setup requirements.
+- Preserve accurate project-specific content and managed sections, such as authentication and
+  deployment handoffs. Update stale information in place and avoid duplicate sections.
 
 ## 2. Identify Audience and Purpose
 
@@ -43,8 +47,9 @@ audience is materially ambiguous and cannot be inferred.
   working example over a long feature list or exhaustive setup guide.
 - Order later sections by the reader's likely next questions. Use descriptive, project-specific
   headings where they improve navigation.
-- Always place a compact navbar directly after the title: a single line of links to the main
-  sections and key external docs, separated by ` · `. Use anchor links for README sections and
+- When creating or restructuring the README, place a compact navbar directly after the title:
+  a single line of links to the main sections and key external docs, separated by ` · `.
+  Use anchor links for README sections and
   reference-style links for other docs; wrap long lines. For example:
 
   ```markdown
@@ -55,7 +60,8 @@ audience is materially ambiguous and cannot be inferred.
   [<doc-b>]: <path-or-url>
   ```
 
-- Do not add a separate contents list; the navbar replaces it.
+- Do not add a separate contents list; when restructuring, replace it with the navbar.
+- When editing section headings or destinations, update affected navbar links and anchors.
 - Keep secondary-audience material later in the document or link to existing dedicated docs.
 - Omit sections that do not help an identified reader complete a real task.
 
@@ -76,7 +82,7 @@ Use these project-type priorities as guidance, not as a fixed template:
 - **Template/starter**: explain intended users, included decisions, how to instantiate it, and
   what must be customized.
 
-## 4. Write Precisely
+## 4. Create or Fix Precisely
 
 - Use the actual package manager and commands found in the repository.
 - Make code examples minimal, runnable, and consistent with the current interfaces.
@@ -96,3 +102,4 @@ Use these project-type priorities as guidance, not as a fixed template:
 - Verify every command, path, link, prerequisite, and factual claim against repository evidence.
 - Run cheap, non-destructive commands or examples when practical.
 - Remove conventional sections that do not serve the chosen audience or project type.
+- Save the README and report the path, meaningful changes, and verification performed.

@@ -1,0 +1,7 @@
+interface:
+  display_name: "DESIGN.md"
+  short_description: "Create and fix spec-compliant visual design documents"
+  default_prompt: "Use $design-md to create or fix DESIGN.md from this project's visual system."
+
+policy:
+  allow_implicit_invocation: true

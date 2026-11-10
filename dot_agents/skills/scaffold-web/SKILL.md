@@ -1,6 +1,6 @@
 ---
 name: scaffold-web
-description: Create a new web application and set it up with the standard project conventions by coordinating the ui-design-principles, oidc-auth, compliance-links, coolify, write-readme-md, and write-agents-md skills. Use only when the user explicitly invokes this skill.
+description: Create a new web application and set it up with the standard project conventions by coordinating the ui-design-principles, oidc-auth, compliance-links, coolify, readme-md, and agents-md skills. Use only when the user explicitly invokes this skill.
 ---
 
 # Scaffold Web
@@ -46,7 +46,8 @@ Before changing files, collect the following from the request, asking once for a
 
 ## 4. Write the README
 
-Delete `README.md` if it only describes the generator or template, then run `write-readme-md`.
+Run `readme-md` to create or update `README.md` for the application, replacing generator or
+template-only content while retaining accurate project-specific material.
 Complete this before the following steps, which add managed sections to the README.
 
 ## 5. Add Authentication
@@ -65,9 +66,8 @@ Run `coolify` to add any required `railpack.json` and the `Coolify Deployment` R
 
 ## 8. Write AGENTS.md
 
-Run `write-agents-md` last so its commands reflect the finished project. If the template or
-generator already created `AGENTS.md`, update it in place under the same content rules instead,
-keeping instructions that remain accurate.
+Run `agents-md` last so its commands reflect the finished project. Create `AGENTS.md` if missing
+or update it in place, keeping instructions that remain accurate.
 
 ## 9. Verify and Report
 

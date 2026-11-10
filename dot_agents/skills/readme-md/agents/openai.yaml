@@ -1,0 +1,7 @@
+interface:
+  display_name: "README.md"
+  short_description: "Create and fix audience-focused repository READMEs"
+  default_prompt: "Use $readme-md to create or fix this repository's README from codebase evidence."
+
+policy:
+  allow_implicit_invocation: true

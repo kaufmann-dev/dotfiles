@@ -4,6 +4,10 @@
 .agents/skills/add-subagents
 .agents/skills/svg-theme-converter
 .agents/skills/add-compliance-links
+.agents/skills/distill-agents-md
+.agents/skills/write-agents-md
+.agents/skills/write-readme-md
+.agents/skills/write-design-md
 {{ range glob (joinPath .chezmoi.sourceDir "archive" "skills" "*") -}}
 .agents/skills/{{ osBase . }}
 {{ end -}}

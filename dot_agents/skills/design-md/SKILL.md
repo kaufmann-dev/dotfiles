@@ -1,17 +1,24 @@
 ---
-name: write-design-md
-description: Create a DESIGN.md file compliant with the @google/design.md spec from codebase evidence. Use when the user asks to create a visual design document.
+name: design-md
+description: Create, fix, or update a DESIGN.md visual design document compliant with the @google/design.md spec from codebase evidence. Use when documenting a visual system or repairing its design tokens, guidance, or spec compliance.
 ---
 
-# Write DESIGN.md
+# DESIGN.md
 
-Produces a compliant `DESIGN.md` per the `@google/design.md` spec: YAML front matter
+Create or repair `DESIGN.md` per the `@google/design.md` spec: YAML front matter
 (machine-readable tokens) + Markdown prose (human-readable rationale).
 
 ## Before Writing
 
+- Use the requested path, otherwise `DESIGN.md` at the repository root. Read it when it exists.
+- Match the scope of the request: repair affected tokens, references, or prose for a focused fix;
+  reconcile the whole document when updating the visual system or fixing spec compliance.
 - Inspect existing design docs, UI code, style config, component libraries,
   screenshots, and brand assets.
+- Derive tokens and guidance from the implemented visual system. Preserve accurate design
+  decisions, update stale values in place, and remove obsolete or duplicate definitions.
+- Do not redesign the application or change UI code merely to make the document consistent.
+  If code and documentation express conflicting design intent that evidence cannot resolve, ask.
 - Keep `DESIGN.md` limited to visual identity, tokens, components, motion, and
   accessibility. Do not include setup, architecture, or agent workflow content.
 
@@ -92,10 +99,12 @@ components:
 
 ## After Writing
 
-Validate:
+Validate the created or edited file (substitute the selected path when different):
 ```bash
 npx @google/design.md lint DESIGN.md
 ```
 
 Fix all `error` findings before delivering. Investigate `warning` findings -
 especially `contrast-ratio` and `broken-ref` - and resolve or note them explicitly.
+Confirm token references resolve, documented values match their sources, and prose agrees with
+the front matter. Save the file and report its path, meaningful changes, and validation results.

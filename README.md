@@ -141,6 +141,7 @@ Skills marked No require explicit invocation with `$skill-name`.
 
 | Skill                  | Purpose                                                                                        | Auto-invoke |
 | ---------------------- | ---------------------------------------------------------------------------------------------- | ----------- |
+| `agents-md`            | Create, fix, and distill repository or subtree agent instructions from codebase evidence.      | Yes         |
 | `audit-complete`       | Perform a comprehensive, stateless codebase audit before a major release.                      | No          |
 | `audit-defect`         | Directly audit a codebase for concrete, actionable defects.                                    | No          |
 | `audit-rubric`         | Create a bounded, project-specific rubric and immediately audit against it.                    | No          |
@@ -150,8 +151,8 @@ Skills marked No require explicit invocation with `$skill-name`.
 | `coolify`              | Configure and diagnose Coolify/Railpack deployments.                                           | Yes         |
 | `create-datatable`     | Guide context-sensitive decisions for creating, changing, or reviewing data tables.            | Yes         |
 | `debloat`              | Remove over-engineered security, testing, and complexity when explicitly requested.            | No          |
+| `design-md`            | Create and fix spec-compliant visual design documents from the implemented design system.      | Yes         |
 | `debugging`            | Debug bugs by reproducing behavior, confirming root cause, and documenting fixes.              | Yes         |
-| `distill-agents-md`    | Distill bloated instruction files (AGENTS.md, etc.) into lean versions.                        | Yes         |
 | `favicon-theming`      | Make favicons and standalone SVG icons adapt to light and dark mode.                           | Yes         |
 | `harness-guides`       | Add project-scoped MCP servers and subagents across agent harnesses.                           | No          |
 | `humanizer`            | Remove signs of AI-generated writing from text.                                                | No          |
@@ -160,12 +161,10 @@ Skills marked No require explicit invocation with `$skill-name`.
 | `md-table-formatter`   | Format Markdown tables after any table is created or modified.                                 | Yes         |
 | `medsurface`           | Convert medical volumes, fuse scans, and extract surface meshes.                               | Yes         |
 | `oidc-auth`            | Add OpenID Connect authentication, replacing any local authentication.                         | No          |
+| `readme-md`            | Create and fix repository READMEs for the project's audience and purpose.                      | Yes         |
 | `scaffold-web`         | Create a new web app with UI defaults, OIDC auth, compliance links, Coolify, and docs.         | No          |
 | `ui-cleanup`           | Clean up duplicated and inconsistent frontend UI when explicitly requested.                    | No          |
 | `ui-design-principles` | Apply accessible UI guardrails and scoped greenfield visual defaults.                          | Yes         |
-| `write-agents-md`      | Create a repository- or subtree-scoped `AGENTS.md` from codebase evidence.                     | Yes         |
-| `write-design-md`      | Create a project `DESIGN.md` from scratch.                                                     | Yes         |
-| `write-readme-md`      | Create a project `README.md` from scratch.                                                     | Yes         |
 
 ## MCP Servers
 
