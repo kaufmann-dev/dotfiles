@@ -1,9 +1,9 @@
 ---
-name: create-datatable
+name: datatable
 description: Guide context-sensitive creation, extension, or review of data tables in any project. Use when the user explicitly asks to build, change, or review a tabular data view, including its columns, interactions, data handling, responsiveness, accessibility, or row actions.
 ---
 
-# Create Data Table
+# Data Table
 
 Treat this skill as a decision framework, not a checklist. Make the smallest change that satisfies the request and fits the project. Apply guidance only when the table's actual requirements make it relevant.
 

@@ -149,7 +149,7 @@ Skills marked No require explicit invocation with `$skill-name`.
 | `autofixer-yolo`       | Coordinate a bounded audit-fix-verify loop that proceeds without approval for dangerous fixes. | No          |
 | `compliance-links`     | Add centralized imprint and privacy links to appropriate public website surfaces.              | No          |
 | `coolify`              | Configure and diagnose Coolify/Railpack deployments.                                           | Yes         |
-| `create-datatable`     | Guide context-sensitive decisions for creating, changing, or reviewing data tables.            | Yes         |
+| `datatable`            | Guide context-sensitive decisions for creating, changing, or reviewing data tables.            | Yes         |
 | `debloat`              | Remove over-engineered security, testing, and complexity when explicitly requested.            | No          |
 | `design-md`            | Create and fix spec-compliant visual design documents from the implemented design system.      | Yes         |
 | `debugging`            | Debug bugs by reproducing behavior, confirming root cause, and documenting fixes.              | Yes         |

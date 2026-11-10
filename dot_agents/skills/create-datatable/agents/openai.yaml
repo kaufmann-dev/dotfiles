@@ -1,7 +1,0 @@
-interface:
-  display_name: "Create Data Table"
-  short_description: "Guide proportionate data-table decisions"
-  default_prompt: "Use $create-datatable to make proportionate, project-native decisions for this table."
-
-policy:
-  allow_implicit_invocation: true
