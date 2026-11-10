@@ -145,8 +145,7 @@ Skills marked No require explicit invocation with `$skill-name`.
 | `audit-complete`       | Perform a comprehensive, stateless codebase audit before a major release.                      | No          |
 | `audit-defect`         | Directly audit a codebase for concrete, actionable defects.                                    | No          |
 | `audit-rubric`         | Create a bounded, project-specific rubric and immediately audit against it.                    | No          |
-| `autofixer`            | Coordinate a bounded audit-fix-verify loop using fresh-context subagents.                      | No          |
-| `autofixer-yolo`       | Coordinate a bounded audit-fix-verify loop that proceeds without approval for dangerous fixes. | No          |
+| `autofixer`            | Coordinate a bounded audit-fix-verify loop that proceeds without approval for dangerous fixes. | No          |
 | `compliance-links`     | Add centralized imprint and privacy links to appropriate public website surfaces.              | No          |
 | `coolify`              | Configure and diagnose Coolify/Railpack deployments.                                           | Yes         |
 | `datatable`            | Guide context-sensitive decisions for creating, changing, or reviewing data tables.            | Yes         |
