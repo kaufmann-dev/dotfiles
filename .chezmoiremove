@@ -10,6 +10,7 @@
 .agents/skills/write-design-md
 .agents/skills/create-datatable
 .agents/skills/autofixer-yolo
+.agents/skills/humanizer-german
 {{ range glob (joinPath .chezmoi.sourceDir "archive" "skills" "*") -}}
 .agents/skills/{{ osBase . }}
 {{ end -}}

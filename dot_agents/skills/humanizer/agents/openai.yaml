@@ -1,7 +1,7 @@
 interface:
   display_name: "Humanizer"
-  short_description: "Make English writing sound natural and human"
-  default_prompt: "Use $humanizer to rewrite this English text in a natural human voice."
+  short_description: "Rewrite English and German in a natural, purposeful voice"
+  default_prompt: "Use $humanizer to rewrite this English or German text naturally, strengthening its flow and voice while preserving its substance."
 
 policy:
   allow_implicit_invocation: false

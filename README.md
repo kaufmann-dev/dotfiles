@@ -154,8 +154,7 @@ Skills marked No require explicit invocation with `$skill-name`.
 | `debugging`            | Debug bugs by reproducing behavior, confirming root cause, and documenting fixes.              | Yes         |
 | `favicon-theming`      | Make favicons and standalone SVG icons adapt to light and dark mode.                           | Yes         |
 | `harness-guides`       | Add project-scoped MCP servers and subagents across agent harnesses.                           | No          |
-| `humanizer`            | Remove signs of AI-generated writing from text.                                                | No          |
-| `humanizer-german`     | Rewrite German text to sound natural and idiomatic without flattening it.                      | No          |
+| `humanizer`            | Rewrite English and German naturally, strengthening flow and voice while preserving substance. | No          |
 | `mcp-server`           | Build OAuth MCP servers with connection instructions and connected-app management.             | Yes         |
 | `md-table-formatter`   | Format Markdown tables after any table is created or modified.                                 | Yes         |
 | `medsurface`           | Convert medical volumes, fuse scans, and extract surface meshes.                               | Yes         |
