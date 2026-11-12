@@ -1,0 +1,7 @@
+interface:
+  display_name: "VPS Access"
+  short_description: "Get temporary, auto-expiring SSH access to a VPS"
+  default_prompt: "Use $vps-access to get temporary SSH access to my VPS."
+
+policy:
+  allow_implicit_invocation: true

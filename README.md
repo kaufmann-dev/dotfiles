@@ -161,6 +161,7 @@ Skills marked No require explicit invocation with `$skill-name`.
 | `synthetic-student`    | Simulate student quiz attempts as an HTML report with a play-along timer and key corrections.  | No          |
 | `ui-cleanup`           | Clean up duplicated and inconsistent frontend UI when explicitly requested.                    | No          |
 | `ui-design-principles` | Apply accessible UI guardrails and scoped greenfield visual defaults.                          | Yes         |
+| `vps-access`           | Grant the agent temporary, auto-expiring SSH access to a VPS without exposing the private key. | Yes         |
 
 ## MCP Servers
 
