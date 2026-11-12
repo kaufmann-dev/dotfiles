@@ -250,7 +250,6 @@ ul.opts li.dim { color: var(--muted); }
   document.title = run.title || document.title;
 
   const qByN = new Map(run.questions.map(q => [q.n, q]));
-  const passes = run.passes;
 
   // ---------- review state: corrections + checked keys (localStorage, optional) ----------
   const storeKey = "synthetic-student:" + location.pathname;
@@ -261,12 +260,42 @@ ul.opts li.dim { color: var(--muted); }
     try { localStorage.setItem(storeKey, JSON.stringify({ fixes, reviewed })); } catch { /* storage unavailable */ }
   };
 
+  // ---------- effective key and passes: corrections apply immediately ----------
+  // Every pass is re-scored against the corrected key, and the final pass (always fully correct)
+  // answers with the corrected key.
+  const keyOf = q => (fixes[q.n] ? fixes[q.n].key : q.key);
+  function scoreAnswer(q, sel, key) {
+    if (q.type === "multi") {
+      const hits = sel.filter(x => key.includes(x)).length;
+      if (hits === key.length && sel.length === key.length) return "correct";
+      return hits ? "partial" : "wrong";
+    }
+    const ids = Object.keys(q.items);
+    const right = ids.filter(id => sel[id] === key[id]).length;
+    return right === ids.length ? "correct" : right ? "partial" : "wrong";
+  }
+  let passes = [];
+  function derivePasses() {
+    const lastIdx = run.passes.length - 1;
+    passes = run.passes.map((p, i) => {
+      const answers = p.answers.map(a => {
+        const q = qByN.get(a.n);
+        const key = keyOf(q);
+        const selected = i === lastIdx && fixes[q.n] ? key : a.selected;
+        const result = scoreAnswer(q, selected, key);
+        return { ...a, selected, result, note: result === "correct" ? "" : a.note };
+      });
+      return { ...p, answers, correct: answers.filter(a => a.result === "correct").length, total: answers.length };
+    });
+  }
+  derivePasses();
+
   // ---------- answer rendering ----------
   function answerList(q, sel, compareToKey) {
     const ul = h("ul", { class: "opts" });
     if (q.type === "multi") {
       for (const letter of sel) {
-        const ok = q.key.includes(letter);
+        const ok = keyOf(q).includes(letter);
         ul.append(h("li", {},
           mark(ok, compareToKey),
           h("span", { class: "letter" }, letter + ")"),
@@ -274,7 +303,7 @@ ul.opts li.dim { color: var(--muted); }
       }
     } else {
       for (const [id, text] of Object.entries(q.items)) {
-        const ok = sel[id] === q.key[id];
+        const ok = sel[id] === keyOf(q)[id];
         ul.append(h("li", {},
           mark(ok, compareToKey),
           h("span", { class: "text" }, text),
@@ -305,7 +334,7 @@ ul.opts li.dim { color: var(--muted); }
         answerList(q, a.selected, wrongish)),
       wrongish ? h("div", { class: "block" },
         h("div", { class: "block-label" }, t.solution),
-        answerList(q, q.key, false)) : null,
+        answerList(q, keyOf(q), false)) : null,
       wrongish && a.note ? h("p", { class: "note" }, t.note + ": " + a.note) : null);
   }
 
@@ -315,11 +344,14 @@ ul.opts li.dim { color: var(--muted); }
     h("p", { class: "meta" }, [run.created ? run.created.replace("T", " ") : null, run.questions.length + " " + t.question + (run.lang === "en" ? "s" : "n"), passes.length + " " + t.passes].filter(Boolean).join(" · ")),
     run.passReason ? h("p", { class: "reason" }, run.passReason) : null);
 
-  const summary = h("section", { class: "summary" },
-    passes.map((p, i) => h("div", { class: "stat" },
+  const summary = h("section", { class: "summary" });
+  function drawSummary() {
+    summary.replaceChildren(...passes.map((p, i) => h("div", { class: "stat" },
       h("div", { class: "muted" }, t.pass + " " + (i + 1)),
       h("div", { class: "big mono" }, p.correct + "/" + p.total),
       h("div", { class: "muted mono" }, mmss(p.seconds) + " · " + t.avg + " " + Math.round(p.seconds / p.total)))));
+  }
+  drawSummary();
 
   const tabNames = passes.map((_, i) => t.pass + " " + (i + 1)).concat([t.flow, t.keys]);
   const panels = tabNames.map(() => h("section", { role: "tabpanel" }));
@@ -335,24 +367,25 @@ ul.opts li.dim { color: var(--muted); }
   }
 
   // ---------- pass panels ----------
-  passes.forEach((p, i) => {
+  const passDraws = passes.map((_, i) => {
     const panel = panels[i];
     const list = h("div");
+    const scoreLine = h("span", { class: "muted" });
     let onlyWrong = false;
     const draw = () => {
-      list.replaceChildren();
+      const p = passes[i];
+      scoreLine.textContent = t.score + ": " + p.correct + "/" + p.total + " · " + t.total + " " + mmss(p.seconds);
       const shown = p.answers.filter(a => !onlyWrong || a.result !== "correct");
-      if (!shown.length) list.append(h("p", { class: "empty" }, t.noErrors));
-      for (const a of shown) list.append(questionCard(qByN.get(a.n), a));
+      list.replaceChildren(...(shown.length ? shown.map(a => questionCard(qByN.get(a.n), a)) : [h("p", { class: "empty" }, t.noErrors)]));
     };
-    const hasErrors = p.answers.some(a => a.result !== "correct");
     panel.append(
       h("div", { class: "toolbar" },
-        hasErrors ? h("label", { class: "check" },
-          h("input", { type: "checkbox", onchange: e => { onlyWrong = e.target.checked; draw(); } }), t.onlyWrong) : null,
-        h("span", { class: "muted" }, t.score + ": " + p.correct + "/" + p.total + " · " + t.total + " " + mmss(p.seconds))),
+        h("label", { class: "check" },
+          h("input", { type: "checkbox", onchange: e => { onlyWrong = e.target.checked; draw(); } }), t.onlyWrong),
+        scoreLine),
       list);
     draw();
+    return draw;
   });
 
   // ---------- play-along timer ----------
@@ -554,10 +587,7 @@ ul.opts li.dim { color: var(--muted); }
   function flowCard(q, a) {
     const fix = fixes[q.n];
     const wrongish = a.result !== "correct";
-    let solution;
-    if (fix) solution = answerList(q, fix.key, false);
-    else if (wrongish) solution = answerList(q, q.key, false);
-    else solution = h("p", { class: "muted" }, t.matchesAnswer);
+    const solution = wrongish ? answerList(q, keyOf(q), false) : h("p", { class: "muted" }, t.matchesAnswer);
     return h("article", { class: "card " + (wrongish ? a.result : "") },
       h("div", { class: "card-head" },
         h("span", { class: "num" }, q.n),
@@ -604,8 +634,12 @@ ul.opts li.dim { color: var(--muted); }
   }
 
   function refreshReview() {
+    derivePasses();
+    drawSummary();
+    passDraws.forEach(draw => draw());
     keyList.replaceChildren(...run.questions.map(keyCard));
     renderStage();
+    paint();
     const nFix = known(fixes).length;
     const nRev = known(reviewed).length;
     fixbarText.textContent = [nRev ? t.reviewedCount(nRev) : null, nFix ? t.pendingCount(nFix) : null].filter(Boolean).join(" · ");

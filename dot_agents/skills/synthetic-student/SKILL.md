@@ -24,7 +24,9 @@ HTML report; the terminal only gets a short overview.
 
 While playing along (Ablauf) or in the answer-key tab, the report shows what
 would have been correct for every question and lets the user confirm it or
-mark it as wrong. Corrections are copied as a block that starts
+mark it as wrong. A correction applies to the open report at once: every pass
+is re-scored against the corrected key and the final pass answers with it.
+Corrections are copied as a block that starts
 with `synthetic-student corrections v1`, followed by a JSON line
 `{"items": [...]}`. Each item carries `label`, `type`, `stem`, optional
 `context`, `options` (multi) or `items` and `choices` (match), the corrected
