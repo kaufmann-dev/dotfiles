@@ -138,6 +138,7 @@ ul.opts li.dim { color: var(--muted); }
 .bar > div { height: 100%; background: var(--fg); width: 0; }
 .player .card { margin: 12px 0 0; }
 .done { padding: 24px 0; text-align: center; }
+.timeup { margin: 12px 0 0; padding: 8px 12px; border: 1px solid var(--border-strong); border-radius: var(--radius); background: var(--raised); font-weight: 600; }
 
 .fixbar {
   position: fixed; left: 0; right: 0; bottom: 0;
@@ -167,7 +168,8 @@ ul.opts li.dim { color: var(--muted); }
       showStem: "Fragetext anzeigen", onlyWrong: "Nur Fehler anzeigen", total: "Gesamtzeit", avg: "Ø Sek.",
       score: "Ergebnis", start: "Start", pause: "Pause", resume: "Weiter", prev: "Zurück", next: "Nächste",
       restart: "Neu starten", elapsed: "Vergangen", remaining: "Verbleibend", beep: "Signalton bei Wechsel",
-      finished: "Durchgang beendet", select: "Auswählen", markWrong: "Lösung ist falsch", save: "Speichern",
+      finished: "Durchgang beendet", finish: "Abschließen", timeUpTitle: "Zeit um",
+      timeUp: "Zeit abgelaufen. Weiter mit „Nächste“ oder der rechten Pfeiltaste.", select: "Auswählen", markWrong: "Lösung ist falsch", save: "Speichern",
       cancel: "Abbrechen", undo: "Korrektur entfernen", notePh: "Begründung (optional)",
       copy: "Korrekturen kopieren", copied: "Kopiert. In den nächsten Prompt einfügen.",
       copyManual: "Text markieren und kopieren, dann in den nächsten Prompt einfügen.",
@@ -186,7 +188,8 @@ ul.opts li.dim { color: var(--muted); }
       showStem: "Show question text", onlyWrong: "Show mistakes only", total: "Total time", avg: "Avg s",
       score: "Score", start: "Start", pause: "Pause", resume: "Resume", prev: "Previous", next: "Next",
       restart: "Restart", elapsed: "Elapsed", remaining: "Remaining", beep: "Beep on next question",
-      finished: "Pass finished", select: "Select", markWrong: "Key is wrong", save: "Save",
+      finished: "Pass finished", finish: "Finish", timeUpTitle: "Time's up",
+      timeUp: "Time's up. Continue with Next or the right arrow key.", select: "Select", markWrong: "Key is wrong", save: "Save",
       cancel: "Cancel", undo: "Remove correction", notePh: "Reason (optional)",
       copy: "Copy corrections", copied: "Copied. Paste it into your next prompt.",
       copyManual: "Select and copy this text, then paste it into your next prompt.",
@@ -354,7 +357,7 @@ ul.opts li.dim { color: var(--muted); }
 
   // ---------- play-along timer ----------
   const flow = panels[passes.length];
-  const player = { pass: 0, idx: 0, remainingMs: 0, running: false, last: 0, timer: null, finished: false };
+  const player = { pass: 0, idx: 0, remainingMs: 0, running: false, last: 0, timer: null, finished: false, timeUp: false };
   let beepOn = false;
   const passSelect = h("select", { "aria-label": t.pass, onchange: e => { player.pass = Number(e.target.value); reset(); } },
     passes.map((_, i) => h("option", { value: i }, t.pass + " " + (i + 1))));
@@ -367,12 +370,14 @@ ul.opts li.dim { color: var(--muted); }
   const bar = h("div");
   const totals = h("div", { class: "muted mono" });
   const stage = h("div");
+  const timeUpLine = h("p", { class: "timeup", role: "status", hidden: true }, t.timeUp);
   flow.append(
     h("div", { class: "toolbar" }, passSelect, startBtn, prevBtn, nextBtn, restartBtn,
       h("label", { class: "check" }, h("input", { type: "checkbox", onchange: e => { beepOn = e.target.checked; } }), t.beep)),
     h("div", { class: "player" },
       h("div", { class: "player-top" }, h("div", {}, position, countdown), totals),
       h("div", { class: "bar", role: "progressbar", "aria-label": t.remaining }, bar),
+      timeUpLine,
       stage));
 
   const cur = () => passes[player.pass].answers;
@@ -397,30 +402,41 @@ ul.opts li.dim { color: var(--muted); }
   }
   function pauseFlow() { if (player.running) { stop(); paint(); } }
   function reset() {
-    stop(); player.idx = 0; player.finished = false; loadQuestion(); paint();
+    stop(); player.idx = 0; player.finished = false; player.timeUp = false; loadQuestion(); paint();
   }
   function stop() {
     player.running = false; clearInterval(player.timer); player.timer = null;
   }
+  function start() {
+    player.running = true; player.last = performance.now(); player.timer = setInterval(tick, 200);
+  }
+  // Primary button and Space: restart when finished, advance after time is up, otherwise start/pause.
   function toggle() {
-    if (player.finished) { reset(); }
-    if (player.running) { stop(); }
-    else { player.running = true; player.last = performance.now(); player.timer = setInterval(tick, 200); }
+    if (player.finished) { reset(); start(); }
+    else if (player.timeUp) { jump(1); return; }
+    else if (player.running) stop();
+    else start();
     paint();
   }
   function jump(d) {
+    const wasUp = player.timeUp;
     const n = player.idx + d;
-    if (n < 0 || n >= cur().length) return;
-    player.idx = n; player.finished = false; loadQuestion(); player.last = performance.now(); paint();
+    if (n >= cur().length) {
+      if (wasUp) { stop(); player.timeUp = false; player.finished = true; paint(); }
+      return;
+    }
+    if (n < 0) return;
+    player.idx = n; player.finished = false; player.timeUp = false;
+    loadQuestion(); player.last = performance.now();
+    if (wasUp && d > 0) start();
+    paint();
   }
+  // When the countdown ends, stay on the question until the user moves on.
   function tick() {
     const now = performance.now();
-    let dt = now - player.last; player.last = now;
-    while (dt > 0 && player.running) {
-      if (dt < player.remainingMs) { player.remainingMs -= dt; dt = 0; break; }
-      dt -= player.remainingMs; player.remainingMs = 0;
-      if (player.idx + 1 < cur().length) { player.idx++; loadQuestion(); beep(); }
-      else { stop(); player.finished = true; beep(); }
+    player.remainingMs -= now - player.last; player.last = now;
+    if (player.remainingMs <= 0) {
+      player.remainingMs = 0; stop(); player.timeUp = true; beep();
     }
     paint();
   }
@@ -434,20 +450,27 @@ ul.opts li.dim { color: var(--muted); }
     countdown.textContent = mmss(Math.ceil(player.remainingMs / 1000));
     bar.style.width = (100 * (1 - player.remainingMs / (curSecs * 1000))) + "%";
     totals.textContent = t.elapsed + " " + mmss(elapsed) + " · " + t.remaining + " " + mmss(Math.max(0, total - elapsed));
-    startBtn.textContent = player.finished ? t.restart : player.running ? t.pause : (elapsed > 0 ? t.resume : t.start);
+    const last = player.idx === answers.length - 1;
+    startBtn.textContent = player.finished ? t.restart
+      : player.timeUp ? (last ? t.finish : t.next)
+      : player.running ? t.pause : (elapsed > 0 ? t.resume : t.start);
     prevBtn.disabled = player.idx === 0;
-    nextBtn.disabled = player.idx === answers.length - 1;
+    nextBtn.disabled = last;
+    nextBtn.hidden = player.timeUp;
+    timeUpLine.hidden = !player.timeUp || player.finished;
     if (player.finished) {
       const p = passes[player.pass];
       stage.replaceChildren(h("div", { class: "done" },
         h("h2", {}, t.finished),
         h("p", { class: "muted mono" }, t.score + " " + p.correct + "/" + p.total + " · " + t.total + " " + mmss(p.seconds))));
     }
-    document.title = player.running ? mmss(Math.ceil(player.remainingMs / 1000)) + " · " + t.question + " " + (player.idx + 1) : (run.title || "Quiz");
+    document.title = player.timeUp ? "0:00 · " + t.timeUpTitle + " · " + t.question + " " + (player.idx + 1)
+      : player.running ? mmss(Math.ceil(player.remainingMs / 1000)) + " · " + t.question + " " + (player.idx + 1)
+      : (run.title || "Quiz");
   }
   document.addEventListener("keydown", e => {
-    if (flow.hidden || e.target.closest("input, textarea, select, button")) return;
-    if (e.key === " ") { e.preventDefault(); toggle(); }
+    if (flow.hidden || e.target.closest("input, textarea, select")) return;
+    if (e.key === " ") { if (e.target.closest("button")) return; e.preventDefault(); toggle(); }
     else if (e.key === "ArrowLeft") jump(-1);
     else if (e.key === "ArrowRight") jump(1);
   });
