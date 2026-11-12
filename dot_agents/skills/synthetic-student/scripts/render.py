@@ -126,8 +126,8 @@ def enrich(run):
 
     warnings = []
     share = passes[0]["correct"] / passes[0]["total"]
-    if not 0.55 <= share <= 0.80:
-        warnings.append(f"pass 1 correct share is {share:.0%}, outside 55–80 %")
+    if not 0.45 <= share <= 0.75:
+        warnings.append(f"pass 1 correct share is {share:.0%}, outside 45–75 %")
     if len(passes) == 3 and passes[0]["correct"] == passes[0]["total"]:
         warnings.append("pass 1 of a 3-pass run is already fully correct")
     for i in range(1, len(passes)):

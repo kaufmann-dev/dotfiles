@@ -87,17 +87,24 @@ Decide before simulating and write one short sentence why into `passReason`.
 - **3 passes** for a hard quiz: case or calculation items, several
   multi-select questions with three or more correct options, long matching
   sets, or subtle wording traps.
-  - Pass 1: about 60–75 % fully correct.
+  - Pass 1: about 50–65 % fully correct.
   - Pass 2: the student re-answers everything and knows which answers were
     wrong, but not the right options. Previously correct answers stay the
-    same; most wrong ones get fixed, but about 1–3 stay wrong or only partly
-    fixed. Rarely, one previously correct item slips. About 85–95 % correct.
+    same; many wrong ones get fixed, but about 2–3 stay wrong or only partly
+    fixed. Rarely, one previously correct item slips. About 75–90 % correct.
   - Pass 3: everything correct.
 - **2 passes** for a simple recall quiz.
-  - Pass 1: about 65–80 % fully correct.
+  - Pass 1: about 55–70 % fully correct.
   - Pass 2: everything correct; previously wrong items are reconsidered.
 
 The final pass is always fully correct and the fastest.
+
+Prepared is not perfect. A real student who studied still gets most hard
+items wrong or only partly right on the first try, and does not see through
+every distractor. When unsure between two plausible counts, choose the one
+with more mistakes. Fix the number of mistakes per pass before choosing which
+questions get them, and aim for the middle of the range, so that runs of
+similar quizzes come out similar.
 
 ## 5. Timing
 
