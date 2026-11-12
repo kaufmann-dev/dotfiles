@@ -158,6 +158,7 @@ Skills marked No require explicit invocation with `$skill-name`.
 | `oidc-auth`            | Add OpenID Connect authentication, replacing any local authentication.                         | No          |
 | `readme-md`            | Create and fix repository READMEs for the project's audience and purpose.                      | Yes         |
 | `scaffold-web`         | Create a new web app with UI defaults, OIDC auth, compliance links, Coolify, and docs.         | No          |
+| `synthetic-student`    | Simulate three realistic student quiz attempts with typical mistakes and answer times.         | No          |
 | `ui-cleanup`           | Clean up duplicated and inconsistent frontend UI when explicitly requested.                    | No          |
 | `ui-design-principles` | Apply accessible UI guardrails and scoped greenfield visual defaults.                          | Yes         |
 
