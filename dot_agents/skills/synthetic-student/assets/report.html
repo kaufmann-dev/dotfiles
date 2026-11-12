@@ -54,7 +54,7 @@ body {
   color: var(--fg);
   font: 15px/1.5 var(--sans);
 }
-main { max-width: 56rem; margin: 0 auto; padding: 24px 16px 96px; }
+main { max-width: 56rem; margin: 0 auto; padding: 24px 16px 140px; }
 h1 { font-size: 1.5rem; line-height: 1.25; margin: 0 0 4px; }
 h2 { font-size: 1rem; margin: 0; min-width: 0; }
 p { margin: 0; }
@@ -105,6 +105,8 @@ label.check { display: inline-flex; gap: 6px; align-items: center; cursor: point
 .badge.partial { color: var(--part); }
 .badge.wrong { color: var(--bad); }
 .badge.fixed { color: var(--fix); }
+.badge.checked { color: var(--ok); }
+.badges { display: inline-flex; flex-wrap: wrap; gap: 6px; }
 .secs { font-family: var(--mono); color: var(--muted); white-space: nowrap; }
 
 details { margin-top: 8px; }
@@ -170,6 +172,8 @@ ul.opts li.dim { color: var(--muted); }
       copy: "Korrekturen kopieren", copied: "Kopiert. In den nächsten Prompt einfügen.",
       copyManual: "Text markieren und kopieren, dann in den nächsten Prompt einfügen.",
       pendingCount: n => n === 1 ? "1 Korrektur offen" : n + " Korrekturen offen",
+      reviewedCount: n => n + " geprüft",
+      matchesAnswer: "Entspricht der Antwort.", confirm: "Passt", confirmed: "geprüft", editFix: "Korrektur bearbeiten",
       noErrors: "In diesem Durchgang gibt es keine Fehler.",
       chooseOne: "Mindestens eine Option wählen.",
       noData: "Keine Daten. Diese Datei ist die leere Vorlage; erzeuge einen Bericht mit render.py.",
@@ -187,6 +191,8 @@ ul.opts li.dim { color: var(--muted); }
       copy: "Copy corrections", copied: "Copied. Paste it into your next prompt.",
       copyManual: "Select and copy this text, then paste it into your next prompt.",
       pendingCount: n => n === 1 ? "1 correction pending" : n + " corrections pending",
+      reviewedCount: n => n + " checked",
+      matchesAnswer: "Same as the answer.", confirm: "Looks right", confirmed: "checked", editFix: "Edit correction",
       noErrors: "No mistakes in this pass.",
       chooseOne: "Choose at least one option.",
       noData: "No data. This file is the empty template; create a report with render.py.",
@@ -243,11 +249,14 @@ ul.opts li.dim { color: var(--muted); }
   const qByN = new Map(run.questions.map(q => [q.n, q]));
   const passes = run.passes;
 
-  // ---------- corrections (localStorage, optional) ----------
+  // ---------- review state: corrections + checked keys (localStorage, optional) ----------
   const storeKey = "synthetic-student:" + location.pathname;
-  const loadFixes = () => { try { return JSON.parse(localStorage.getItem(storeKey)) || {}; } catch { return {}; } };
-  let fixes = loadFixes();
-  const saveFixes = () => { try { localStorage.setItem(storeKey, JSON.stringify(fixes)); } catch { /* storage unavailable */ } };
+  const stored = (() => { try { return JSON.parse(localStorage.getItem(storeKey)) || {}; } catch { return {}; } })();
+  const fixes = stored.fixes || {};
+  const reviewed = stored.reviewed || {};
+  const saveState = () => {
+    try { localStorage.setItem(storeKey, JSON.stringify({ fixes, reviewed })); } catch { /* storage unavailable */ }
+  };
 
   // ---------- answer rendering ----------
   function answerList(q, sel, compareToKey) {
@@ -377,10 +386,16 @@ ul.opts li.dim { color: var(--muted); }
       osc.onended = () => ctx.close();
     } catch { /* audio unavailable */ }
   }
+  function renderStage() {
+    if (player.finished) return;
+    const a = cur()[player.idx];
+    stage.replaceChildren(flowCard(qByN.get(a.n), a));
+  }
   function loadQuestion() {
     player.remainingMs = cur()[player.idx].seconds * 1000;
-    stage.replaceChildren(questionCard(qByN.get(cur()[player.idx].n), cur()[player.idx], { openStem: true }));
+    renderStage();
   }
+  function pauseFlow() { if (player.running) { stop(); paint(); } }
   function reset() {
     stop(); player.idx = 0; player.finished = false; loadQuestion(); paint();
   }
@@ -438,51 +453,42 @@ ul.opts li.dim { color: var(--muted); }
   });
   reset();
 
-  // ---------- answer key + corrections ----------
+  // ---------- answer key review + corrections (shared by Ablauf and Lösungen) ----------
   const keysPanel = panels[passes.length + 1];
   const keyList = h("div");
-  const pendingText = h("span");
+  const fixbarText = h("span");
   const copyBox = h("div", { class: "copybox", hidden: true });
   const copyBtn = h("button", { class: "primary", onclick: copyFixes }, t.copy);
   const fixbar = h("div", { class: "fixbar", hidden: true },
-    h("div", { class: "fixbar-inner" }, pendingText, copyBtn));
+    h("div", { class: "fixbar-inner" }, fixbarText, copyBtn));
   keysPanel.append(keyList, copyBox);
 
-  function keyCard(q) {
-    const fix = fixes[q.n];
-    const key = fix ? fix.key : q.key;
-    const card = h("article", { class: "card" });
-    const head = h("div", { class: "card-head" },
-      h("span", { class: "num" }, q.n),
-      h("h2", { title: q.label }, q.label),
-      fix ? h("span", { class: "badge fixed" }, icon("edit"), t.pending) : q.corrected ? h("span", { class: "badge fixed" }, icon("correct"), t.fixedBadge) : null);
-    const ul = h("ul", { class: "opts" });
-    if (q.type === "multi") {
-      for (const [letter, text] of Object.entries(q.options)) {
-        const on = key.includes(letter);
-        ul.append(h("li", { class: on ? "key" : "dim" },
-          mark(true, on),
-          h("span", { class: "letter" }, letter + ")"),
-          h("span", { class: "text" }, text)));
-      }
-    } else {
-      for (const [id, text] of Object.entries(q.items)) {
-        ul.append(h("li", { class: "key" }, mark(true, false), h("span", { class: "text" }, text),
-          h("span", { class: "pair" }, icon("arrow"), h("strong", {}, key[id]))));
-      }
-    }
-    const actions = h("div", { class: "actions" },
-      h("button", { onclick: () => card.replaceWith(editor(q)) }, t.markWrong),
-      fix ? h("button", { onclick: () => { delete fixes[q.n]; saveFixes(); drawKeys(); } }, t.undo) : null);
-    card.append(...[head, stemDetails(q, false), h("div", { class: "block" }, ul),
-      fix && fix.note ? h("p", { class: "note" }, t.note + ": " + fix.note) : null, actions].filter(Boolean));
-    return card;
+  const known = obj => Object.keys(obj).filter(k => qByN.has(Number(k)));
+
+  function statusBadges(q) {
+    return h("span", { class: "badges" },
+      fixes[q.n] ? h("span", { class: "badge fixed" }, icon("edit"), t.pending)
+        : q.corrected ? h("span", { class: "badge fixed" }, icon("correct"), t.fixedBadge) : null,
+      reviewed[q.n] && !fixes[q.n] ? h("span", { class: "badge checked" }, icon("correct"), t.confirmed) : null);
   }
 
-  function editor(q) {
+  // Review row: "Passt" / "Lösung ist falsch" (+ remove correction). Editing swaps the row for the editor.
+  function reviewRow(q, onEditStart) {
+    const fix = fixes[q.n];
+    const row = h("div", { class: "actions" },
+      fix ? null : h("button", {
+        "aria-pressed": reviewed[q.n] ? "true" : "false",
+        onclick: () => { if (reviewed[q.n]) delete reviewed[q.n]; else reviewed[q.n] = true; saveState(); refreshReview(); },
+      }, reviewed[q.n] ? [icon("correct"), " " + t.confirmed] : t.confirm),
+      h("button", { onclick: () => { if (onEditStart) onEditStart(); row.replaceWith(correctionEditor(q, refreshReview)); } },
+        fix ? t.editFix : t.markWrong),
+      fix ? h("button", { onclick: () => { delete fixes[q.n]; saveState(); refreshReview(); } }, t.undo) : null);
+    return row;
+  }
+
+  function correctionEditor(q, onDone) {
     const fix = fixes[q.n];
     const key = fix ? fix.key : q.key;
-    const box = h("article", { class: "card" });
     const err = h("p", { class: "note", role: "alert" });
     const note = h("textarea", { placeholder: t.notePh, "aria-label": t.note });
     note.value = fix ? fix.note : "";
@@ -490,7 +496,7 @@ ul.opts li.dim { color: var(--muted); }
     const rows = h("div");
     if (q.type === "multi") {
       for (const [letter, text] of Object.entries(q.options)) {
-        const cb = h("input", { type: "checkbox", id: `fix-${q.n}-${letter}` });
+        const cb = h("input", { type: "checkbox", id: `fix-${q.n}-${letter}-${Math.random().toString(36).slice(2, 7)}` });
         cb.checked = key.includes(letter);
         inputs[letter] = cb;
         rows.append(h("label", { class: "row", for: cb.id }, cb, h("span", { class: "letter mono" }, letter + ")"), h("span", { class: "text" }, text)));
@@ -511,29 +517,84 @@ ul.opts li.dim { color: var(--muted); }
         newKey = Object.fromEntries(Object.entries(inputs).map(([k, s]) => [k, s.value]));
       }
       fixes[q.n] = { key: newKey, note: note.value.trim() };
-      saveFixes(); drawKeys();
+      delete reviewed[q.n];
+      saveState(); onDone();
     };
-    box.append(
-      h("div", { class: "card-head" }, h("span", { class: "num" }, q.n), h("h2", { title: q.label }, q.label)),
-      stemDetails(q, true),
-      h("div", { class: "editor" }, rows, h("div", { class: "block" }, note), err,
-        h("div", { class: "actions" },
-          h("button", { class: "primary", onclick: save }, t.save),
-          h("button", { onclick: drawKeys }, t.cancel))));
+    const box = h("div", { class: "editor" }, rows, h("div", { class: "block" }, note), err,
+      h("div", { class: "actions" },
+        h("button", { class: "primary", onclick: save }, t.save),
+        h("button", { onclick: onDone }, t.cancel)));
     return box;
   }
 
-  function drawKeys() {
+  // Ablauf card: answer, what would have been right, and the review row.
+  function flowCard(q, a) {
+    const fix = fixes[q.n];
+    const wrongish = a.result !== "correct";
+    let solution;
+    if (fix) solution = answerList(q, fix.key, false);
+    else if (wrongish) solution = answerList(q, q.key, false);
+    else solution = h("p", { class: "muted" }, t.matchesAnswer);
+    return h("article", { class: "card " + (wrongish ? a.result : "") },
+      h("div", { class: "card-head" },
+        h("span", { class: "num" }, q.n),
+        h("h2", { title: q.label }, q.label),
+        badge(a.result),
+        h("span", { class: "secs" }, a.seconds + " " + t.s)),
+      stemDetails(q, true),
+      h("div", { class: "block" }, h("div", { class: "block-label" }, t.answer), answerList(q, a.selected, wrongish)),
+      h("div", { class: "block" },
+        h("div", { class: "block-label" }, t.solution, " ", statusBadges(q)),
+        solution),
+      wrongish && a.note ? h("p", { class: "note" }, t.note + ": " + a.note) : null,
+      fix && fix.note ? h("p", { class: "note" }, t.note + " (" + t.pending + "): " + fix.note) : null,
+      reviewRow(q, pauseFlow));
+  }
+
+  function keyCard(q) {
+    const fix = fixes[q.n];
+    const key = fix ? fix.key : q.key;
+    const ul = h("ul", { class: "opts" });
+    if (q.type === "multi") {
+      for (const [letter, text] of Object.entries(q.options)) {
+        const on = key.includes(letter);
+        ul.append(h("li", { class: on ? "key" : "dim" },
+          mark(true, on),
+          h("span", { class: "letter" }, letter + ")"),
+          h("span", { class: "text" }, text)));
+      }
+    } else {
+      for (const [id, text] of Object.entries(q.items)) {
+        ul.append(h("li", { class: "key" }, mark(true, false), h("span", { class: "text" }, text),
+          h("span", { class: "pair" }, icon("arrow"), h("strong", {}, key[id]))));
+      }
+    }
+    return h("article", { class: "card" },
+      h("div", { class: "card-head" },
+        h("span", { class: "num" }, q.n),
+        h("h2", { title: q.label }, q.label),
+        statusBadges(q)),
+      stemDetails(q, false),
+      h("div", { class: "block" }, ul),
+      fix && fix.note ? h("p", { class: "note" }, t.note + ": " + fix.note) : null,
+      reviewRow(q));
+  }
+
+  function refreshReview() {
     keyList.replaceChildren(...run.questions.map(keyCard));
-    const n = Object.keys(fixes).filter(k => qByN.has(Number(k))).length;
-    pendingText.textContent = t.pendingCount(n);
-    fixbar.hidden = n === 0;
-    if (n === 0) copyBox.hidden = true;
+    renderStage();
+    const nFix = known(fixes).length;
+    const nRev = known(reviewed).length;
+    fixbarText.textContent = [nRev ? t.reviewedCount(nRev) : null, nFix ? t.pendingCount(nFix) : null].filter(Boolean).join(" · ");
+    fixbar.hidden = nFix === 0 && nRev === 0;
+    copyBtn.hidden = nFix === 0;
+    if (nFix === 0) copyBox.hidden = true;
   }
 
   function fixesBlock() {
-    const items = Object.entries(fixes).filter(([n]) => qByN.has(Number(n))).map(([n, fix]) => {
+    const items = known(fixes).map(n => {
       const q = qByN.get(Number(n));
+      const fix = fixes[n];
       const item = { label: q.label, type: q.type, stem: q.stem };
       if (q.context) item.context = q.context;
       if (q.type === "multi") item.options = q.options;
@@ -559,7 +620,7 @@ ul.opts li.dim { color: var(--muted); }
     }
   }
 
-  drawKeys();
+  refreshReview();
   app.append(header, summary, tabs, ...panels, fixbar);
   let initial = 0;
   try { initial = Number(sessionStorage.getItem(storeKey + ":tab")) || 0; } catch { /* ignore */ }

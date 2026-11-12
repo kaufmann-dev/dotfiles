@@ -13,16 +13,18 @@ HTML report; the terminal only gets a short overview.
 
 ## Files
 
-- Reports and run data: `~/synthetic-student/runs/<YYYY-MM-DD-HHMM>-<slug>.html`
-  and `.json` with the same name.
-- Corrections store: `~/synthetic-student/corrections.json`, shaped
-  `{"items": [...]}`.
-
-Never write these into the current project and never commit them.
+- Output folder: the folder the user names, otherwise the current working
+  directory. Create it if it does not exist.
+- Run data and report: `<folder>/synthetic-student-<YYYY-MM-DD-HHMM>-<slug>.json`
+  and `.html` with the same name.
+- Corrections store: `<folder>/synthetic-student-corrections.json`, shaped
+  `{"items": [...]}`, unless the user names another corrections file.
 
 ## 1. Corrections first
 
-The report lets the user mark a wrong answer key and copy a block that starts
+While playing along (Ablauf) or in the answer-key tab, the report shows what
+would have been correct for every question and lets the user confirm it or
+mark it as wrong. Corrections are copied as a block that starts
 with `synthetic-student corrections v1`, followed by a JSON line
 `{"items": [...]}`. Each item carries `label`, `type`, `stem`, optional
 `context`, `options` (multi) or `items` and `choices` (match), the corrected
@@ -166,7 +168,7 @@ Write the run JSON, then render it:
 Run:
 
 ```bash
-python3 {skill_path}/scripts/render.py ~/synthetic-student/runs/<name>.json ~/synthetic-student/runs/<name>.html
+python3 {skill_path}/scripts/render.py <folder>/<name>.json <folder>/<name>.html
 ```
 
 An error means the data is invalid or the final pass is not fully correct: fix
