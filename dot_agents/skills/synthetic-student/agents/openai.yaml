@@ -1,7 +1,7 @@
 interface:
   display_name: "Synthetic Student"
   short_description: "Simulate realistic student quiz attempts with timings"
-  default_prompt: "Use $synthetic-student to simulate three realistic student attempts at these quiz questions."
+  default_prompt: "Use $synthetic-student to simulate realistic student attempts at these quiz questions and build the HTML report."
 
 policy:
   allow_implicit_invocation: false

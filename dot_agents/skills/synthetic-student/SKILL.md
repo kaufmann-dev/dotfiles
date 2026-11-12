@@ -1,125 +1,191 @@
 ---
 name: synthetic-student
-description: Simulate a well-prepared student taking a multiple-choice quiz over three attempts, producing realistic answers, typical mistakes, and per-question answer times in tables. Use only when the user explicitly invokes this skill.
+description: Simulate a well-prepared student taking a multiple-choice or matching quiz over two or three attempts, with realistic mistakes and answer times, rendered as a local HTML report with a play-along timer and answer-key corrections. Use only when the user explicitly invokes this skill.
 ---
 
 # Synthetic Student
 
 Simulate how a real student who has read and studied the material performs on a
-quiz over three attempts. For every attempt, report the chosen answers, whether
-each is correct, and a realistic time in seconds. The output must be believable
-as real student data: plausible mistakes, plausible times, no visible pattern.
+quiz over several attempts. For every attempt, decide the chosen answers and a
+realistic time in seconds. The result must be believable as real student data:
+plausible mistakes, plausible times, no visible pattern. The output is a local
+HTML report; the terminal only gets a short overview.
 
-## Input
+## Files
 
-- Questions arrive as screenshots or pasted text. Each has a stem, options
-  (a, b, c, …), and sometimes a case description or data table shared by
-  several questions.
-- Treat every question as multi-select unless it states otherwise. A question
-  is correct only when the selected set matches the key exactly.
-- If two questions are identical, merge them into one and say so in one line
-  before the tables.
-- If the user supplies an answer key, use it. Otherwise solve every question
-  carefully before simulating anything. Recompute numbers from the case data
-  instead of trusting labels (for example relative market share = own share /
-  share of the strongest competitor; growth = this year / last year − 1). If a
-  key remains uncertain, flag the question in one line before the tables rather
-  than guessing silently.
-- If a question is unreadable or incomplete, ask about it before simulating.
+- Reports and run data: `~/synthetic-student/runs/<YYYY-MM-DD-HHMM>-<slug>.html`
+  and `.json` with the same name.
+- Corrections store: `~/synthetic-student/corrections.json`, shaped
+  `{"items": [...]}`.
 
-## The simulated student
+Never write these into the current project and never commit them.
 
-The student studied properly. They know most concepts and never guess at
+## 1. Corrections first
+
+The report lets the user mark a wrong answer key and copy a block that starts
+with `synthetic-student corrections v1`, followed by a JSON line
+`{"items": [...]}`. Each item carries `label`, `type`, `stem`, optional
+`context`, `options` (multi) or `items` and `choices` (match), the corrected
+`key`, and an optional `note`.
+
+- If the prompt contains such a block, merge its items into the corrections
+  store. An item with the same stem and the same options or items replaces the
+  stored one. Report the number of merged items in one line. If the prompt
+  contains nothing else, stop there.
+- Before solving a quiz, read the store if it exists. Match each question by
+  content: stem plus option or item texts, tolerating small OCR differences
+  and a different option order. When a correction matches, its key is the
+  answer key (remap letters if the order differs) and the question gets
+  `"corrected": true`. Mention applied corrections in one line.
+
+## 2. Input
+
+- Questions arrive as screenshots or pasted text: a stem, options or items, and
+  sometimes a case description or data table shared by several questions.
+- **Types.** A question is `match` when each statement gets one choice from a
+  shared list (for example statement → X/Y). Otherwise it is `multi`; treat it
+  as multi-select unless it says otherwise.
+- If two questions are identical, merge them and say so in one line.
+- Without a correction, solve every question carefully before simulating.
+  Recompute numbers from the case data instead of trusting labels (relative
+  market share = own share / share of the strongest competitor; growth = this
+  year / last year − 1). If a key remains uncertain, name the question in one
+  line rather than guessing silently.
+- If a question is unreadable or incomplete, ask before simulating.
+
+## 3. The simulated student
+
+The student studied properly, knows most concepts, and never guesses at
 random. Their mistakes are the ones such a student actually makes:
 
 - **Under-selecting** in multi-select: choosing the clearly true options and
   missing a less obvious one. This is the most common mistake.
-- **Plausible distractor**: choosing a false option whose wording sounds
-  familiar from the material.
-- **Neighboring concepts**: mixing up closely related ideas, such as Reife- vs.
-  Wachstumsphase, Star vs. Cash Cow, or Kostenführerschaft vs.
-  Differenzierung.
-- **Wording traps**: missing a negation, an absolute ("immer", "nur"), or a
-  reversed relationship ("je höher … desto geringer").
-- **Case data slips**: reading the wrong row or column, treating a percentage
-  as a ratio, or a small arithmetic error.
+- **Plausible distractor**: a false option whose wording sounds familiar.
+- **Neighboring concepts**: Reife- vs. Wachstumsphase, Star vs. Cash Cow,
+  Kostenführerschaft vs. Differenzierung, and the like.
+- **Wording traps**: a missed negation, absolute ("immer", "nur"), or reversed
+  relationship ("je höher … desto geringer").
+- **Case data slips**: wrong row or column, a percentage read as a ratio, a
+  small arithmetic error.
+- **Matching**: swapping two related pairs, or putting a borderline statement
+  into the neighboring category.
 
-Rules for placing mistakes:
+Mistakes cluster on harder items (several correct options, subtle wording,
+calculations, case questions, long matching sets); simple recall questions are
+usually right. A misconception stays consistent across related questions until
+it is corrected. Avoid artificial patterns: no mistake on every n-th question,
+no evenly spaced errors, no absurd answers, no identical or round times.
 
-- Mistakes cluster on harder items: several correct options, subtle wording,
-  calculations, case questions. Simple recall questions are usually right.
-- Misconceptions stay consistent. If the student confuses two concepts, related
-  questions show the same confusion until it is corrected.
-- No artificial patterns: no mistake on every n-th question, no evenly spaced
-  errors, no absurd answers, no identical or round times.
+## 4. Number of passes
 
-## Passes
+Decide before simulating and write one short sentence why into `passReason`.
 
-- **Pass 1.** About 60–75 % of questions fully correct, with some partially
-  correct (◐) among the rest.
-- **Pass 2.** The student re-answers every question and knows which ones were
-  wrong in Pass 1, but not the correct options (as in Moodle feedback).
-  Previously correct answers stay the same and go faster. Previously wrong ones
-  are reconsidered: most get fixed, but about 1–3 stay wrong or only partly
-  fixed (for example, a missing option added while a wrong one stays selected).
-  Rarely, one previously correct item slips. Overall about 85–95 % correct.
-- **Pass 3.** Every answer is correct, and this is the fastest pass.
+- **3 passes** for a hard quiz: case or calculation items, several
+  multi-select questions with three or more correct options, long matching
+  sets, or subtle wording traps.
+  - Pass 1: about 60–75 % fully correct.
+  - Pass 2: the student re-answers everything and knows which answers were
+    wrong, but not the right options. Previously correct answers stay the
+    same; most wrong ones get fixed, but about 1–3 stay wrong or only partly
+    fixed. Rarely, one previously correct item slips. About 85–95 % correct.
+  - Pass 3: everything correct.
+- **2 passes** for a simple recall quiz.
+  - Pass 1: about 65–80 % fully correct.
+  - Pass 2: everything correct; previously wrong items are reconsidered.
 
-## Timing (seconds per question)
+The final pass is always fully correct and the fastest.
 
-- **Pass 1.** Reading time for stem and options at about 3–4 words per second
-  for German academic text, plus 3–6 s to weigh each option. Add 15–60 s for
-  calculations or reading a data table. A case stem shared by consecutive
-  questions is read in full only once; later questions on that case add only
-  5–15 s of re-skimming. Hard or uncertain items take longer.
-- **Pass 2.** About 55–75 % of the Pass 1 time. Previously correct items sit
-  near the low end; previously wrong items stay relatively longer because the
-  student reconsiders them.
-- **Pass 3.** About 30–50 % of the Pass 1 time, with a floor of about 6–10 s
-  (read, recognize, click).
-- Use irregular whole numbers and do not scale times exactly in proportion
-  between passes.
+## 5. Timing
 
-## Output
+Seconds per question:
 
-Write headings, labels, and notes in the quiz's language. The labels below are
-for German quizzes. Output in this order:
+- **Pass 1**: reading time for stem and options at about 3–4 words per second
+  for German academic text, plus 3–6 s per option or 3–5 s per matching item.
+  Add 15–60 s for calculations or reading a data table. A case shared by
+  consecutive questions is read in full only once; later questions add 5–15 s
+  of re-skimming. Hard or uncertain items take longer.
+- **Later passes**, relative to Pass 1:
 
-1. Optional one-line notes: merged duplicates, uncertain keys.
-2. `### Durchgang 1` as a table with these columns:
+  | Pass   | 3-pass run        | 2-pass run        |
+  | ------ | ----------------- | ----------------- |
+  | Pass 2 | 55–75 % of Pass 1 | 40–60 % of Pass 1 |
+  | Pass 3 | 30–50 % of Pass 1 | —                 |
 
-   | #   | Frage | Antwort | Ergebnis | Sek. | Lösung | Anmerkung |
-   | --- | ----- | ------- | -------- | ---- | ------ | --------- |
+  Previously correct items sit at the low end; previously wrong items stay
+  relatively longer because the student reconsiders them.
+- Floor of about 6–10 s per question. Use irregular whole numbers and do not
+  scale times exactly in proportion.
 
-   - `Frage`: a short topic label of at most five words, such as
-     "Porter: Substitution".
-   - `Antwort`: every chosen option as its letter plus its text, such as
-     `**b)** Kostengünstigere Produkte mit ähnlichem Kundennutzen …`. Separate
-     several options with ` · `. Trim options longer than about 15 words at a
-     natural point and end them with `…`, keeping the part that identifies
-     the option. Never show a letter alone.
-   - `Ergebnis`: `✓` correct, `◐` partially correct, `✗` wrong.
-   - `Sek.`: the answer time in whole seconds.
-   - `Lösung` and `Anmerkung`: filled only on ◐ and ✗ rows, `—` otherwise.
-     `Lösung` uses the same letter-plus-text format as `Antwort`. `Anmerkung`
-     names the reason in a few words, such as "c übersehen" or "Star mit Cash
-     Cow verwechselt".
-   - Below the table: `Ergebnis: X/N richtig · Gesamtzeit m:ss`.
-3. `### Durchgang 2` with the same columns and summary line.
-4. `### Durchgang 3` with only `#`, `Frage`, `Antwort`, `Ergebnis`, and `Sek.`,
-   since every answer is correct. Same summary line.
-5. `### Überblick` as a small table with `Durchgang`, `Richtig`, `Gesamtzeit`,
-   and `Ø Sek.`.
+## 6. Output
 
-Give no preamble, no explanation of the method, and no closing offer unless the
-user asks.
+Write the run JSON, then render it:
 
-## Check before delivering
+```json
+{
+  "title": "Strategisches Management – Quiz 3",
+  "lang": "de",
+  "created": "2026-11-12T14:03",
+  "passReason": "Viele Fallfragen mit Rechenschritten, daher 3 Durchgänge.",
+  "questions": [
+    {
+      "n": 1, "label": "Porter: Substitution", "type": "multi",
+      "context": null,
+      "stem": "Zu den fünf Wettbewerbskräften laut Porter …",
+      "options": {"a": "…", "b": "…", "c": "…", "d": "…"},
+      "key": ["b", "d"],
+      "corrected": false
+    },
+    {
+      "n": 2, "label": "McGregor: Theorie X/Y", "type": "match",
+      "context": null,
+      "stem": "Ordnen Sie die Aussagen zu.",
+      "items": {"1": "Braucht konkrete Anweisungen", "2": "Hohe Selbstkontrolle"},
+      "choices": ["X", "Y"],
+      "key": {"1": "X", "2": "Y"},
+      "corrected": false
+    }
+  ],
+  "passes": [
+    {"answers": [
+      {"n": 1, "selected": ["b"], "seconds": 48, "note": "d übersehen"},
+      {"n": 2, "selected": {"1": "X", "2": "Y"}, "seconds": 37, "note": ""}
+    ]}
+  ]
+}
+```
 
-Silently confirm that:
+- `lang` is the quiz language (`de` or `en`); `label` is a topic of at most
+  five words; `stem` and `options` are the full original texts; `context` holds
+  shared case text including a data table as plain text, or `null`.
+- `note` names the reason for a mistake in a few words in the quiz language
+  ("c übersehen", "Star mit Cash Cow verwechselt"); leave it empty on correct
+  answers.
+- Do not write results or totals. The script scores every answer against the
+  key and computes totals.
 
-- every ✓ matches the key exactly, and every ◐ or ✗ differs from it;
-- every Pass 3 answer equals the key;
-- Pass 2 keeps every Pass 1 ✓ answer unchanged except a deliberate rare slip;
-- each pass's times follow the timing ranges relative to Pass 1;
-- summary counts, total times, and averages match the table rows.
+Run:
+
+```bash
+python3 {skill_path}/scripts/render.py ~/synthetic-student/runs/<name>.json ~/synthetic-student/runs/<name>.html
+```
+
+An error means the data is invalid or the final pass is not fully correct: fix
+the data and run again. A warning means a pass looks implausible: revise the
+simulation unless there is a good reason.
+
+Then print only the one-line notes (merged duplicates, uncertain keys, applied
+or merged corrections), the overview table the script printed, and the HTML
+path. No per-question tables in the terminal, no method explanation, no
+closing offer.
+
+## 7. Check before delivering
+
+The script verifies scoring, totals, and the final pass. Check the rest
+silently:
+
+- every mistake is plausible for a prepared student and consistent with
+  related questions;
+- Pass 2 keeps every answer that was correct in Pass 1, except a rare
+  deliberate slip;
+- times follow the ranges above, are not round, and do not scale exactly in
+  proportion.
